@@ -9,6 +9,13 @@ export const mockZones = (): Zones => [
       { id: "1", component: <TestAsset>TestAsset1</TestAsset> },
       { id: "2", component: <TestAsset>TestAsset2</TestAsset> },
       { id: "3", component: <TestAsset>TestAsset3</TestAsset> },
+      { id: "4", component: <TestAsset>TestAsset3.1</TestAsset> },
+      { id: "5", component: <TestAsset>TestAsset3.2</TestAsset> },
+      { id: "6", component: <TestAsset>TestAsset3.3</TestAsset> },
+      { id: "7", component: <TestAsset>TestAsset3.4</TestAsset> },
+      { id: "8", component: <TestAsset>TestAsset3.5</TestAsset> },
+      { id: "9", component: <TestAsset>TestAsset3.6</TestAsset> },
+      { id: "10", component: <TestAsset>TestAsset3.7</TestAsset> },
     ],
   },
   {

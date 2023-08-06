@@ -21,7 +21,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({ zones }) => {
             {zone.name}
           </h1>
 
-          <div className={clsx("flex flex-row items-stretch gap-10")}>
+          <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
             {zone.assets.map((asset) => (
               <div
                 key={asset.id}
