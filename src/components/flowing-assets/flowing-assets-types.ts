@@ -1,6 +1,6 @@
-export type Asset = {
+export type Zone = {
   id: string;
   name: string;
 };
 
-export type Assets = Asset[];
+export type Zones = Zone[];
