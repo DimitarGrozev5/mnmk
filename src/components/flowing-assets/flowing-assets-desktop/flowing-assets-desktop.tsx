@@ -42,8 +42,6 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     [transformers, zones]
   );
 
-  console.log(transformerZones);
-
   return (
     <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
       {zones.map((zone, index) => (
