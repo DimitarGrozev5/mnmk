@@ -23,7 +23,4 @@ export type Transformer = {
 
 // Additional types
 
-export type IdRef = {
-  id: string;
-  ref: React.RefObject<HTMLDivElement>;
-};
+export type IdRefs = Record<string, React.RefObject<HTMLDivElement>>;

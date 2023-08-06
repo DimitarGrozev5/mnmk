@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import { type IdRef, type Zone } from "../flowing-assets-types";
+import { type IdRefs, type Zone } from "../flowing-assets-types";
 import FLowingAsset from "./flowing-asset";
 
 type Props = {
   zone: Zone;
-  addAssetRef: (ref: IdRef) => void;
-  removeAssetRef: (ref: IdRef) => void;
+  addAssetRef: (ref: IdRefs) => void;
+  removeAssetRef: (ref: IdRefs) => void;
 };
 
 const FlowingZone: React.FC<Props> = ({

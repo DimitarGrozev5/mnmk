@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { type IdRef, type Asset } from "../flowing-assets-types";
+import { type IdRefs, type Asset } from "../flowing-assets-types";
 
 type Props = {
   asset: Asset;
-  addAssetRef: (ref: IdRef) => void;
-  removeAssetRef: (ref: IdRef) => void;
+  addAssetRef: (ref: IdRefs) => void;
+  removeAssetRef: (ref: IdRefs) => void;
 };
 
 const FLowingAsset: React.FC<Props> = ({
@@ -17,10 +17,10 @@ const FLowingAsset: React.FC<Props> = ({
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (divRef.current) {
-      addAssetRef({ id: asset.id, ref: divRef });
+      addAssetRef({ [asset.id]: divRef });
     }
     () => {
-      removeAssetRef({ id: asset.id, ref: divRef });
+      removeAssetRef({ [asset.id]: divRef });
     };
   }, [addAssetRef, asset.id, removeAssetRef]);
 

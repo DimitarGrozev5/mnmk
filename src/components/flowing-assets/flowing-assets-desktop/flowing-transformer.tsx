@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import type { IdRef, Transformer } from "../flowing-assets-types";
+import type { IdRefs, Transformer } from "../flowing-assets-types";
 import { useEffect, useRef } from "react";
 
 type Props = {
   transformer: Transformer;
-  addTransRef: (ref: IdRef) => void;
-  removeTransRef: (ref: IdRef) => void;
+  addTransRef: (ref: IdRefs) => void;
+  removeTransRef: (ref: IdRefs) => void;
 };
 
 const FlowingTransformer: React.FC<Props> = ({
@@ -17,10 +17,10 @@ const FlowingTransformer: React.FC<Props> = ({
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (divRef.current) {
-      addTransRef({ id: transformer.id, ref: divRef });
+      addTransRef({ [transformer.id]: divRef });
     }
     () => {
-      removeTransRef({ id: transformer.id, ref: divRef });
+      removeTransRef({ [transformer.id]: divRef });
     };
   }, [addTransRef, removeTransRef, transformer.id]);
 
