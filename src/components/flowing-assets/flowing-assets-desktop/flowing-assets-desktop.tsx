@@ -21,13 +21,19 @@ const FlowingAssets_Desktop: React.FC<Props> = ({ zones }) => {
             {zone.name}
           </h1>
 
-          <div
-            className={clsx(
-              "border border-red-500",
-              "flex flex-row justify-between items-stretch gap-4"
-            )}
-          >
-            {zone.assets.map((asset) => asset.component)}
+          <div className={clsx("flex flex-row items-stretch gap-10")}>
+            {zone.assets.map((asset) => (
+              <div
+                key={asset.id}
+                className={clsx(
+                  "p-3 w-36 h-36",
+                  "bg-slate-300 rounded-lg",
+                  "shadow-lg"
+                )}
+              >
+                {asset.component}
+              </div>
+            ))}
           </div>
         </div>
       ))}
