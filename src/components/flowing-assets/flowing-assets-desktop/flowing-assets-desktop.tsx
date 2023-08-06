@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { ZonesAndTransformers } from "../flowing-assets-types";
 import FlowingZone from "./flowing-zone";
 import { useRefsArray } from "./hooks/useRefsArray";
+import FlowingTransformer from "./flowing-transformer";
 
 type Props = {
   zonesAndTransformers: ZonesAndTransformers;
@@ -16,7 +17,11 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     removeRef: removeAssetRef,
   } = useRefsArray();
 
-  console.log(assetRefs);
+  const {
+    refs: transRefs,
+    addRef: addTransRef,
+    removeRef: removeTransRef,
+  } = useRefsArray();
 
   return (
     <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
@@ -30,12 +35,12 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
       ))}
       <div className={clsx("flex flex-row gap-4", "px-5")}>
         {transformers.map((transformer) => (
-          <div
+          <FlowingTransformer
             key={transformer.id}
-            className={clsx("p-3 w-36", "bg-slate-300 rounded-lg", "shadow-lg")}
-          >
-            {transformer.component}
-          </div>
+            transformer={transformer}
+            addTransRef={addTransRef}
+            removeTransRef={removeTransRef}
+          />
         ))}
       </div>
     </div>
