@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <div className="flex flex-col w-full items-stretch p-10">
-        <FlowingAssets_Desktop zones={mockZones()} />
+        <FlowingAssets_Desktop zonesAndTransformers={mockZones()} />
       </div>
     </>
   );

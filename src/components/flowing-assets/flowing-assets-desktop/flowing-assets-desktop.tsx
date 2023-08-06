@@ -1,11 +1,13 @@
 import clsx from "clsx";
-import { Zones } from "../flowing-assets-types";
+import { ZonesAndTransformers } from "../flowing-assets-types";
 
 type Props = {
-  zones: Zones;
+  zonesAndTransformers: ZonesAndTransformers;
 };
 
-const FlowingAssets_Desktop: React.FC<Props> = ({ zones }) => {
+const FlowingAssets_Desktop: React.FC<Props> = ({
+  zonesAndTransformers: { zones },
+}) => {
   return (
     <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
       {zones.map((zone) => (

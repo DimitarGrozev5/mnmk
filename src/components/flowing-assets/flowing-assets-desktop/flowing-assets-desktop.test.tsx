@@ -5,11 +5,17 @@ import { mockZones } from "../mock-zones";
 
 describe("FlowingAssets_Desktop", () => {
   it("should render all asset zones with a name", () => {
-    render(<FlowingAssets_Desktop zones={mockZones()} />);
+    render(<FlowingAssets_Desktop zonesAndTransformers={mockZones()} />);
 
-    const heading1 = screen.getByRole("heading", { name: mockZones()[0].name });
-    const heading2 = screen.getByRole("heading", { name: mockZones()[1].name });
-    const heading3 = screen.getByRole("heading", { name: mockZones()[2].name });
+    const heading1 = screen.getByRole("heading", {
+      name: mockZones().zones[0].name,
+    });
+    const heading2 = screen.getByRole("heading", {
+      name: mockZones().zones[1].name,
+    });
+    const heading3 = screen.getByRole("heading", {
+      name: mockZones().zones[2].name,
+    });
 
     expect(heading1).toBeInTheDocument();
     expect(heading2).toBeInTheDocument();
@@ -17,21 +23,21 @@ describe("FlowingAssets_Desktop", () => {
   });
 
   it("should render with custom component individual assets in each zone", () => {
-    render(<FlowingAssets_Desktop zones={mockZones()} />);
+    render(<FlowingAssets_Desktop zonesAndTransformers={mockZones()} />);
 
     const zone1 = screen
       .getByRole("heading", {
-        name: mockZones()[0].name,
+        name: mockZones().zones[0].name,
       })
       .closest("div")!;
     const zone2 = screen
       .getByRole("heading", {
-        name: mockZones()[1].name,
+        name: mockZones().zones[1].name,
       })
       .closest("div")!;
     const zone3 = screen
       .getByRole("heading", {
-        name: mockZones()[2].name,
+        name: mockZones().zones[2].name,
       })
       .closest("div")!;
 
@@ -54,5 +60,14 @@ describe("FlowingAssets_Desktop", () => {
     expect(asset7).toBeInTheDocument();
     expect(asset8).toBeInTheDocument();
     expect(asset9).toBeInTheDocument();
+  });
+
+  it("should render with custom component individual transformers", () => {
+    render(<FlowingAssets_Desktop zonesAndTransformers={mockZones()} />);
+
+    mockZones().transformers.forEach((transformer) => {
+      const transformerElement = screen.getByText(`TestTrans${transformer.id}`);
+      expect(transformerElement).toBeInTheDocument();
+    });
   });
 });
