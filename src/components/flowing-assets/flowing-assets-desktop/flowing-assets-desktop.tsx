@@ -46,7 +46,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
 
   return (
     <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
-      {zones.map((zone) => (
+      {zones.map((zone, index) => (
         <React.Fragment key={zone.id}>
           <FlowingZone
             key={zone.id}
@@ -54,18 +54,20 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
             addAssetRef={addAssetRef}
             removeAssetRef={removeAssetRef}
           />
+          {transformerZones[index].length > 0 && (
+            <div className={clsx("flex flex-row gap-10", "px-5")}>
+              {transformerZones[index].map((transformer) => (
+                <FlowingTransformer
+                  key={transformer.id}
+                  transformer={transformer}
+                  addTransRef={addTransRef}
+                  removeTransRef={removeTransRef}
+                />
+              ))}
+            </div>
+          )}
         </React.Fragment>
       ))}
-      <div className={clsx("flex flex-row gap-4", "px-5")}>
-        {transformers.map((transformer) => (
-          <FlowingTransformer
-            key={transformer.id}
-            transformer={transformer}
-            addTransRef={addTransRef}
-            removeTransRef={removeTransRef}
-          />
-        ))}
-      </div>
     </div>
   );
 };
