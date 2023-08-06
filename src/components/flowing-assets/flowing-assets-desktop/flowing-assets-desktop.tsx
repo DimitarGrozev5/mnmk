@@ -5,8 +5,9 @@ import type {
   ZonesAndTransformers,
 } from "../flowing-assets-types";
 import FlowingZone from "./flowing-zone";
-import { useRefsArray } from "./hooks/useRefsArray";
+import { useRefsArray } from "./hooks/useRefsCollection";
 import FlowingTransformer from "./flowing-transformer";
+import FlowLine from "./flow-line";
 
 type Props = {
   zonesAndTransformers: ZonesAndTransformers;
@@ -28,6 +29,11 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     removeRef: removeTransRef,
   } = useRefsArray();
 
+  // Go through the zones and calculate lines
+  const lines: React.ReactNode = useMemo(() => {
+    return <></>;
+  }, []);
+
   // Sort and filter transformers
   const transformerZones: Transformer[][] = useMemo(
     () =>
@@ -43,7 +49,9 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
   );
 
   return (
-    <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
+    <div
+      className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
+    >
       {zones.map((zone, index) => (
         <React.Fragment key={zone.id}>
           <FlowingZone
@@ -66,6 +74,9 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
           )}
         </React.Fragment>
       ))}
+      {lines}
+      <FlowLine startPoint={[10, 20]} endPoint={[10, 90]} />
+      <FlowLine startPoint={[10, 30]} endPoint={[90, 30]} />
     </div>
   );
 };

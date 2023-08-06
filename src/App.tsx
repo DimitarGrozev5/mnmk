@@ -7,6 +7,16 @@ function App() {
       <div className="flex flex-col w-full items-stretch p-10">
         <FlowingAssets_Desktop zonesAndTransformers={mockZones()} />
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 }
