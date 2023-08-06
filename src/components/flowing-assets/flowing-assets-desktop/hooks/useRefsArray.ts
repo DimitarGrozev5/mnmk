@@ -1,17 +1,20 @@
 import { useCallback, useMemo, useState } from "react";
+import { type IdRef } from "../../flowing-assets-types";
 
 export const useRefsArray = () => {
-  const [refs, setREfs] = useState<React.RefObject<HTMLDivElement>[]>([]);
+  const [refs, setREfs] = useState<IdRef[]>([]);
   const addRef = useCallback(
-    (ref: React.RefObject<HTMLDivElement>) =>
+    (idRef: IdRef) =>
       setREfs((refs) =>
-        refs.find((zRef) => zRef === ref) ? [...refs] : [...refs, ref]
+        refs.find((zRef) => zRef.ref === idRef.ref)
+          ? [...refs]
+          : [...refs, idRef]
       ),
     []
   );
   const removeRef = useCallback(
-    (ref: React.RefObject<HTMLDivElement>) =>
-      setREfs((refs) => refs.filter((zRef) => zRef !== ref)),
+    (idRef: IdRef) =>
+      setREfs((refs) => refs.filter((zRef) => zRef.ref !== idRef.ref)),
     []
   );
   return useMemo(

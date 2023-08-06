@@ -20,3 +20,10 @@ export type Transformer = {
   result: Asset;
   component: React.ReactNode;
 };
+
+// Additional types
+
+export type IdRef = {
+  id: string;
+  ref: React.RefObject<HTMLDivElement>;
+};
