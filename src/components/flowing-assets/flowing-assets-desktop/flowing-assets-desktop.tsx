@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Zones } from "../flowing-assets-types";
 
 type Props = {
@@ -5,7 +6,20 @@ type Props = {
 };
 
 const FlowingAssets_Desktop: React.FC<Props> = ({ zones }) => {
-  return zones.map((zone) => <h1 key={zone.id}>{zone.name}</h1>);
+  return (
+    <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
+      {zones.map((zone) => (
+        <div
+          key={zone.id}
+          className={clsx("border border-slate-400 rounded-lg", "p-5")}
+        >
+          <h1 className={clsx("text-xl font-semibold", "text-slate-700")}>
+            {zone.name}
+          </h1>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default FlowingAssets_Desktop;

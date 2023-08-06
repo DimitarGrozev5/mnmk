@@ -4,7 +4,7 @@ import { mockZones } from "./components/flowing-assets/mock-zones";
 function App() {
   return (
     <>
-      <div className="flex flex-col w-full items-stretch border border-black">
+      <div className="flex flex-col w-full items-stretch p-10">
         <FlowingAssets_Desktop zones={mockZones} />
       </div>
     </>

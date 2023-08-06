@@ -7,9 +7,9 @@ describe("FlowingAssets_Desktop", () => {
   it("should render all asset zones with a name", () => {
     render(<FlowingAssets_Desktop zones={mockZones} />);
 
-    const heading1 = screen.getByRole("heading", { name: "test1" });
-    const heading2 = screen.getByRole("heading", { name: "test2" });
-    const heading3 = screen.getByRole("heading", { name: "test3" });
+    const heading1 = screen.getByRole("heading", { name: mockZones[0].name });
+    const heading2 = screen.getByRole("heading", { name: mockZones[1].name });
+    const heading3 = screen.getByRole("heading", { name: mockZones[2].name });
 
     expect(heading1).toBeInTheDocument();
     expect(heading2).toBeInTheDocument();
