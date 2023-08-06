@@ -1,12 +1,5 @@
 import { type Zones } from "./flowing-assets-types";
-
-type TestAssetProps = {
-  children: string;
-};
-// eslint-disable-next-line react-refresh/only-export-components
-const TestAsset: React.FC<TestAssetProps> = ({ children }) => (
-  <div>{children}</div>
-);
+import TestAsset from "./test-components/test-asset";
 
 export const mockZones = (): Zones => [
   {
