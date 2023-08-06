@@ -27,28 +27,28 @@ export const mockZones = (): ZonesAndTransformers => {
         component: <TestAsset>TestTrans2</TestAsset>,
       },
       {
-        id: "4",
+        id: "3",
         sources: [asset4, asset5],
         result: asset7,
         component: <TestAsset>TestTrans3</TestAsset>,
       },
       {
-        id: "5",
+        id: "4",
         sources: [asset4, asset5],
         result: asset6,
-        component: <TestAsset>TestTrans3</TestAsset>,
+        component: <TestAsset>TestTrans4</TestAsset>,
+      },
+      {
+        id: "5",
+        sources: [asset4, asset5],
+        result: asset8,
+        component: <TestAsset>TestTrans5</TestAsset>,
       },
       {
         id: "6",
-        sources: [asset4, asset5],
-        result: asset8,
-        component: <TestAsset>TestTrans3</TestAsset>,
-      },
-      {
-        id: "7",
         sources: [asset6],
         result: asset9,
-        component: <TestAsset>TestTrans3</TestAsset>,
+        component: <TestAsset>TestTrans6</TestAsset>,
       },
     ],
     zones: [

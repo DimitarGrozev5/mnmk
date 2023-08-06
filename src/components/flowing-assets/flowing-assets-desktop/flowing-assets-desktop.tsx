@@ -6,7 +6,7 @@ type Props = {
 };
 
 const FlowingAssets_Desktop: React.FC<Props> = ({
-  zonesAndTransformers: { zones },
+  zonesAndTransformers: { zones, transformers },
 }) => {
   return (
     <div className={clsx("flex flex-col gap-4", "bg-slate-200", "p-3")}>
@@ -39,6 +39,16 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
           </div>
         </div>
       ))}
+      <div className={clsx("flex flex-row gap-4", "px-5")}>
+        {transformers.map((transformer) => (
+          <div
+            key={transformer.id}
+            className={clsx("p-3 w-36", "bg-slate-300 rounded-lg", "shadow-lg")}
+          >
+            {transformer.component}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
