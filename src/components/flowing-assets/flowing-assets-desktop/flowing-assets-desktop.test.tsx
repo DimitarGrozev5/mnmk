@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import FlowingAssets_Desktop from "./flowing-assets-desktop";
 import { mockZones } from "../mock-zones";
 
@@ -16,5 +16,43 @@ describe("FlowingAssets_Desktop", () => {
     expect(heading3).toBeInTheDocument();
   });
 
-  it("should render with custom component individual assets in each zone");
+  it("should render with custom component individual assets in each zone", () => {
+    render(<FlowingAssets_Desktop zones={mockZones()} />);
+
+    const zone1 = screen
+      .getByRole("heading", {
+        name: mockZones()[0].name,
+      })
+      .closest("div")!;
+    const zone2 = screen
+      .getByRole("heading", {
+        name: mockZones()[1].name,
+      })
+      .closest("div")!;
+    const zone3 = screen
+      .getByRole("heading", {
+        name: mockZones()[2].name,
+      })
+      .closest("div")!;
+
+    const asset1 = within(zone1).getByText("TestAsset1");
+    const asset2 = within(zone1).getByText("TestAsset2");
+    const asset3 = within(zone1).getByText("TestAsset3");
+    const asset4 = within(zone2).getByText("TestAsset4");
+    const asset5 = within(zone2).getByText("TestAsset5");
+    const asset6 = within(zone2).getByText("TestAsset6");
+    const asset7 = within(zone3).getByText("TestAsset7");
+    const asset8 = within(zone3).getByText("TestAsset8");
+    const asset9 = within(zone3).getByText("TestAsset9");
+
+    expect(asset1).toBeInTheDocument();
+    expect(asset2).toBeInTheDocument();
+    expect(asset3).toBeInTheDocument();
+    expect(asset4).toBeInTheDocument();
+    expect(asset5).toBeInTheDocument();
+    expect(asset6).toBeInTheDocument();
+    expect(asset7).toBeInTheDocument();
+    expect(asset8).toBeInTheDocument();
+    expect(asset9).toBeInTheDocument();
+  });
 });
