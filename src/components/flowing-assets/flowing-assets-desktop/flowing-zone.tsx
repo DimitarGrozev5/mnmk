@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Zone } from "../flowing-assets-types";
-import { useEffect, useRef } from "react";
+import { type Zone } from "../flowing-assets-types";
+import FLowingAsset from "./flowing-asset";
 
 type Props = {
   zone: Zone;
@@ -13,20 +13,8 @@ const FlowingZone: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
 }) => {
-  // Take a ref to the div element and
-  const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (divRef.current) {
-      addAssetRef(divRef);
-    }
-    () => {
-      removeAssetRef(divRef);
-    };
-  }, [addAssetRef, removeAssetRef]);
-
   return (
     <div
-      ref={divRef}
       className={clsx(
         "flex flex-col gap-2",
         "border border-slate-400 rounded-lg",
@@ -39,16 +27,12 @@ const FlowingZone: React.FC<Props> = ({
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
         {zone.assets.map((asset) => (
-          <div
+          <FLowingAsset
             key={asset.id}
-            className={clsx(
-              "p-3 w-36 h-36",
-              "bg-slate-300 rounded-lg",
-              "shadow-lg"
-            )}
-          >
-            {asset.component}
-          </div>
+            asset={asset}
+            addAssetRef={addAssetRef}
+            removeAssetRef={removeAssetRef}
+          />
         ))}
       </div>
     </div>

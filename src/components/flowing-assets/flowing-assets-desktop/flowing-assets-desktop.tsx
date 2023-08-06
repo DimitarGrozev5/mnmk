@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { ZonesAndTransformers } from "../flowing-assets-types";
-import FlowingZone from "./flowing-zones";
+import FlowingZone from "./flowing-zone";
 import { useRefsArray } from "./hooks/useRefsArray";
 
 type Props = {
