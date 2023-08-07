@@ -27,7 +27,12 @@ const FLowingAsset: React.FC<Props> = ({
   return (
     <div
       ref={divRef}
-      className={clsx("p-3 w-36 h-36", "bg-slate-300 rounded-lg", "shadow-lg")}
+      className={clsx(
+        "relative z-10",
+        "p-3 w-36 h-36",
+        "bg-slate-300 rounded-lg",
+        "shadow-lg"
+      )}
     >
       {asset.component}
     </div>
