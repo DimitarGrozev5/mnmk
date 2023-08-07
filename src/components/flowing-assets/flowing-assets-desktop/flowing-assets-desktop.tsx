@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import clsx from "clsx";
 import type {
   Transformer,
@@ -7,7 +7,7 @@ import type {
 import FlowingZone from "./flowing-zone";
 import { useRefsArray } from "./hooks/useRefsCollection";
 import FlowingTransformer from "./flowing-transformer";
-import FlowLine from "./flow-line";
+import { useConnectionLines } from "./hooks/useConnectionLines";
 
 type Props = {
   zonesAndTransformers: ZonesAndTransformers;
@@ -17,6 +17,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
   zonesAndTransformers: { zones, transformers },
 }) => {
   // Get refs for zones and transformers
+  const containerRef = useRef<HTMLDivElement>(null);
   const {
     refs: assetRefs,
     addRef: addAssetRef,
@@ -30,9 +31,12 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
   } = useRefsArray();
 
   // Go through the zones and calculate lines
-  const lines: React.ReactNode = useMemo(() => {
-    return <></>;
-  }, []);
+  const lines: React.ReactNode = useConnectionLines(
+    transformers,
+    containerRef,
+    assetRefs,
+    transRefs
+  );
 
   // Sort and filter transformers
   const transformerZones: Transformer[][] = useMemo(
@@ -50,6 +54,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
 
   return (
     <div
+      ref={containerRef}
       className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
     >
       {zones.map((zone, index) => (
@@ -75,8 +80,6 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
         </React.Fragment>
       ))}
       {lines}
-      <FlowLine startPoint={[10, 20]} endPoint={[10, 90]} />
-      <FlowLine startPoint={[10, 30]} endPoint={[90, 30]} />
     </div>
   );
 };
