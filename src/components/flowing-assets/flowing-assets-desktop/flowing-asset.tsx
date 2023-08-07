@@ -6,12 +6,14 @@ type Props = {
   asset: Asset;
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
+  setHoveredAsset: (assetId: string | null) => void;
 };
 
 const FLowingAsset: React.FC<Props> = ({
   asset,
   addAssetRef,
   removeAssetRef,
+  setHoveredAsset,
 }) => {
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
@@ -33,6 +35,8 @@ const FLowingAsset: React.FC<Props> = ({
         "bg-slate-300 rounded-lg",
         "shadow-lg"
       )}
+      onMouseEnter={() => setHoveredAsset(asset.id)}
+      onMouseLeave={() => setHoveredAsset(null)}
     >
       {asset.component}
     </div>

@@ -44,8 +44,6 @@ const FlowLine: React.FC<Props> = ({ startPoint, endPoint }) => {
     }
   }, [endPoint, startPoint]);
 
-  console.log(start, size);
-
   return (
     <div
       className="border-t border-l border-slate-500"

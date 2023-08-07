@@ -6,12 +6,14 @@ type Props = {
   zone: Zone;
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
+  setHoveredAsset: (assetId: string | null) => void;
 };
 
 const FlowingZone: React.FC<Props> = ({
   zone,
   addAssetRef,
   removeAssetRef,
+  setHoveredAsset,
 }) => {
   return (
     <div
@@ -32,6 +34,7 @@ const FlowingZone: React.FC<Props> = ({
             asset={asset}
             addAssetRef={addAssetRef}
             removeAssetRef={removeAssetRef}
+            setHoveredAsset={setHoveredAsset}
           />
         ))}
       </div>
