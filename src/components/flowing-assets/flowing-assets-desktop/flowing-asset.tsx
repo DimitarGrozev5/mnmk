@@ -17,12 +17,13 @@ const FLowingAsset: React.FC<Props> = ({
 }) => {
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (divRef.current) {
-      addAssetRef({ [asset.id]: divRef });
+      addAssetRef({ [asset.id]: divRef.current.getBoundingClientRect() });
     }
     () => {
-      removeAssetRef({ [asset.id]: divRef });
+      removeAssetRef({ [asset.id]: new DOMRect() });
     };
   }, [addAssetRef, asset.id, removeAssetRef]);
 

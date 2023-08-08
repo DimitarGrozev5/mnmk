@@ -1,12 +1,13 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import type {
   Transformer,
   ZonesAndTransformers,
 } from "../flowing-assets-types";
 import FlowingZone from "./flowing-zone";
-import { useRefsArray } from "./hooks/useRefsCollection";
+import { useRectCollection } from "./hooks/useRefsCollection";
 import FlowingTransformer from "./flowing-transformer";
+import { useDrawLines } from "./hooks/useDrawLines";
 
 type Props = {
   zonesAndTransformers: ZonesAndTransformers;
@@ -18,20 +19,38 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
   // Get refs for zones and transformers
   const containerRef = useRef<HTMLDivElement>(null);
   const {
-    refs: assetRefs,
-    addRef: addAssetRef,
-    removeRef: removeAssetRef,
-  } = useRefsArray();
+    rects: assetRects,
+    addRect: addAssetRef,
+    removeRect: removeAssetRef,
+  } = useRectCollection();
 
   const {
-    refs: transRefs,
-    addRef: addTransRef,
-    removeRef: removeTransRef,
-  } = useRefsArray();
+    rects: transRects,
+    addRect: addTransRef,
+    removeRect: removeTransRef,
+  } = useRectCollection();
 
   // Calculate lines for the hovered element
   const [hoveredAsset, setHoveredAsset] = useState<string | null>(null);
   const [hoveredTrans, setHoveredTrans] = useState<string | null>(null);
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    if (canvasRef.current && containerRef.current) {
+      canvasRef.current.width = containerRef.current.clientWidth;
+      canvasRef.current.height = containerRef.current.clientHeight;
+    }
+  }, []);
+
+  useDrawLines(
+    canvasRef,
+    containerRef,
+    hoveredAsset,
+    hoveredTrans,
+    assetRects,
+    transRects,
+    transformers
+  );
 
   // Sort and filter transformers
   const transformerZones: Transformer[][] = useMemo(
@@ -52,7 +71,9 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
       ref={containerRef}
       className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
     >
-      <div className={clsx("absolute inset-0 z-0")}></div>
+      <div className={clsx("absolute inset-0 z-0")}>
+        <canvas ref={canvasRef} className="border border-red-500"></canvas>
+      </div>
       <div className={clsx("relative inset-0 z-10", "flex flex-col gap-4")}>
         {zones.map((zone, index) => (
           <React.Fragment key={zone.id}>

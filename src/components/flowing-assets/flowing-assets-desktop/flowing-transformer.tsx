@@ -19,10 +19,10 @@ const FlowingTransformer: React.FC<Props> = ({
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (divRef.current) {
-      addTransRef({ [transformer.id]: divRef });
+      addTransRef({ [transformer.id]: divRef.current.getBoundingClientRect() });
     }
     () => {
-      removeTransRef({ [transformer.id]: divRef });
+      removeTransRef({ [transformer.id]: new DOMRect() });
     };
   }, [addTransRef, removeTransRef, transformer.id]);
 
