@@ -72,7 +72,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
       className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
     >
       <div className={clsx("absolute inset-0 z-0")}>
-        <canvas ref={canvasRef} className="border border-red-500"></canvas>
+        <canvas ref={canvasRef}></canvas>
       </div>
       <div className={clsx("relative inset-0 z-10", "flex flex-col gap-4")}>
         {zones.map((zone, index) => (
