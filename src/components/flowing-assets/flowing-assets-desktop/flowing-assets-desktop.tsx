@@ -82,6 +82,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
               zone={zone}
               addAssetRef={addAssetRef}
               removeAssetRef={removeAssetRef}
+              hoveredAsset={hoveredAsset}
               setHoveredAsset={setHoveredAsset}
             />
             {transformerZones[index].length > 0 && (

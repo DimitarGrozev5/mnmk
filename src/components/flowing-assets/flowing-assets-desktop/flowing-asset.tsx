@@ -7,6 +7,7 @@ type Props = {
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
   setHoveredAsset: (assetId: string | null) => void;
+  dim: boolean;
 };
 
 const FLowingAsset: React.FC<Props> = ({
@@ -14,6 +15,7 @@ const FLowingAsset: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
   setHoveredAsset,
+  dim,
 }) => {
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
@@ -34,8 +36,9 @@ const FLowingAsset: React.FC<Props> = ({
         "relative z-10",
         "p-3 w-36 h-36",
         "bg-slate-300 rounded-lg",
-        "shadow-lg",
-        "cursor-pointer"
+        "shadow-lg transition-all duration-500",
+        "cursor-pointer",
+        dim && "opacity-50 grayscale-0 blur-sm"
       )}
       onMouseEnter={() => setHoveredAsset(asset.id)}
       onMouseLeave={() => setHoveredAsset(null)}
