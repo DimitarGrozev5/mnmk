@@ -7,7 +7,6 @@ import type {
 import FlowingZone from "./flowing-zone";
 import { useRefsArray } from "./hooks/useRefsCollection";
 import FlowingTransformer from "./flowing-transformer";
-import { useConnectionLines } from "./hooks/useConnectionLines";
 
 type Props = {
   zonesAndTransformers: ZonesAndTransformers;
@@ -29,6 +28,10 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     addRef: addTransRef,
     removeRef: removeTransRef,
   } = useRefsArray();
+
+  // Calculate lines for the hovered element
+  const [hoveredAsset, setHoveredAsset] = useState<string | null>(null);
+  const [hoveredTrans, setHoveredTrans] = useState<string | null>(null);
 
   // Sort and filter transformers
   const transformerZones: Transformer[][] = useMemo(
