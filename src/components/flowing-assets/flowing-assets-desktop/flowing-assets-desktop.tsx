@@ -30,60 +30,6 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     removeRef: removeTransRef,
   } = useRefsArray();
 
-  // Calculate lines for the hovered element
-  const [hoveredAsset, setHoveredAsset] = useState<string | null>(null);
-  const [hoveredTrans, setHoveredTrans] = useState<string | null>(null);
-
-  const [hoveredAssets, hoveredTransformers] = useMemo(() => {
-    if (hoveredAsset !== null) {
-      // Select the asset
-      const asset = { [hoveredAsset]: assetRefs[hoveredAsset] };
-
-      // Select all transformers that take the selected asset
-      const transformerIds = transformers
-        .filter(
-          (trans) =>
-            trans.sources.find((source) => source.id === hoveredAsset) ||
-            trans.result.id === hoveredAsset
-        )
-        .reduce(
-          (acc, trans) => ({ [trans.id]: transRefs[trans.id], ...acc }),
-          {}
-        );
-
-      return [{ ...asset }, { ...transformerIds }];
-    }
-
-    if (hoveredTrans !== null) {
-      // Select the transformer
-      const transformerId = { [hoveredTrans]: transRefs[hoveredTrans] };
-
-      // Select all assets that the selected transformer has
-      const transformer = transformers.find(
-        (trans) => trans.id === hoveredTrans
-      )!;
-      const assetIds = transformer.sources.reduce(
-        (acc, cur) => ({ [cur.id]: assetRefs[cur.id], ...acc }),
-        {}
-      );
-
-      // Select result asset
-      const result = transformer.result;
-      const resultAsset = { [result.id]: assetRefs[result.id] };
-
-      return [{ ...assetIds, ...resultAsset }, { ...transformerId }];
-    }
-
-    return [{}, {}];
-  }, [assetRefs, hoveredAsset, hoveredTrans, transRefs, transformers]);
-
-  const lines: React.ReactNode = useConnectionLines(
-    transformers,
-    containerRef,
-    hoveredAssets,
-    hoveredTransformers
-  );
-
   // Sort and filter transformers
   const transformerZones: Transformer[][] = useMemo(
     () =>
@@ -129,7 +75,6 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
             )}
           </React.Fragment>
         ))}
-        {lines}
       </div>
     </div>
   );
