@@ -33,7 +33,8 @@ const FlowingTransformer: React.FC<Props> = ({
         "relative z-10",
         "p-3 w-36",
         "bg-slate-300 rounded-lg",
-        "shadow-lg"
+        "shadow-lg",
+        "cursor-pointer"
       )}
       onMouseEnter={() => setHoveredTrans(transformer.id)}
       onMouseLeave={() => setHoveredTrans(null)}
