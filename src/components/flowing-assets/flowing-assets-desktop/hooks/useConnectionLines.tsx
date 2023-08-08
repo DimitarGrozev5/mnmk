@@ -12,6 +12,7 @@ export const useConnectionLines = (
     const containerRect = container.current?.getBoundingClientRect();
     if (!containerRect) return <></>;
 
+    let key = 0;
     const lines: JSX.Element[] = transformers.flatMap((transformer) => {
       // Get transformer bounding rect
       const transRect =
@@ -49,10 +50,26 @@ export const useConnectionLines = (
             // const y5 = y4 + transRect.height / 2 + 10;
 
             return [
-              <FlowLine startPoint={[x1, y1]} endPoint={[xM, yM]} />,
-              <FlowLine startPoint={[x1, y1]} endPoint={[x2, y2]} />,
-              <FlowLine startPoint={[x2, y2]} endPoint={[x3, y3]} />,
-              <FlowLine startPoint={[x3, y3]} endPoint={[x4, y4]} />,
+              <FlowLine
+                key={key++}
+                startPoint={[x1, y1]}
+                endPoint={[xM, yM]}
+              />,
+              <FlowLine
+                key={key++}
+                startPoint={[x1, y1]}
+                endPoint={[x2, y2]}
+              />,
+              <FlowLine
+                key={key++}
+                startPoint={[x2, y2]}
+                endPoint={[x3, y3]}
+              />,
+              <FlowLine
+                key={key++}
+                startPoint={[x3, y3]}
+                endPoint={[x4, y4]}
+              />,
               // <FlowLine startPoint={[x4, y4]} endPoint={[x5, y5]} />,
             ];
           }
@@ -87,10 +104,10 @@ export const useConnectionLines = (
         const y5 = y4;
 
         resultLines.push(
-          <FlowLine startPoint={[x1, y1]} endPoint={[x2, y2]} />,
-          <FlowLine startPoint={[x2, y2]} endPoint={[x3, y3]} />,
-          <FlowLine startPoint={[x3, y3]} endPoint={[x4, y4]} />,
-          <FlowLine startPoint={[x4, y4]} endPoint={[x5, y5]} />
+          <FlowLine key={key++} startPoint={[x1, y1]} endPoint={[x2, y2]} />,
+          <FlowLine key={key++} startPoint={[x2, y2]} endPoint={[x3, y3]} />,
+          <FlowLine key={key++} startPoint={[x3, y3]} endPoint={[x4, y4]} />,
+          <FlowLine key={key++} startPoint={[x4, y4]} endPoint={[x5, y5]} />
         );
       }
 
