@@ -2,15 +2,15 @@ import { useCallback, useMemo, useState } from "react";
 import { type IdRefs } from "../../flowing-assets-types";
 import { produce } from "immer";
 
-export const useRefsArray = () => {
-  const [refs, setREfs] = useState<IdRefs>({});
-  const addRef = useCallback(
-    (idRef: IdRefs) => setREfs((refs) => ({ ...refs, ...idRef })),
+export const useRectCollection = () => {
+  const [rects, setRects] = useState<IdRefs>({});
+  const addRect = useCallback(
+    (idRef: IdRefs) => setRects((refs) => ({ ...refs, ...idRef })),
     []
   );
-  const removeRef = useCallback(
+  const removeRect = useCallback(
     (idRef: IdRefs) =>
-      setREfs(
+      setRects(
         produce((draft) => {
           Object.keys(idRef).forEach((key) => {
             delete draft[key];
@@ -20,7 +20,7 @@ export const useRefsArray = () => {
     []
   );
   return useMemo(
-    () => ({ refs, addRef, removeRef }),
-    [addRef, refs, removeRef]
+    () => ({ rects, addRect, removeRect }),
+    [addRect, rects, removeRect]
   );
 };
