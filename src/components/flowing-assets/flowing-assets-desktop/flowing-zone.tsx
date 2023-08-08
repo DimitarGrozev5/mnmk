@@ -36,8 +36,8 @@ const FlowingZone: React.FC<Props> = ({
             asset={asset}
             addAssetRef={addAssetRef}
             removeAssetRef={removeAssetRef}
+            hoveredAsset={hoveredAsset}
             setHoveredAsset={setHoveredAsset}
-            dim={hoveredAsset !== null && hoveredAsset !== asset.id}
           />
         ))}
       </div>

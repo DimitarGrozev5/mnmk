@@ -22,7 +22,7 @@ export const generateAssetLines = (
     (transformer) => transformer.result.id === hoveredAsset
   );
 
-  const offsetCoef = 5;
+  const offsetCoef = 6;
 
   // Generate direct lines from transformers to asset
   const linesDown = transSource

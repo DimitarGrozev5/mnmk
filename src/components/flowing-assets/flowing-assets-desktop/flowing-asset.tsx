@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
 import { type IdRefs, type Asset } from "../flowing-assets-types";
 
@@ -6,8 +6,8 @@ type Props = {
   asset: Asset;
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
+  hoveredAsset: string | null;
   setHoveredAsset: (assetId: string | null) => void;
-  dim: boolean;
 };
 
 const FLowingAsset: React.FC<Props> = ({
@@ -15,7 +15,7 @@ const FLowingAsset: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
   setHoveredAsset,
-  dim,
+  hoveredAsset,
 }) => {
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
@@ -29,6 +29,16 @@ const FLowingAsset: React.FC<Props> = ({
     };
   }, [addAssetRef, asset.id, removeAssetRef]);
 
+  const dim = useMemo(
+    () => hoveredAsset !== null && hoveredAsset !== asset.id,
+    [asset.id, hoveredAsset]
+  );
+
+  const expand = useMemo(
+    () => hoveredAsset === asset.id,
+    [asset.id, hoveredAsset]
+  );
+
   return (
     <div
       ref={divRef}
@@ -38,7 +48,8 @@ const FLowingAsset: React.FC<Props> = ({
         "bg-slate-300 rounded-lg",
         "shadow-lg transition-all duration-500",
         "cursor-pointer",
-        dim && "opacity-50 grayscale-0 blur-sm"
+        dim && "opacity-50 grayscale-0 blur-sm",
+        expand && "scale-105"
       )}
       onMouseEnter={() => setHoveredAsset(asset.id)}
       onMouseLeave={() => setHoveredAsset(null)}

@@ -16,7 +16,7 @@ export const generateTransLines = (
   const transformer = transformers.find((trans) => trans.id === hoveredTrans);
   if (!transformer) return [];
 
-  const offsetCoef = 5;
+  const offsetCoef = 6;
 
   // Generate direct lines from transformers to asset
   const linesUp = transformer.sources
