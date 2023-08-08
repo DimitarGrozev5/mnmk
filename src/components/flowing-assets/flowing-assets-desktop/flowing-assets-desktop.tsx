@@ -103,31 +103,34 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
       ref={containerRef}
       className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
     >
-      {zones.map((zone, index) => (
-        <React.Fragment key={zone.id}>
-          <FlowingZone
-            key={zone.id}
-            zone={zone}
-            addAssetRef={addAssetRef}
-            removeAssetRef={removeAssetRef}
-            setHoveredAsset={setHoveredAsset}
-          />
-          {transformerZones[index].length > 0 && (
-            <div className={clsx("flex flex-row gap-10", "px-5")}>
-              {transformerZones[index].map((transformer) => (
-                <FlowingTransformer
-                  key={transformer.id}
-                  transformer={transformer}
-                  addTransRef={addTransRef}
-                  removeTransRef={removeTransRef}
-                  setHoveredTrans={setHoveredTrans}
-                />
-              ))}
-            </div>
-          )}
-        </React.Fragment>
-      ))}
-      {lines}
+      <div className={clsx("absolute inset-0 z-0")}></div>
+      <div className={clsx("relative inset-0 z-10", "flex flex-col gap-4")}>
+        {zones.map((zone, index) => (
+          <React.Fragment key={zone.id}>
+            <FlowingZone
+              key={zone.id}
+              zone={zone}
+              addAssetRef={addAssetRef}
+              removeAssetRef={removeAssetRef}
+              setHoveredAsset={setHoveredAsset}
+            />
+            {transformerZones[index].length > 0 && (
+              <div className={clsx("flex flex-row gap-10", "px-5")}>
+                {transformerZones[index].map((transformer) => (
+                  <FlowingTransformer
+                    key={transformer.id}
+                    transformer={transformer}
+                    addTransRef={addTransRef}
+                    removeTransRef={removeTransRef}
+                    setHoveredTrans={setHoveredTrans}
+                  />
+                ))}
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+        {lines}
+      </div>
     </div>
   );
 };
