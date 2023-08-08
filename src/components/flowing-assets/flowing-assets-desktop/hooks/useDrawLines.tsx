@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { IdRefs, Transformer } from "../../flowing-assets-types";
 import { generateAssetLines } from "./generate-asset-lines";
+import { generateTransLines } from "./generate-trans-lines";
 
 export const useDrawLines = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
@@ -28,20 +29,30 @@ export const useDrawLines = (
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
 
-    let lines: number[][][] = [];
+    const lines: number[][][] = [];
 
     // Get selected asset
     if (hoveredAsset) {
-      lines = [
-        ...lines,
+      lines.push(
         ...generateAssetLines(
           containerRef,
           hoveredAsset,
           assetRects,
           transRects,
           transformers
-        ),
-      ];
+        )
+      );
+    }
+    if (hoveredTrans) {
+      lines.push(
+        ...generateTransLines(
+          containerRef,
+          hoveredTrans,
+          assetRects,
+          transRects,
+          transformers
+        )
+      );
     }
 
     const draw = () => {
