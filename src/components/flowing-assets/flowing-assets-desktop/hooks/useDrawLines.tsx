@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { IdRefs, Transformer } from "../../flowing-assets-types";
 import { generateAssetLines } from "./generate-asset-lines";
 import { generateTransLines } from "./generate-trans-lines";
@@ -12,6 +12,11 @@ export const useDrawLines = (
   transRects: IdRefs,
   transformers: Transformer[]
 ) => {
+  const [selectedRefs, setSelectedRefs] = useState<{
+    assets: string[];
+    trans: string[];
+  }>({ assets: [], trans: [] });
+
   useEffect(() => {
     if (canvasRef.current === null || containerRef.current === null) return;
     const canvas = canvasRef.current;
@@ -33,26 +38,26 @@ export const useDrawLines = (
 
     // Get selected asset
     if (hoveredAsset) {
-      lines.push(
-        ...generateAssetLines(
-          containerRef,
-          hoveredAsset,
-          assetRects,
-          transRects,
-          transformers
-        )
+      const { selectedIds, lines } = generateAssetLines(
+        containerRef,
+        hoveredAsset,
+        assetRects,
+        transRects,
+        transformers
       );
+      lines.push(...lines);
+      setSelectedRefs(selectedIds);
     }
     if (hoveredTrans) {
-      lines.push(
-        ...generateTransLines(
-          containerRef,
-          hoveredTrans,
-          assetRects,
-          transRects,
-          transformers
-        )
+      const { selectedIds, lines } = generateTransLines(
+        containerRef,
+        hoveredTrans,
+        assetRects,
+        transRects,
+        transformers
       );
+      lines.push(...lines);
+      setSelectedRefs(selectedIds);
     }
 
     const start = new Date().getTime();
@@ -130,4 +135,6 @@ export const useDrawLines = (
     transRects,
     transformers,
   ]);
+
+  return selectedRefs;
 };

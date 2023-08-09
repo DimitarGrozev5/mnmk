@@ -7,10 +7,13 @@ export const generateAssetLines = (
   transRects: IdRefs,
   transformers: Transformer[]
 ) => {
-  if (!containerRef.current) return [];
+  if (!containerRef.current)
+    return { selectedIds: { assets: [], trans: [] }, lines: [] };
 
+  // Get the FlowingAssets Component container ref
   const containerRect = containerRef.current.getBoundingClientRect();
 
+  // Get the selected asset rect
   const assetRect = assetRects[hoveredAsset];
 
   // Get connected transformers
@@ -109,5 +112,12 @@ export const generateAssetLines = (
     return [[x1, y1], [x2, y2], [x3, y3], [x4, y4], line[1]];
   });
 
-  return [...leftDown, ...rightDown, ...linesUp];
+  const selectedTransIds = [...transSource, ...transResult].map(
+    (transformer) => transformer.id
+  );
+
+  return {
+    selectedIds: { assets: [hoveredAsset], trans: [...selectedTransIds] },
+    lines: [...leftDown, ...rightDown, ...linesUp],
+  };
 };

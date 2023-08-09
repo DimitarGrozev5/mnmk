@@ -7,14 +7,16 @@ export const generateTransLines = (
   transRects: IdRefs,
   transformers: Transformer[]
 ) => {
-  if (!containerRef.current) return [];
+  if (!containerRef.current)
+    return { selectedIds: { assets: [], trans: [] }, lines: [] };
   const containerRect = containerRef.current.getBoundingClientRect();
 
   const transRect = transRects[hoveredTrans];
 
   // Get transformer
   const transformer = transformers.find((trans) => trans.id === hoveredTrans);
-  if (!transformer) return [];
+  if (!transformer)
+    return { selectedIds: { assets: [], trans: [] }, lines: [] };
 
   const offsetCoef = 6;
 
@@ -102,5 +104,12 @@ export const generateTransLines = (
     return [[x1, y1], [x2, y2], [x3, y3], [x4, y4], line[1]];
   });
 
-  return [...leftUp, ...rightUp, lineDown];
+  const selectedAssetIds = [...transformer.sources, transformer.result].map(
+    (asset) => asset.id
+  );
+
+  return {
+    selectedIds: { assets: selectedAssetIds, trans: [hoveredTrans] },
+    lines: [...leftUp, ...rightUp, lineDown],
+  };
 };
