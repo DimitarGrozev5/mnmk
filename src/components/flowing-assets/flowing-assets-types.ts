@@ -24,3 +24,8 @@ export type Transformer = {
 // Additional types
 
 export type IdRefs = Record<string, DOMRect>;
+
+export type SelectedIds = {
+  assets: string[];
+  trans: string[];
+};

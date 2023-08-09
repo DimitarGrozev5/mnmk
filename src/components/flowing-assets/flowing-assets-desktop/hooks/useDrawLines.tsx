@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import type { IdRefs, Transformer } from "../../flowing-assets-types";
+import type {
+  IdRefs,
+  SelectedIds,
+  Transformer,
+} from "../../flowing-assets-types";
 import { generateAssetLines } from "./generate-asset-lines";
 import { generateTransLines } from "./generate-trans-lines";
 
@@ -11,7 +15,7 @@ export const useDrawLines = (
   assetRects: IdRefs,
   transRects: IdRefs,
   transformers: Transformer[]
-) => {
+): SelectedIds => {
   const [selectedRefs, setSelectedRefs] = useState<{
     assets: string[];
     trans: string[];

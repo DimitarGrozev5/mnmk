@@ -42,7 +42,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     }
   }, []);
 
-  useDrawLines(
+  const selectedAssets = useDrawLines(
     canvasRef,
     containerRef,
     hoveredAsset,

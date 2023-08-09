@@ -1,4 +1,4 @@
-import { IdRefs, Transformer } from "../../flowing-assets-types";
+import { IdRefs, SelectedIds, Transformer } from "../../flowing-assets-types";
 
 export const generateAssetLines = (
   containerRef: React.RefObject<HTMLDivElement>,
@@ -6,7 +6,7 @@ export const generateAssetLines = (
   assetRects: IdRefs,
   transRects: IdRefs,
   transformers: Transformer[]
-) => {
+): { selectedIds: SelectedIds; lines: number[][][] } => {
   if (!containerRef.current)
     return { selectedIds: { assets: [], trans: [] }, lines: [] };
 
