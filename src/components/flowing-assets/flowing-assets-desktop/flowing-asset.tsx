@@ -16,7 +16,7 @@ const FLowingAsset: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
   setHoveredAsset,
-  // selectedIds,
+  selectedIds,
   hoveredAsset,
 }) => {
   // Take a ref to the div element and
@@ -32,8 +32,15 @@ const FLowingAsset: React.FC<Props> = ({
   }, [addAssetRef, asset.id, removeAssetRef]);
 
   const dim = useMemo(
-    () => hoveredAsset !== null && hoveredAsset !== asset.id,
-    [asset.id, hoveredAsset]
+    () =>
+      (selectedIds.assets.length > 0 || selectedIds.trans.length > 0) &&
+      !selectedIds.assets.includes(asset.id),
+    [asset.id, selectedIds.assets, selectedIds.trans.length]
+  );
+
+  const contract = useMemo(
+    () => selectedIds.assets.includes(asset.id) && hoveredAsset !== asset.id,
+    [asset.id, hoveredAsset, selectedIds.assets]
   );
 
   const expand = useMemo(
@@ -51,6 +58,7 @@ const FLowingAsset: React.FC<Props> = ({
         "shadow-lg transition-all duration-500",
         "cursor-pointer",
         dim && "opacity-50 grayscale-0 blur-sm",
+        contract && "scale-90",
         expand && "scale-105"
       )}
       onMouseEnter={() => setHoveredAsset(asset.id)}
