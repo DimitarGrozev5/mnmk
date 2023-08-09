@@ -37,7 +37,7 @@ export const generateTransLines = (
     .sort((a, b) => b[1][0] - a[1][0]);
 
   const resultRect = assetRects[transformer.result.id];
-  const x5 = resultRect.right - containerRect.left;
+  const x5 = resultRect.left - containerRect.left;
   const y5 = resultRect.top + resultRect.height / 2 - containerRect.top;
 
   const x1 = transRect.left + transRect.width / 2 - containerRect.left;
@@ -46,7 +46,7 @@ export const generateTransLines = (
   const x2 = x1;
   const y2 = y1 + offsetCoef;
 
-  const x3 = x5 + offsetCoef;
+  const x3 = x5 - offsetCoef;
   const y3 = y2;
 
   const x4 = x3;
