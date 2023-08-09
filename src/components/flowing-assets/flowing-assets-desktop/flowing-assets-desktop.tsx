@@ -94,6 +94,8 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
                     transformer={transformer}
                     addTransRef={addTransRef}
                     removeTransRef={removeTransRef}
+                    selectedIds={selectedIds}
+                    hoveredTrans={hoveredTrans}
                     setHoveredTrans={setHoveredTrans}
                   />
                 ))}

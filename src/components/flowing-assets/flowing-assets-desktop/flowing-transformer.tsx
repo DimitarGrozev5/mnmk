@@ -1,11 +1,13 @@
 import clsx from "clsx";
-import type { IdRefs, Transformer } from "../flowing-assets-types";
-import { useEffect, useRef } from "react";
+import type { IdRefs, SelectedIds, Transformer } from "../flowing-assets-types";
+import { useEffect, useMemo, useRef } from "react";
 
 type Props = {
   transformer: Transformer;
   addTransRef: (ref: IdRefs) => void;
   removeTransRef: (ref: IdRefs) => void;
+  hoveredTrans: string | null;
+  selectedIds: SelectedIds;
   setHoveredTrans: (tranformerId: string | null) => void;
 };
 
@@ -13,6 +15,8 @@ const FlowingTransformer: React.FC<Props> = ({
   transformer,
   addTransRef,
   removeTransRef,
+  hoveredTrans,
+  selectedIds,
   setHoveredTrans,
 }) => {
   // Take a ref to the div element and
@@ -26,6 +30,25 @@ const FlowingTransformer: React.FC<Props> = ({
     };
   }, [addTransRef, removeTransRef, transformer.id]);
 
+  const dim = useMemo(
+    () =>
+      (selectedIds.assets.length > 0 || selectedIds.trans.length > 0) &&
+      !selectedIds.trans.includes(transformer.id),
+    [selectedIds.assets.length, selectedIds.trans, transformer.id]
+  );
+
+  const contract = useMemo(
+    () =>
+      selectedIds.trans.includes(transformer.id) &&
+      hoveredTrans !== transformer.id,
+    [selectedIds.trans, transformer.id, hoveredTrans]
+  );
+
+  const expand = useMemo(
+    () => hoveredTrans === transformer.id,
+    [transformer.id, hoveredTrans]
+  );
+
   return (
     <div
       ref={divRef}
@@ -33,8 +56,11 @@ const FlowingTransformer: React.FC<Props> = ({
         "relative z-10",
         "p-3 w-36",
         "bg-slate-300 rounded-lg",
-        "shadow-lg",
-        "cursor-pointer"
+        "shadow-lg transition-all duration-500",
+        "cursor-pointer",
+        dim && "opacity-50 grayscale-0 blur-sm",
+        contract && "scale-90",
+        expand && "scale-105"
       )}
       onMouseEnter={() => setHoveredTrans(transformer.id)}
       onMouseLeave={() => setHoveredTrans(null)}
