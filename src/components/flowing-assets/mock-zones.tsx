@@ -34,8 +34,8 @@ export const mockZones = (): ZonesAndTransformers => {
       },
       {
         id: "4",
-        sources: [asset4, asset6],
-        result: asset5,
+        sources: [asset4, asset5],
+        result: asset6,
         component: <TestAsset>TestTrans4</TestAsset>,
       },
       {
