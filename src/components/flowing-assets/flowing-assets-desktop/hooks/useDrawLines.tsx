@@ -129,6 +129,7 @@ export const useDrawLines = (
 
     return () => {
       keepDrawing = false;
+      setSelectedRefs({ assets: [], trans: [] });
     };
   }, [
     assetRects,
