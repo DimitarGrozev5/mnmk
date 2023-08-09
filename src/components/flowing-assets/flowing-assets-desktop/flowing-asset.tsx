@@ -57,8 +57,8 @@ const FLowingAsset: React.FC<Props> = ({
         "bg-slate-300 rounded-lg",
         "shadow-lg transition-all duration-500",
         "cursor-pointer",
-        dim && "opacity-50 grayscale-0 blur-sm",
-        contract && "scale-90",
+        dim && "scale-95 opacity-50 grayscale-0 blur-sm",
+        contract && "scale-95",
         expand && "scale-105"
       )}
       onMouseEnter={() => setHoveredAsset(asset.id)}
