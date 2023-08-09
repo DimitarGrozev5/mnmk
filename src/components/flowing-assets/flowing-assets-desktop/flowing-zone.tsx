@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { type IdRefs, type Zone } from "../flowing-assets-types";
+import type { SelectedIds, IdRefs, Zone } from "../flowing-assets-types";
 import FLowingAsset from "./flowing-asset";
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
   hoveredAsset: string | null;
+  selectedIds: SelectedIds;
   setHoveredAsset: (assetId: string | null) => void;
 };
 
@@ -15,6 +16,7 @@ const FlowingZone: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
   hoveredAsset,
+  selectedIds,
   setHoveredAsset,
 }) => {
   return (
@@ -36,6 +38,7 @@ const FlowingZone: React.FC<Props> = ({
             asset={asset}
             addAssetRef={addAssetRef}
             removeAssetRef={removeAssetRef}
+            selectedIds={selectedIds}
             hoveredAsset={hoveredAsset}
             setHoveredAsset={setHoveredAsset}
           />

@@ -42,7 +42,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
     }
   }, []);
 
-  const selectedAssets = useDrawLines(
+  const selectedIds = useDrawLines(
     canvasRef,
     containerRef,
     hoveredAsset,
@@ -82,6 +82,7 @@ const FlowingAssets_Desktop: React.FC<Props> = ({
               zone={zone}
               addAssetRef={addAssetRef}
               removeAssetRef={removeAssetRef}
+              selectedIds={selectedIds}
               hoveredAsset={hoveredAsset}
               setHoveredAsset={setHoveredAsset}
             />

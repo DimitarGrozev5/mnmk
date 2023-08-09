@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
-import { type IdRefs, type Asset } from "../flowing-assets-types";
+import type { IdRefs, Asset, SelectedIds } from "../flowing-assets-types";
 
 type Props = {
   asset: Asset;
   addAssetRef: (ref: IdRefs) => void;
   removeAssetRef: (ref: IdRefs) => void;
   hoveredAsset: string | null;
+  selectedIds: SelectedIds;
   setHoveredAsset: (assetId: string | null) => void;
 };
 
@@ -15,6 +16,7 @@ const FLowingAsset: React.FC<Props> = ({
   addAssetRef,
   removeAssetRef,
   setHoveredAsset,
+  // selectedIds,
   hoveredAsset,
 }) => {
   // Take a ref to the div element and
