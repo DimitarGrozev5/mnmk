@@ -6,9 +6,9 @@ export const generateAssetLines = (
   assetRects: IdRefs,
   transRects: IdRefs,
   transformers: Transformer[]
-): { selectedIds: SelectedIds; lines: number[][][] } => {
+): { selectedIds: SelectedIds; newLines: number[][][] } => {
   if (!containerRef.current)
-    return { selectedIds: { assets: [], trans: [] }, lines: [] };
+    return { selectedIds: { assets: [], trans: [] }, newLines: [] };
 
   // Get the FlowingAssets Component container ref
   const containerRect = containerRef.current.getBoundingClientRect();
@@ -118,6 +118,6 @@ export const generateAssetLines = (
 
   return {
     selectedIds: { assets: [hoveredAsset], trans: [...selectedTransIds] },
-    lines: [...leftDown, ...rightDown, ...linesUp],
+    newLines: [...leftDown, ...rightDown, ...linesUp],
   };
 };

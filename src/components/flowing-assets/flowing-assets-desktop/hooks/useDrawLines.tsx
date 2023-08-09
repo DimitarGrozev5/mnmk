@@ -42,25 +42,25 @@ export const useDrawLines = (
 
     // Get selected asset
     if (hoveredAsset) {
-      const { selectedIds, lines } = generateAssetLines(
+      const { selectedIds, newLines } = generateAssetLines(
         containerRef,
         hoveredAsset,
         assetRects,
         transRects,
         transformers
       );
-      lines.push(...lines);
+      lines.push(...newLines);
       setSelectedRefs(selectedIds);
     }
     if (hoveredTrans) {
-      const { selectedIds, lines } = generateTransLines(
+      const { selectedIds, newLines } = generateTransLines(
         containerRef,
         hoveredTrans,
         assetRects,
         transRects,
         transformers
       );
-      lines.push(...lines);
+      lines.push(...newLines);
       setSelectedRefs(selectedIds);
     }
 
