@@ -11,7 +11,7 @@ type Props = {
   setHoveredAsset: (assetId: string | null) => void;
 };
 
-const FLowingAsset: React.FC<Props> = ({
+const FlowingAsset: React.FC<Props> = ({
   asset,
   addAssetRef,
   removeAssetRef,
@@ -53,6 +53,7 @@ const FLowingAsset: React.FC<Props> = ({
       ref={divRef}
       className={clsx(
         "relative z-10",
+        "flex flex-col items-center justify-center",
         "p-3 w-36 h-36",
         "bg-slate-300 rounded-lg",
         "shadow-lg transition-all duration-500",
@@ -65,8 +66,20 @@ const FLowingAsset: React.FC<Props> = ({
       onMouseLeave={() => setHoveredAsset(null)}
     >
       {asset.component}
+
+      <div
+        className={clsx(
+          "border-2 border-slate-500 rounded-lg",
+          "absolute inset-0",
+          "transition-all duration-700",
+          "opacity-0",
+          "hover:opacity-100"
+        )}
+      >
+        <button>move</button>
+      </div>
     </div>
   );
 };
 
-export default FLowingAsset;
+export default FlowingAsset;

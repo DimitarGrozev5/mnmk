@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { SelectedIds, IdRefs, Zone } from "../flowing-assets-types";
-import FLowingAsset from "./flowing-asset";
+import FlowingAsset from "./flowing-asset";
 
 type Props = {
   zone: Zone;
@@ -33,7 +33,7 @@ const FlowingZone: React.FC<Props> = ({
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
         {zone.assets.map((asset) => (
-          <FLowingAsset
+          <FlowingAsset
             key={asset.id}
             asset={asset}
             addAssetRef={addAssetRef}

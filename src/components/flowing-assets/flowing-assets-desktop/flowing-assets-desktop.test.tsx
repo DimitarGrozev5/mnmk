@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import FlowingAssets_Desktop from "./flowing-assets-desktop";
 import { mockZones } from "../mock-zones";
 
@@ -69,5 +69,24 @@ describe("FlowingAssets_Desktop", () => {
       const transformerElement = screen.getByText(`TestTrans${transformer.id}`);
       expect(transformerElement).toBeInTheDocument();
     });
+  });
+
+  it("should render a move button on hover", () => {
+    render(<FlowingAssets_Desktop zonesAndTransformers={mockZones()} />);
+
+    const zone1 = screen
+      .getByRole("heading", {
+        name: mockZones().zones[0].name,
+      })
+      .closest("div")!;
+
+    const asset1 = within(zone1).getByText("TestAsset1");
+
+    fireEvent.mouseOver(asset1);
+
+    const moveBtn = within(asset1.parentElement!).getByRole("button", {
+      name: "move",
+    });
+    expect(moveBtn).toBeInTheDocument();
   });
 });
