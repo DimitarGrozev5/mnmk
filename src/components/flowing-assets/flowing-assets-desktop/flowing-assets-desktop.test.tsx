@@ -85,7 +85,7 @@ describe("FlowingAssets_Desktop", () => {
     fireEvent.mouseOver(asset1);
 
     const moveBtn = within(asset1.parentElement!).getByRole("button", {
-      name: "move",
+      name: "Move",
     });
     expect(moveBtn).toBeInTheDocument();
   });

@@ -1,28 +1,45 @@
+import { forwardRef } from "react";
+
 type Props = {
   label: string;
   children: React.ReactNode;
-  onClick?: () => void;
-  onMouseDown?: () => void;
-  onMouseUp?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
+  onMouseUp?: (e: React.MouseEvent) => void;
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
+  onMouseMove?: (e: React.MouseEvent) => void;
 };
 
-const IconButton: React.FC<Props> = ({
-  label,
-  children,
-  onClick,
-  onMouseDown,
-  onMouseUp,
-}) => {
-  return (
-    <button
-      aria-label={label}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-    >
-      {children}
-    </button>
-  );
-};
+const IconButton = forwardRef<HTMLButtonElement | null, Props>(
+  (
+    {
+      label,
+      children,
+      onClick,
+      onMouseDown,
+      onMouseUp,
+      onMouseEnter,
+      onMouseLeave,
+      onMouseMove,
+    },
+    ref
+  ) => {
+    return (
+      <button
+        ref={ref}
+        aria-label={label}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 
 export default IconButton;
