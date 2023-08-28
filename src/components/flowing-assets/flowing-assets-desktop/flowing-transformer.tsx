@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { IdRefs, SelectedIds, Transformer } from "../flowing-assets-types";
+import type { IdRefs, SelectedIds, Transformer } from "../../../store/slices/flowing-assets-types";
 import { useEffect, useMemo, useRef } from "react";
 
 type Props = {

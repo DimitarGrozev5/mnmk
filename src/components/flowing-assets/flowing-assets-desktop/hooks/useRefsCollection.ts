@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { type IdRefs } from "../../flowing-assets-types";
+import { type IdRefs } from "../../../../store/slices/flowing-assets-types";
 import { produce } from "immer";
 
 export const useRectCollection = () => {

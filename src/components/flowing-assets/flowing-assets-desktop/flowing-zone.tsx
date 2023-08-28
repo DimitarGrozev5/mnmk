@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { SelectedIds, IdRefs, Zone } from "../flowing-assets-types";
+import type { SelectedIds, IdRefs, Zone } from "../../../store/slices/flowing-assets-types";
 import FlowingAsset from "./flowing-asset";
 
 type Props = {

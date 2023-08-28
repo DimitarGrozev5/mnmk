@@ -1,4 +1,4 @@
-import { type ZonesAndTransformers } from "./flowing-assets-types";
+import { type ZonesAndTransformers } from "../../store/slices/flowing-assets-types";
 import TestAsset from "./test-components/test-asset";
 
 export const mockZones = (): ZonesAndTransformers => {

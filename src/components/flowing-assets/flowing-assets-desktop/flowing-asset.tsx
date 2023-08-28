@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import type { IdRefs, Asset, SelectedIds } from "../flowing-assets-types";
+import type { IdRefs, Asset, SelectedIds } from "../../../store/slices/flowing-assets-types";
 import IconButton from "../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
 

@@ -3,7 +3,7 @@ import type {
   IdRefs,
   SelectedIds,
   Transformer,
-} from "../../flowing-assets-types";
+} from "../../../../store/slices/flowing-assets-types";
 import { generateAssetLines } from "./generate-asset-lines";
 import { generateTransLines } from "./generate-trans-lines";
 

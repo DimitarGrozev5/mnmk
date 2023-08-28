@@ -1,21 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import type {
-  Transformer,
-  ZonesAndTransformers,
-} from "../flowing-assets-types";
+import type { Transformer } from "../../../store/slices/flowing-assets-types";
 import FlowingZone from "./flowing-zone";
 import { useRectCollection } from "./hooks/useRefsCollection";
 import FlowingTransformer from "./flowing-transformer";
 import { useDrawLines } from "./hooks/useDrawLines";
+import { useAppSelector } from "../../../store/hooks";
 
-type Props = {
-  zonesAndTransformers: ZonesAndTransformers;
-};
+const FlowingAssets_Desktop: React.FC = () => {
+  const zones = useAppSelector((state) => state.zonesAndTransformers.zones);
+  const transformers = useAppSelector(
+    (state) => state.zonesAndTransformers.transformers
+  );
 
-const FlowingAssets_Desktop: React.FC<Props> = ({
-  zonesAndTransformers: { zones, transformers },
-}) => {
   // Get refs for zones and transformers
   const containerRef = useRef<HTMLDivElement>(null);
   const {

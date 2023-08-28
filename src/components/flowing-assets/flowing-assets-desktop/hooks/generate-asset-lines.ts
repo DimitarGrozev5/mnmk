@@ -1,4 +1,4 @@
-import { IdRefs, SelectedIds, Transformer } from "../../flowing-assets-types";
+import { IdRefs, SelectedIds, Transformer } from "../../../../store/slices/flowing-assets-types";
 
 export const generateAssetLines = (
   containerRef: React.RefObject<HTMLDivElement>,
