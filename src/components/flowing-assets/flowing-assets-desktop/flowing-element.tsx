@@ -8,6 +8,7 @@ import {
   ElementRect,
   ZoneType,
 } from "../../../store/slices/flowing-assets-types";
+import { useAppDispatch } from "../../../store/hooks";
 
 type Props = {
   id: ElementId;
@@ -22,6 +23,7 @@ const FlowingElement: React.FC<Props> = ({
   children,
   rectangular,
 }) => {
+  const dispatch = useAppDispatch();
   const { setElementRect, setHoveredElementId } = zonesActions;
 
   // Take a ref to the div element and
@@ -133,8 +135,8 @@ const FlowingElement: React.FC<Props> = ({
               // expand && "scale-105",
               // dragging && "transition-none"
             )}
-            onMouseEnter={() => setHoveredElementId(id)}
-            onMouseLeave={() => setHoveredElementId(null)}
+            onMouseEnter={() => dispatch(setHoveredElementId(id))}
+            onMouseLeave={() => dispatch(setHoveredElementId(null))}
             style={
               {
                 // transform: `translate(${currentCoords[0] - initCoords[0]}px, ${

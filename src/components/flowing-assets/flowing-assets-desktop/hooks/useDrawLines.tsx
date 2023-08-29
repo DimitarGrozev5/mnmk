@@ -6,7 +6,7 @@ import {
   hoveredIsAssetSelector,
   zonesActions,
 } from "../../../../store/slices/zones-and-transformers-slice";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 export const useDrawLines = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
@@ -23,6 +23,7 @@ export const useDrawLines = (
     (state) => state.zonesAndTransformers.transformers
   );
 
+  const dispatch = useAppDispatch();
   const { setConnectedToHoveredIds } = zonesActions;
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export const useDrawLines = (
         transformers
       );
       lines.push(...newLines);
-      setConnectedToHoveredIds(selectedIds);
+      dispatch(setConnectedToHoveredIds(selectedIds));
     }
     if (hoveredIsTrans) {
       const { selectedIds, newLines } = generateTransLines(
@@ -63,7 +64,7 @@ export const useDrawLines = (
         transformers
       );
       lines.push(...newLines);
-      setConnectedToHoveredIds(selectedIds);
+      dispatch(setConnectedToHoveredIds(selectedIds));
     }
 
     const start = new Date().getTime();
@@ -131,12 +132,13 @@ export const useDrawLines = (
 
     return () => {
       keepDrawing = false;
-      setConnectedToHoveredIds([]);
+      dispatch(setConnectedToHoveredIds([]));
     };
   }, [
     assets,
     canvasRef,
     containerRef,
+    dispatch,
     hoveredElementId,
     hoveredIsAsset,
     hoveredIsTrans,
