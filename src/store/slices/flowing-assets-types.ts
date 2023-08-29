@@ -1,5 +1,6 @@
 export type ZonesAndTransformers = {
-  zones: Zone[];
+  zones: Record<string, Zone>;
+  zoneIds: string[];
   assets: Record<AssetId, Asset>;
   transformers: Record<TransformerId, Transformer>;
 };
@@ -8,7 +9,12 @@ export type Zone = {
   id: string;
   name: string;
   elementsIds: string[];
-  type: "assets" | "transformers";
+  type: ZoneType;
+};
+export type ZoneType = "assets" | "transformers";
+export const ZoneType = {
+  Assets: "assets" as ZoneType,
+  Transformers: "transformers" as ZoneType,
 };
 
 export type Asset = {

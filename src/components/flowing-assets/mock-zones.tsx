@@ -2,38 +2,39 @@ import { type ZonesAndTransformers } from "../../store/slices/flowing-assets-typ
 
 export const mockZones = (): ZonesAndTransformers => {
   return {
-    zones: [
-      {
+    zoneIds: ["1", "2", "3", "4", "5"],
+    zones: {
+      "1": {
         id: "1",
         name: "Test1",
         elementsIds: ["1", "2", "3"],
         type: "assets",
       },
-      {
-        id: "1",
+      "2": {
+        id: "2",
         name: "",
         elementsIds: ["4", "5"],
         type: "transformers",
       },
-      {
-        id: "1",
+      "3": {
+        id: "3",
         name: "Test2",
         elementsIds: ["6", "7", "8"],
         type: "assets",
       },
-      {
-        id: "1",
+      "4": {
+        id: "4",
         name: "",
         elementsIds: ["0", "10", "11", "12"],
         type: "transformers",
       },
-      {
-        id: "1",
-        name: "Test1",
+      "5": {
+        id: "5",
+        name: "Test3",
         elementsIds: ["13", "14", "15"],
         type: "assets",
       },
-    ],
+    },
     assets: {
       "1": { id: "1", type: "test" },
       "2": { id: "2", type: "test" },

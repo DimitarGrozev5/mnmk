@@ -1,56 +1,66 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import type { IdRefs, Asset, SelectedIds } from "../../../store/slices/flowing-assets-types";
+// import type {
+//   IdRefs,
+//   Asset,
+//   SelectedIds,
+// } from "../../../store/slices/flowing-assets-types";
 import IconButton from "../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
+import { useAppSelector } from "../../../store/hooks";
+import { AssetId } from "../../../store/slices/flowing-assets-types";
 
 type Props = {
-  asset: Asset;
-  addAssetRef: (ref: IdRefs) => void;
-  removeAssetRef: (ref: IdRefs) => void;
-  hoveredAsset: string | null;
-  selectedIds: SelectedIds;
-  setHoveredAsset: (assetId: string | null) => void;
+  assetId: AssetId;
+  // addAssetRef: (ref: IdRefs) => void;
+  // removeAssetRef: (ref: IdRefs) => void;
+  // hoveredAsset: string | null;
+  // selectedIds: SelectedIds;
+  // setHoveredAsset: (assetId: string | null) => void;
 };
 
 const FlowingAsset: React.FC<Props> = ({
-  asset,
-  addAssetRef,
-  removeAssetRef,
-  setHoveredAsset,
-  selectedIds,
-  hoveredAsset,
+  assetId,
+  // addAssetRef,
+  // removeAssetRef,
+  // setHoveredAsset,
+  // selectedIds,
+  // hoveredAsset,
 }) => {
+  const asset = useAppSelector(
+    (state) => state.zonesAndTransformers.assets[assetId]
+  );
+
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
 
   // Register the initial position of the asset
-  useEffect(() => {
-    if (divRef.current) {
-      addAssetRef({ [asset.id]: divRef.current.getBoundingClientRect() });
-    }
-    () => {
-      removeAssetRef({ [asset.id]: new DOMRect() });
-    };
-  }, [addAssetRef, asset.id, removeAssetRef]);
+  // useEffect(() => {
+  //   if (divRef.current) {
+  //     addAssetRef({ [asset.id]: divRef.current.getBoundingClientRect() });
+  //   }
+  //   () => {
+  //     removeAssetRef({ [asset.id]: new DOMRect() });
+  //   };
+  // }, [addAssetRef, asset.id, removeAssetRef]);
 
   // Calculate display properties
-  const dim = useMemo(
-    () =>
-      (selectedIds.assets.length > 0 || selectedIds.trans.length > 0) &&
-      !selectedIds.assets.includes(asset.id),
-    [asset.id, selectedIds.assets, selectedIds.trans.length]
-  );
+  // const dim = useMemo(
+  //   () =>
+  //     (selectedIds.assets.length > 0 || selectedIds.trans.length > 0) &&
+  //     !selectedIds.assets.includes(asset.id),
+  //   [asset.id, selectedIds.assets, selectedIds.trans.length]
+  // );
 
-  const contract = useMemo(
-    () => selectedIds.assets.includes(asset.id) && hoveredAsset !== asset.id,
-    [asset.id, hoveredAsset, selectedIds.assets]
-  );
+  // const contract = useMemo(
+  //   () => selectedIds.assets.includes(asset.id) && hoveredAsset !== asset.id,
+  //   [asset.id, hoveredAsset, selectedIds.assets]
+  // );
 
-  const expand = useMemo(
-    () => hoveredAsset === asset.id,
-    [asset.id, hoveredAsset]
-  );
+  // const expand = useMemo(
+  //   () => hoveredAsset === asset.id,
+  //   [asset.id, hoveredAsset]
+  // );
 
   // Setup Asset drag params
   const [dragging, setDragging] = useState(false);
@@ -112,20 +122,20 @@ const FlowingAsset: React.FC<Props> = ({
           "bg-slate-300 rounded-lg",
           "shadow-lg transition-all duration-500",
           "cursor-pointer",
-          dim && "scale-95 opacity-50 grayscale-0 blur-sm",
-          contract && "scale-95",
-          expand && "scale-105",
+          // dim && "scale-95 opacity-50 grayscale-0 blur-sm",
+          // contract && "scale-95",
+          // expand && "scale-105",
           dragging && "transition-none"
         )}
-        onMouseEnter={() => setHoveredAsset(asset.id)}
-        onMouseLeave={() => setHoveredAsset(null)}
+        // onMouseEnter={() => setHoveredAsset(asset.id)}
+        // onMouseLeave={() => setHoveredAsset(null)}
         style={{
           transform: `translate(${currentCoords[0] - initCoords[0]}px, ${
             currentCoords[1] - initCoords[1]
           }px)`,
         }}
       >
-        {asset.component}
+        {/* {asset.component} */}
 
         <div
           className={clsx(

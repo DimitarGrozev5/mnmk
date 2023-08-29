@@ -1,24 +1,46 @@
 import clsx from "clsx";
-import type { SelectedIds, IdRefs, Zone } from "../../../store/slices/flowing-assets-types";
 import FlowingAsset from "./flowing-asset";
+import { useAppSelector } from "../../../store/hooks";
+import FlowingTransformer from "./flowing-transformer";
 
 type Props = {
-  zone: Zone;
-  addAssetRef: (ref: IdRefs) => void;
-  removeAssetRef: (ref: IdRefs) => void;
-  hoveredAsset: string | null;
-  selectedIds: SelectedIds;
-  setHoveredAsset: (assetId: string | null) => void;
+  zoneId: string;
+  // addAssetRef: (ref: IdRefs) => void;
+  // removeAssetRef: (ref: IdRefs) => void;
+  // hoveredAsset: string | null;
+  // selectedIds: SelectedIds;
+  // setHoveredAsset: (assetId: string | null) => void;
 };
 
 const FlowingZone: React.FC<Props> = ({
-  zone,
-  addAssetRef,
-  removeAssetRef,
-  hoveredAsset,
-  selectedIds,
-  setHoveredAsset,
+  zoneId,
+  // addAssetRef,
+  // removeAssetRef,
+  // hoveredAsset,
+  // selectedIds,
+  // setHoveredAsset,
 }) => {
+  const zone = useAppSelector(
+    (state) => state.zonesAndTransformers.zones[zoneId]
+  );
+
+  if (zone.type === "transformers")
+    return (
+      <div className={clsx("flex flex-row gap-10", "px-5")}>
+        {zone.elementsIds.map((transId) => (
+          <FlowingTransformer
+            key={transId}
+            transformerId={transId}
+            // addTransRef={addTransRef}
+            // removeTransRef={removeTransRef}
+            // selectedIds={selectedIds}
+            // hoveredTrans={hoveredTrans}
+            // setHoveredTrans={setHoveredTrans}
+          />
+        ))}
+      </div>
+    );
+
   return (
     <div
       className={clsx(
@@ -32,15 +54,15 @@ const FlowingZone: React.FC<Props> = ({
       </h1>
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
-        {zone.assets.map((asset) => (
+        {zone.elementsIds.map((assetId) => (
           <FlowingAsset
-            key={asset.id}
-            asset={asset}
-            addAssetRef={addAssetRef}
-            removeAssetRef={removeAssetRef}
-            selectedIds={selectedIds}
-            hoveredAsset={hoveredAsset}
-            setHoveredAsset={setHoveredAsset}
+            key={assetId}
+            assetId={assetId}
+            // addAssetRef={addAssetRef}
+            // removeAssetRef={removeAssetRef}
+            // selectedIds={selectedIds}
+            // hoveredAsset={hoveredAsset}
+            // setHoveredAsset={setHoveredAsset}
           />
         ))}
       </div>
