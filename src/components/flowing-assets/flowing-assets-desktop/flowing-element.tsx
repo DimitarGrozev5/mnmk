@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import IconButton from "../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
@@ -8,7 +8,7 @@ import {
   ElementRect,
   ZoneType,
 } from "../../../store/slices/flowing-assets-types";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 type Props = {
   id: ElementId;
@@ -23,6 +23,13 @@ const FlowingElement: React.FC<Props> = ({
   children,
   rectangular,
 }) => {
+  const hoveredElementId = useAppSelector(
+    (state) => state.zonesAndTransformers.hoveredElementId
+  );
+  const connectedToHoveredIds = useAppSelector(
+    (state) => state.zonesAndTransformers.connectedToHoveredIds
+  );
+
   const dispatch = useAppDispatch();
   const { setElementRect, setHoveredElementId } = zonesActions;
 
@@ -49,25 +56,23 @@ const FlowingElement: React.FC<Props> = ({
   }, [id, type, setElementRect, dispatch]);
 
   // Calculate display properties
-  // const dim = useMemo(
-  //   () =>
-  //     (selectedIds.assets.length > 0 || selectedIds.trans.length > 0) &&
-  //     !selectedIds.assets.includes(asset.id),
-  //   [asset.id, selectedIds.assets, selectedIds.trans.length]
-  // );
+  const dim = useMemo(
+    () =>
+      hoveredElementId !== null &&
+      !connectedToHoveredIds.includes(id) &&
+      hoveredElementId !== id,
+    [connectedToHoveredIds, hoveredElementId, id]
+  );
 
-  // const contract = useMemo(
-  //   () => selectedIds.assets.includes(asset.id) && hoveredAsset !== asset.id,
-  //   [asset.id, hoveredAsset, selectedIds.assets]
-  // );
+  const contract = useMemo(
+    () => connectedToHoveredIds.includes(id) && hoveredElementId !== id,
+    [connectedToHoveredIds, hoveredElementId, id]
+  );
 
-  // const expand = useMemo(
-  //   () => hoveredAsset === asset.id,
-  //   [asset.id, hoveredAsset]
-  // );
+  const expand = useMemo(() => hoveredElementId === id, [hoveredElementId, id]);
 
   // Setup Asset drag params
-  // const [dragging, setDragging] = useState(false);
+  const [dragging, setDragging] = useState(false);
   // const [initCoords, setInitCoords] = useState<[number, number]>([0, 0]);
   // const [currentCoords, setCurrentCoords] = useState<[number, number]>([0, 0]);
 
@@ -129,10 +134,10 @@ const FlowingElement: React.FC<Props> = ({
               rectangular ? "h-36" : "h-10",
               "bg-slate-300 rounded-lg",
               "shadow-lg transition-all duration-500",
-              "cursor-pointer"
-              // dim && "scale-95 opacity-50 grayscale-0 blur-sm",
-              // contract && "scale-95",
-              // expand && "scale-105",
+              "cursor-pointer",
+              dim && "scale-95 opacity-50 grayscale-0 blur-sm",
+              contract && "scale-95",
+              expand && "scale-105"
               // dragging && "transition-none"
             )}
             onMouseEnter={() => dispatch(setHoveredElementId(id))}
@@ -179,8 +184,8 @@ const FlowingElement: React.FC<Props> = ({
             className={clsx(
               "absolute inset-2 z-0",
               "border-4 border-slate-400 border-dashed rounded-lg",
-              "bg-slate-300 bg-opacity-50"
-              // dragging ? "visible" : "invisible"
+              "bg-slate-300 bg-opacity-50",
+              dragging ? "visible" : "invisible"
             )}
           />
         </div>

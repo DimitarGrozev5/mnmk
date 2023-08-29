@@ -1,31 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import clsx from "clsx";
-// import type { Transformer } from "../../../store/slices/flowing-assets-types";
 import FlowingZone from "./flowing-zone";
-// import { useRectCollection } from "./hooks/useRefsCollection";
-// import FlowingTransformer from "./flowing-transformer";
 import { useDrawLines } from "./hooks/useDrawLines";
 import { useAppSelector } from "../../../store/hooks";
 
 const FlowingAssets_Desktop: React.FC = () => {
   const zones = useAppSelector((state) => state.zonesAndTransformers.zoneIds);
-
-  // Get refs for zones and transformers
-  // const {
-  //   rects: assetRects,
-  //   addRect: addAssetRef,
-  //   removeRect: removeAssetRef,
-  // } = useRectCollection();
-
-  // const {
-  //   rects: transRects,
-  //   addRect: addTransRef,
-  //   removeRect: removeTransRef,
-  // } = useRectCollection();
-
-  // Calculate lines for the hovered element
-  // const [hoveredAsset, setHoveredAsset] = useState<string | null>(null);
-  // const [hoveredTrans, setHoveredTrans] = useState<string | null>(null);
 
   // Setup canvas size to match container
   const containerRef = useRef<HTMLDivElement>(null);
