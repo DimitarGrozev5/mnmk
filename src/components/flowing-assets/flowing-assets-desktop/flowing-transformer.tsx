@@ -62,7 +62,7 @@ const FlowingTransformer: React.FC<Props> = ({
         "p-3 w-36",
         "bg-slate-300 rounded-lg",
         "shadow-lg transition-all duration-500",
-        "cursor-pointer",
+        "cursor-pointer"
         // dim && "scale-90 opacity-50 grayscale-0 blur-sm",
         // contract && "scale-90",
         // expand && "scale-105"
@@ -70,7 +70,7 @@ const FlowingTransformer: React.FC<Props> = ({
       // onMouseEnter={() => setHoveredTrans(transformer.id)}
       // onMouseLeave={() => setHoveredTrans(null)}
     >
-      {/* {transformer.component} */}
+      {transformer.title}
     </div>
   );
 };

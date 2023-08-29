@@ -20,6 +20,7 @@ export const ZoneType = {
 export type Asset = {
   id: AssetId;
   type: AssetType;
+  title: string;
 };
 
 export type AssetId = string;
@@ -30,6 +31,7 @@ export type Transformer = {
   sourcesIds: AssetId[];
   result: AssetId;
   type: TransformerType;
+  title: string;
 };
 export type TransformerId = string;
 export type TransformerType = "test";

@@ -135,7 +135,7 @@ const FlowingAsset: React.FC<Props> = ({
           }px)`,
         }}
       >
-        {/* {asset.component} */}
+        {asset.title}
 
         <div
           className={clsx(
