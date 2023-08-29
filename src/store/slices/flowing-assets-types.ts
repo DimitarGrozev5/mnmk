@@ -5,6 +5,9 @@ export type ZonesAndTransformers = {
   transformers: Record<TransformerId, Transformer>;
 };
 
+/**
+ * Zone types
+ */
 export type Zone = {
   id: string;
   name: string;
@@ -17,22 +20,41 @@ export const ZoneType = {
   Transformers: "transformers" as ZoneType,
 };
 
+/**
+ * Elements types
+ */
+export type Element = {
+  title: string;
+  rect: ElementRect | undefined;
+};
+
+export type ElementRect = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+/**
+ * Asset types
+ */
 export type Asset = {
   id: AssetId;
   type: AssetType;
-  title: string;
-};
+} & Element;
 
 export type AssetId = string;
 export type AssetType = "test";
 
+/**
+ * Transformer types
+ */
 export type Transformer = {
   id: TransformerId;
   sourcesIds: AssetId[];
   result: AssetId;
   type: TransformerType;
-  title: string;
-};
+} & Element;
 export type TransformerId = string;
 export type TransformerType = "test";
 

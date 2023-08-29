@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { TransformerId } from "../../../store/slices/flowing-assets-types";
-import { useEffect, useMemo, useRef } from "react";
+import { useRef } from "react";
 import { useAppSelector } from "../../../store/hooks";
 
 type Props = {
