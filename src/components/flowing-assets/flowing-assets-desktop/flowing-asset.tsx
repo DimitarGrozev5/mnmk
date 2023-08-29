@@ -1,29 +1,21 @@
 import { useAppSelector } from "../../../store/hooks";
-import { AssetId } from "../../../store/slices/flowing-assets-types";
+import type { ElementId } from "../../../store/slices/flowing-assets-types";
 import FlowingElement from "./flowing-element";
 
 type Props = {
-  assetId: AssetId;
-  // addAssetRef: (ref: IdRefs) => void;
-  // removeAssetRef: (ref: IdRefs) => void;
-  // hoveredAsset: string | null;
-  // selectedIds: SelectedIds;
-  // setHoveredAsset: (assetId: string | null) => void;
+  assetId: ElementId;
 };
 
-const FlowingAsset: React.FC<Props> = ({
-  assetId,
-  // addAssetRef,
-  // removeAssetRef,
-  // setHoveredAsset,
-  // selectedIds,
-  // hoveredAsset,
-}) => {
+const FlowingAsset: React.FC<Props> = ({ assetId }) => {
   const asset = useAppSelector(
     (state) => state.zonesAndTransformers.assets[assetId]
   );
 
-  return <FlowingElement rectangular>{asset.title}</FlowingElement>;
+  return (
+    <FlowingElement id={assetId} type="assets" rectangular>
+      {asset.title}
+    </FlowingElement>
+  );
 };
 
 export default FlowingAsset;

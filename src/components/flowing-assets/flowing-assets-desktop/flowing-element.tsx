@@ -2,22 +2,47 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import IconButton from "../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
+import { zonesActions } from "../../../store/slices/zones-and-transformers-slice";
+import {
+  ElementId,
+  ElementRect,
+  ZoneType,
+} from "../../../store/slices/flowing-assets-types";
 
-type Props = { children: React.ReactNode; rectangular?: boolean };
+type Props = {
+  id: ElementId;
+  type: ZoneType;
+  children: React.ReactNode;
+  rectangular?: boolean;
+};
 
-const FlowingElement: React.FC<Props> = ({ children, rectangular }) => {
+const FlowingElement: React.FC<Props> = ({
+  id,
+  type,
+  children,
+  rectangular,
+}) => {
+  const { setElementRect, setHoveredElementId } = zonesActions;
+
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
 
   // Register the initial position of the asset
-  // useEffect(() => {
-  //   if (divRef.current) {
-  //     addAssetRef({ [asset.id]: divRef.current.getBoundingClientRect() });
-  //   }
-  //   () => {
-  //     removeAssetRef({ [asset.id]: new DOMRect() });
-  //   };
-  // }, [addAssetRef, asset.id, removeAssetRef]);
+  useEffect(() => {
+    if (divRef.current) {
+      const boundingRect = divRef.current.getBoundingClientRect();
+      const rect: ElementRect = {
+        left: boundingRect.left,
+        top: boundingRect.top,
+        width: boundingRect.width,
+        height: boundingRect.height,
+      };
+      setElementRect({ id, rect, type });
+    }
+    () => {
+      setElementRect({ id, rect: undefined, type });
+    };
+  }, [id, type, setElementRect]);
 
   // Calculate display properties
   // const dim = useMemo(
@@ -106,8 +131,8 @@ const FlowingElement: React.FC<Props> = ({ children, rectangular }) => {
               // expand && "scale-105",
               dragging && "transition-none"
             )}
-            // onMouseEnter={() => setHoveredAsset(asset.id)}
-            // onMouseLeave={() => setHoveredAsset(null)}
+            onMouseEnter={() => setHoveredElementId(id)}
+            onMouseLeave={() => setHoveredElementId(null)}
             style={{
               transform: `translate(${currentCoords[0] - initCoords[0]}px, ${
                 currentCoords[1] - initCoords[1]

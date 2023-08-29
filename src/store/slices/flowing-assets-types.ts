@@ -1,8 +1,9 @@
 export type ZonesAndTransformers = {
   zones: Record<string, Zone>;
   zoneIds: string[];
-  assets: Record<AssetId, Asset>;
-  transformers: Record<TransformerId, Transformer>;
+  assets: Record<ElementId, Asset>;
+  transformers: Record<ElementId, Transformer>;
+  hoveredElementId: string | null;
 };
 
 /**
@@ -15,19 +16,17 @@ export type Zone = {
   type: ZoneType;
 };
 export type ZoneType = "assets" | "transformers";
-export const ZoneType = {
-  Assets: "assets" as ZoneType,
-  Transformers: "transformers" as ZoneType,
-};
 
 /**
  * Elements types
  */
 export type Element = {
+  id: ElementId;
   title: string;
   rect: ElementRect | undefined;
 };
 
+export type ElementId = string;
 export type ElementRect = {
   left: number;
   top: number;
@@ -39,23 +38,19 @@ export type ElementRect = {
  * Asset types
  */
 export type Asset = {
-  id: AssetId;
   type: AssetType;
 } & Element;
 
-export type AssetId = string;
 export type AssetType = "test";
 
 /**
  * Transformer types
  */
 export type Transformer = {
-  id: TransformerId;
-  sourcesIds: AssetId[];
-  result: AssetId;
+  sourcesIds: ElementId[];
+  result: ElementId;
   type: TransformerType;
 } & Element;
-export type TransformerId = string;
 export type TransformerType = "test";
 
 // Additional types
