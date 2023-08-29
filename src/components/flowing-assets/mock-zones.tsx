@@ -54,6 +54,7 @@ export const mockZones = (): ZonesAndTransformers => {
       "11": { id: "11", type: "test", sourcesIds: ["6", "7"], result: "14", title: "11", rect: undefined },
       "12": { id: "12", type: "test", sourcesIds: ["8"], result: "15", title: "12", rect: undefined },
     },
-    hoveredElementId: null
+    hoveredElementId: null,
+    connectedToHoveredIds: [],
   };
 };

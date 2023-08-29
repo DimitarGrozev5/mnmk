@@ -1,29 +1,37 @@
-import { IdRefs, SelectedIds, Transformer } from "../../../../store/slices/flowing-assets-types";
+import {
+  Asset,
+  ElementId,
+  ElementRecord,
+  Transformer,
+} from "../../../../store/slices/flowing-assets-types";
 
 export const generateTransLines = (
   containerRef: React.RefObject<HTMLDivElement>,
-  hoveredTrans: string,
-  assetRects: IdRefs,
-  transRects: IdRefs,
-  transformers: Transformer[]
-): { selectedIds: SelectedIds; newLines: number[][][] } => {
-  if (!containerRef.current)
-    return { selectedIds: { assets: [], trans: [] }, newLines: [] };
+  hoveredElementId: ElementId,
+  assets: ElementRecord<Asset>,
+  transformers: ElementRecord<Transformer>
+): { selectedIds: ElementId[]; newLines: number[][][] } => {
+  // Get the selected transformer rect
+  const transRect = transformers[hoveredElementId].rect;
+
+  if (!containerRef.current || !transRect)
+    return { selectedIds: [], newLines: [] };
+
+  // Get the FlowingAssets Component container ref
   const containerRect = containerRef.current.getBoundingClientRect();
 
-  const transRect = transRects[hoveredTrans];
-
   // Get transformer
-  const transformer = transformers.find((trans) => trans.id === hoveredTrans);
-  if (!transformer)
-    return { selectedIds: { assets: [], trans: [] }, newLines: [] };
+  const transformer = Object.values(transformers).find(
+    (trans) => trans.id === hoveredElementId
+  );
+  if (!transformer) return { selectedIds: [], newLines: [] };
 
   const offsetCoef = 6;
 
   // Generate direct lines from transformers to asset
-  const linesUp = transformer.sources
-    .map((asset) => {
-      const assetRect = assetRects[asset.id];
+  const linesUp = transformer.sourcesIds
+    .map((assetId) => {
+      const assetRect = assets[assetId].rect!;
       const x1 = transRect.right - transRect.width / 2 - containerRect.left;
       const y1 = transRect.top - containerRect.top;
       const x2 = assetRect.right - containerRect.left;
@@ -36,7 +44,7 @@ export const generateTransLines = (
     // Sort them from most left going line to most right going
     .sort((a, b) => b[1][0] - a[1][0]);
 
-  const resultRect = assetRects[transformer.result.id];
+  const resultRect = assets[transformer.result].rect!;
   const x5 = resultRect.left - containerRect.left;
   const y5 = resultRect.top + resultRect.height / 2 - containerRect.top;
 
@@ -104,12 +112,10 @@ export const generateTransLines = (
     return [[x1, y1], [x2, y2], [x3, y3], [x4, y4], line[1]];
   });
 
-  const selectedAssetIds = [...transformer.sources, transformer.result].map(
-    (asset) => asset.id
-  );
+  const selectedAssetIds = [...transformer.sourcesIds, transformer.result];
 
   return {
-    selectedIds: { assets: selectedAssetIds, trans: [hoveredTrans] },
+    selectedIds: selectedAssetIds,
     newLines: [...leftUp, ...rightUp, lineDown],
   };
 };

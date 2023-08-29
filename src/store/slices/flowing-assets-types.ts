@@ -1,9 +1,10 @@
 export type ZonesAndTransformers = {
   zones: Record<string, Zone>;
   zoneIds: string[];
-  assets: Record<ElementId, Asset>;
-  transformers: Record<ElementId, Transformer>;
-  hoveredElementId: string | null;
+  assets: ElementRecord<Asset>;
+  transformers: ElementRecord<Transformer>;
+  hoveredElementId: ElementId | null;
+  connectedToHoveredIds: ElementId[];
 };
 
 /**
@@ -29,10 +30,14 @@ export type Element = {
 export type ElementId = string;
 export type ElementRect = {
   left: number;
+  right: number;
   top: number;
+  bottom: number;
   width: number;
   height: number;
 };
+
+export type ElementRecord<T extends Asset | Transformer> = Record<ElementId, T>;
 
 /**
  * Asset types

@@ -6,6 +6,7 @@ import {
   ZonesAndTransformers,
 } from "./flowing-assets-types";
 import { mockZones } from "../../components/flowing-assets/mock-zones";
+import type { RootState } from "../store";
 
 const initialState: ZonesAndTransformers = mockZones();
 
@@ -28,6 +29,9 @@ export const zonesAndTransformersSlice = createSlice({
     setHoveredElementId: (state, action: PayloadAction<ElementId | null>) => {
       state.hoveredElementId = action.payload;
     },
+    setConnectedToHoveredIds: (state, action: PayloadAction<ElementId[]>) => {
+      state.connectedToHoveredIds = [...action.payload];
+    },
   },
 });
 
@@ -35,3 +39,20 @@ export const zonesAndTransformersSlice = createSlice({
 export const zonesActions = zonesAndTransformersSlice.actions;
 
 export default zonesAndTransformersSlice.reducer;
+
+// Selectors
+export const hoveredIsAssetSelector = (state: RootState) => {
+  const hovered = state.zonesAndTransformers.hoveredElementId;
+  if (hovered === null) return false;
+
+  const asset = state.zonesAndTransformers.assets[hovered];
+  return asset !== undefined;
+};
+
+export const hoveredITransformerSelector = (state: RootState) => {
+  const hovered = state.zonesAndTransformers.hoveredElementId;
+  if (hovered === null) return false;
+
+  const trans = state.zonesAndTransformers.transformers[hovered];
+  return trans !== undefined;
+};

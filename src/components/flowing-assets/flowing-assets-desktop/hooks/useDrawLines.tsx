@@ -1,32 +1,36 @@
-import { useEffect, useState } from "react";
-import type {
-  IdRefs,
-  SelectedIds,
-  Transformer,
-} from "../../../../store/slices/flowing-assets-types";
+import { useEffect } from "react";
 import { generateAssetLines } from "./generate-asset-lines";
 import { generateTransLines } from "./generate-trans-lines";
+import {
+  hoveredITransformerSelector,
+  hoveredIsAssetSelector,
+  zonesActions,
+} from "../../../../store/slices/zones-and-transformers-slice";
+import { useAppSelector } from "../../../../store/hooks";
 
 export const useDrawLines = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
-  containerRef: React.RefObject<HTMLDivElement>,
-  hoveredAsset: string | null,
-  hoveredTrans: string | null,
-  assetRects: IdRefs,
-  transRects: IdRefs,
-  transformers: Transformer[]
-): SelectedIds => {
-  const [selectedRefs, setSelectedRefs] = useState<{
-    assets: string[];
-    trans: string[];
-  }>({ assets: [], trans: [] });
+  containerRef: React.RefObject<HTMLDivElement>
+) => {
+  const hoveredElementId = useAppSelector(
+    (state) => state.zonesAndTransformers.hoveredElementId
+  );
+  const hoveredIsAsset = useAppSelector(hoveredIsAssetSelector);
+  const hoveredIsTrans = useAppSelector(hoveredITransformerSelector);
+
+  const assets = useAppSelector((state) => state.zonesAndTransformers.assets);
+  const transformers = useAppSelector(
+    (state) => state.zonesAndTransformers.transformers
+  );
+
+  const { setConnectedToHoveredIds } = zonesActions;
 
   useEffect(() => {
     if (canvasRef.current === null || containerRef.current === null) return;
     const canvas = canvasRef.current;
     const canvasRect = canvas.getBoundingClientRect();
 
-    let keepDrawing = !!hoveredAsset || !!hoveredTrans;
+    let keepDrawing = !!hoveredIsAsset || !!hoveredIsTrans;
 
     const ctx = canvas.getContext("2d");
     if (ctx === null) return;
@@ -41,27 +45,25 @@ export const useDrawLines = (
     const lines: number[][][] = [];
 
     // Get selected asset
-    if (hoveredAsset) {
+    if (hoveredIsAsset) {
       const { selectedIds, newLines } = generateAssetLines(
         containerRef,
-        hoveredAsset,
-        assetRects,
-        transRects,
+        hoveredElementId!, // The if above implicitly asserts that hoveredElementId is not null
+        assets,
         transformers
       );
       lines.push(...newLines);
-      setSelectedRefs(selectedIds);
+      setConnectedToHoveredIds(selectedIds);
     }
-    if (hoveredTrans) {
+    if (hoveredIsTrans) {
       const { selectedIds, newLines } = generateTransLines(
         containerRef,
-        hoveredTrans,
-        assetRects,
-        transRects,
+        hoveredElementId!, // The if above implicitly asserts that hoveredElementId is not null
+        assets,
         transformers
       );
       lines.push(...newLines);
-      setSelectedRefs(selectedIds);
+      setConnectedToHoveredIds(selectedIds);
     }
 
     const start = new Date().getTime();
@@ -129,17 +131,16 @@ export const useDrawLines = (
 
     return () => {
       keepDrawing = false;
-      setSelectedRefs({ assets: [], trans: [] });
+      setConnectedToHoveredIds([]);
     };
   }, [
-    assetRects,
+    assets,
     canvasRef,
     containerRef,
-    hoveredAsset,
-    hoveredTrans,
-    transRects,
+    hoveredElementId,
+    hoveredIsAsset,
+    hoveredIsTrans,
+    setConnectedToHoveredIds,
     transformers,
   ]);
-
-  return selectedRefs;
 };
