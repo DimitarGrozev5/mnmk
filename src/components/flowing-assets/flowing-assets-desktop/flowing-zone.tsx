@@ -5,21 +5,9 @@ import FlowingTransformer from "./flowing-transformer";
 
 type Props = {
   zoneId: string;
-  // addAssetRef: (ref: IdRefs) => void;
-  // removeAssetRef: (ref: IdRefs) => void;
-  // hoveredAsset: string | null;
-  // selectedIds: SelectedIds;
-  // setHoveredAsset: (assetId: string | null) => void;
 };
 
-const FlowingZone: React.FC<Props> = ({
-  zoneId,
-  // addAssetRef,
-  // removeAssetRef,
-  // hoveredAsset,
-  // selectedIds,
-  // setHoveredAsset,
-}) => {
+const FlowingZone: React.FC<Props> = ({ zoneId }) => {
   const zone = useAppSelector(
     (state) => state.zonesAndTransformers.zones[zoneId]
   );
@@ -28,15 +16,7 @@ const FlowingZone: React.FC<Props> = ({
     return (
       <div className={clsx("flex flex-row gap-10", "px-5")}>
         {zone.elementsIds.map((transId) => (
-          <FlowingTransformer
-            key={transId}
-            transformerId={transId}
-            // addTransRef={addTransRef}
-            // removeTransRef={removeTransRef}
-            // selectedIds={selectedIds}
-            // hoveredTrans={hoveredTrans}
-            // setHoveredTrans={setHoveredTrans}
-          />
+          <FlowingTransformer key={transId} transformerId={transId} />
         ))}
       </div>
     );
@@ -55,15 +35,7 @@ const FlowingZone: React.FC<Props> = ({
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
         {zone.elementsIds.map((assetId) => (
-          <FlowingAsset
-            key={assetId}
-            assetId={assetId}
-            // addAssetRef={addAssetRef}
-            // removeAssetRef={removeAssetRef}
-            // selectedIds={selectedIds}
-            // hoveredAsset={hoveredAsset}
-            // setHoveredAsset={setHoveredAsset}
-          />
+          <FlowingAsset key={assetId} assetId={assetId} />
         ))}
       </div>
     </div>
