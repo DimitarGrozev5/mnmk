@@ -41,12 +41,12 @@ const FlowingElement: React.FC<Props> = ({
         width: boundingRect.width,
         height: boundingRect.height,
       };
-      setElementRect({ id, rect, type });
+      dispatch(setElementRect({ id, rect, type }));
     }
     () => {
-      setElementRect({ id, rect: undefined, type });
+      dispatch(setElementRect({ id, rect: undefined, type }));
     };
-  }, [id, type, setElementRect]);
+  }, [id, type, setElementRect, dispatch]);
 
   // Calculate display properties
   // const dim = useMemo(
