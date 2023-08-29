@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+// import type { PayloadAction } from "@reduxjs/toolkit";
 import { ZonesAndTransformers } from "./flowing-assets-types";
 import { mockZones } from "../../components/flowing-assets/mock-zones";
 
@@ -9,7 +9,7 @@ export const zonesAndTransformersSlice = createSlice({
   name: "zonesAndTransformers",
   initialState,
   reducers: {
-    test: (state, action: PayloadAction<number>) => {},
+    // test: (state, action: PayloadAction<number>) => {},
   },
 });
 
