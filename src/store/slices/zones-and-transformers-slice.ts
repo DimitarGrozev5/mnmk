@@ -23,8 +23,36 @@ export const zonesAndTransformersSlice = createSlice({
         type: keyof Pick<ZonesAndTransformers, "assets" | "transformers">;
       }>
     ) => {
+      // Update rect
       const { rect, id, type } = action.payload;
       state[type][id].rect = rect;
+
+      // Recalculate zone dx and dy - distances between elements and between rows in the zone
+      const zone = state.zoneIds
+        .map((z) => state.zones[z])
+        .find((zone) => zone.elementsIds.includes(id));
+
+      if (zone) {
+        const zoneElements = zone.elementsIds.map((eId) => state[type][eId]);
+        const dx =
+          zoneElements.length <= 1
+            ? 0
+            : (zoneElements[1].rect?.left ?? 0) -
+              (zoneElements[0].rect?.left ?? 0);
+        const dy =
+          zoneElements.length <= 1
+            ? 0
+            : zoneElements.slice(1).reduce((acc, e) => {
+                if (acc !== 0) return acc;
+
+                const dTop =
+                  (e.rect?.top ?? 0) - (zoneElements[0].rect?.top ?? 0);
+                return dTop;
+              }, 0);
+
+        state.zones[zone.id].dx = dx;
+        state.zones[zone.id].dy = dy;
+      }
     },
     setHoveredElementId: (state, action: PayloadAction<ElementId | null>) => {
       state.hoveredElementId = action.payload;

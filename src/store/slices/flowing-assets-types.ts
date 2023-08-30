@@ -3,6 +3,7 @@ export type ZonesAndTransformers = {
   zoneIds: string[];
   assets: ElementRecord<Asset>;
   transformers: ElementRecord<Transformer>;
+
   hoveredElementId: ElementId | null;
   connectedToHoveredIds: ElementId[];
 };
@@ -15,7 +16,10 @@ export type Zone = {
   name: string;
   elementsIds: string[];
   type: ZoneType;
+  dx: number;
+  dy: number;
 };
+1;
 export type ZoneType = "assets" | "transformers";
 
 /**
