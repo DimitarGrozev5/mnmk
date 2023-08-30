@@ -2,6 +2,7 @@ import clsx from "clsx";
 import FlowingAsset from "./flowing-asset";
 import { useAppSelector } from "../../../store/hooks";
 import FlowingTransformer from "./flowing-transformer";
+import { useCallback } from "react";
 
 type Props = {
   zoneId: string;
@@ -12,11 +13,19 @@ const FlowingZone: React.FC<Props> = ({ zoneId }) => {
     (state) => state.zonesAndTransformers.zones[zoneId]
   );
 
+  const snapX = useCallback((x: number) => x * 2, []);
+  const snapY = useCallback((y: number) => y * 2, []);
+
   if (zone.type === "transformers")
     return (
       <div className={clsx("flex flex-row gap-10", "px-5")}>
         {zone.elementsIds.map((transId) => (
-          <FlowingTransformer key={transId} transformerId={transId} />
+          <FlowingTransformer
+            snapX={snapX}
+            snapY={snapY}
+            key={transId}
+            transformerId={transId}
+          />
         ))}
       </div>
     );
@@ -35,7 +44,12 @@ const FlowingZone: React.FC<Props> = ({ zoneId }) => {
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
         {zone.elementsIds.map((assetId) => (
-          <FlowingAsset key={assetId} assetId={assetId} />
+          <FlowingAsset
+            snapX={snapX}
+            snapY={snapY}
+            key={assetId}
+            assetId={assetId}
+          />
         ))}
       </div>
     </div>

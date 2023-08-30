@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 type Props = {
   id: ElementId;
   type: ZoneType;
+  snapX: (value: number) => number;
+  snapY: (value: number) => number;
   children: React.ReactNode;
   rectangular?: boolean;
 };
@@ -23,6 +25,8 @@ type Props = {
 const FlowingElement: React.FC<Props> = ({
   id,
   type,
+  snapX,
+  snapY,
   children,
   rectangular,
 }) => {
@@ -121,9 +125,12 @@ const FlowingElement: React.FC<Props> = ({
       const dragDx = event.clientX - dragParamsRef.current.startCoords[0];
       const dragDy = event.clientY - dragParamsRef.current.startCoords[1];
 
-      setDragOffset([dragDx + reorderDx, dragDy + reorderDy]);
+      const dx = snapX(dragDx + reorderDx);
+      const dy = snapY(dragDy + reorderDy);
+
+      setDragOffset([dx, dy]);
     },
-    [currentElementPosition?.left, currentElementPosition?.top]
+    [currentElementPosition?.left, currentElementPosition?.top, snapX, snapY]
   );
 
   useEffect(() => {
