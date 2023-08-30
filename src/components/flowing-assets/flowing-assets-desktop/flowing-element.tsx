@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import IconButton from "../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
-import { zonesActions } from "../../../store/slices/zones-and-transformers-slice";
+import {
+  getElementRectSelector,
+  zonesActions,
+} from "../../../store/slices/zones-and-transformers-slice";
 import {
   ElementId,
   ElementRect,
@@ -71,8 +74,74 @@ const FlowingElement: React.FC<Props> = ({
 
   const expand = useMemo(() => hoveredElementId === id, [hoveredElementId, id]);
 
-  // Setup Asset drag params
+  // Setup Element drag params
+  const currentElementPosition = useAppSelector(getElementRectSelector(id));
+
   const [dragging, setDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
+  const dragParamsRef = useRef({
+    startCoords: [0, 0],
+    startElementPosition: [0, 0],
+  });
+
+  const startDrag = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      if (divRef.current) {
+        const boundingRect = divRef.current.getBoundingClientRect();
+        dragParamsRef.current = {
+          startCoords: [event.clientX, event.clientY],
+          startElementPosition: [boundingRect.left, boundingRect.top],
+        };
+      }
+      setDragging(true);
+    },
+    []
+  );
+
+  const endDrag = useCallback(() => {
+    setDragging(false);
+    dragParamsRef.current = {
+      startCoords: [0, 0],
+      startElementPosition: [0, 0],
+    };
+    setDragOffset([0, 0]);
+  }, []);
+
+  const updateOffset = useCallback(
+    (event: MouseEvent) => {
+      const reorderDx = currentElementPosition?.left
+        ? currentElementPosition.left -
+          dragParamsRef.current.startElementPosition[0]
+        : 0;
+      const reorderDy = currentElementPosition?.top
+        ? currentElementPosition.top -
+          dragParamsRef.current.startElementPosition[1]
+        : 0;
+
+      const dragDx = event.clientX - dragParamsRef.current.startCoords[0];
+      const dragDy = event.clientY - dragParamsRef.current.startCoords[1];
+
+      setDragOffset([dragDx + reorderDx, dragDy + reorderDy]);
+    },
+    [currentElementPosition?.left, currentElementPosition?.top]
+  );
+
+  useEffect(() => {
+    if (dragging) {
+      window.addEventListener("mousemove", updateOffset);
+      window.addEventListener("mouseup", endDrag);
+      window.addEventListener("mouseleave", endDrag);
+    } else {
+      window.removeEventListener("mousemove", updateOffset);
+    }
+    return () => {
+      window.removeEventListener("mousemove", updateOffset);
+      window.removeEventListener("mouseup", endDrag);
+      window.removeEventListener("mouseleave", endDrag);
+    };
+  }, [dragging, endDrag, updateOffset]);
+
+  // const [dragging, setDragging] = useState(false);
   // const [initCoords, setInitCoords] = useState<[number, number]>([0, 0]);
   // const [currentCoords, setCurrentCoords] = useState<[number, number]>([0, 0]);
 
@@ -100,13 +169,19 @@ const FlowingElement: React.FC<Props> = ({
 
   // useEffect(() => {
   //   if (dragging) {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
   //     window.addEventListener("mousemove", updateOffset);
   //     window.addEventListener("mouseup", endDrag);
   //     window.addEventListener("mouseleave", endDrag);
   //   } else {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
   //     window.removeEventListener("mousemove", updateOffset);
   //   }
   //   return () => {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     // @ts-ignore
   //     window.removeEventListener("mousemove", updateOffset);
   //     window.removeEventListener("mouseup", endDrag);
   //     window.removeEventListener("mouseleave", endDrag);
@@ -122,8 +197,8 @@ const FlowingElement: React.FC<Props> = ({
             "relative z-10",
             "flex flex-col items-center justify-center",
             "p-3 w-36",
-            rectangular ? "h-36" : "h-10"
-            // dragging && "z-50"
+            rectangular ? "h-36" : "h-10",
+            dragging && "z-50"
           )}
         >
           <div
@@ -137,18 +212,14 @@ const FlowingElement: React.FC<Props> = ({
               "cursor-pointer",
               dim && "scale-95 opacity-50 grayscale-0 blur-sm",
               contract && "scale-95",
-              expand && "scale-105"
-              // dragging && "transition-none"
+              expand && "scale-105",
+              dragging && "transition-none"
             )}
             onMouseEnter={() => dispatch(setHoveredElementId(id))}
             onMouseLeave={() => dispatch(setHoveredElementId(null))}
-            style={
-              {
-                // transform: `translate(${currentCoords[0] - initCoords[0]}px, ${
-                //   currentCoords[1] - initCoords[1]
-                // }px)`,
-              }
-            }
+            style={{
+              transform: `translate(${dragOffset[0]}px, ${dragOffset[1]}px)`,
+            }}
           >
             {children}
 
@@ -171,7 +242,7 @@ const FlowingElement: React.FC<Props> = ({
               >
                 <IconButton
                   label="Move"
-                  // onMouseDown={startDrag}
+                  onMouseDown={startDrag}
                   // ref={moveButton}
                 >
                   <Bars2Icon className="w-4 h-4" />

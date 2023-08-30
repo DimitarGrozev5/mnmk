@@ -56,3 +56,7 @@ export const hoveredITransformerSelector = (state: RootState) => {
   const trans = state.zonesAndTransformers.transformers[hovered];
   return trans !== undefined;
 };
+
+export const getElementRectSelector = (id: string) => (state: RootState) =>
+  state.zonesAndTransformers.assets[id]?.rect ??
+  state.zonesAndTransformers.transformers[id]?.rect;
