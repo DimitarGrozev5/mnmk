@@ -245,7 +245,8 @@ const FlowingElement: React.FC<Props> = ({
                 "absolute inset-0",
                 "transition-all duration-700",
                 "opacity-0",
-                hoveredElementId === id && "hover:opacity-100"
+                hoveredElementId === id && "hover:opacity-100",
+                draggingCurrent && "opacity-100"
               )}
             >
               <div
