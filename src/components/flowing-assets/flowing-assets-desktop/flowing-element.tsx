@@ -38,7 +38,7 @@ const FlowingElement: React.FC<Props> = ({
   );
 
   const dispatch = useAppDispatch();
-  const { setElementRect, setHoveredElementId } = zonesActions;
+  const { setElementRect, setHoveredElementId, setDragging } = zonesActions;
 
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
@@ -80,8 +80,14 @@ const FlowingElement: React.FC<Props> = ({
 
   // Setup Element drag params
   const currentElementPosition = useAppSelector(getElementRectSelector(id));
+  const dragging = useAppSelector(
+    (state) => state.zonesAndTransformers.dragging
+  );
+  const draggingCurrent = useMemo(
+    () => dragging && hoveredElementId === id,
+    [dragging, hoveredElementId, id]
+  );
 
-  const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
   const dragParamsRef = useRef({
     startCoords: [0, 0],
@@ -97,19 +103,19 @@ const FlowingElement: React.FC<Props> = ({
           startElementPosition: [boundingRect.left, boundingRect.top],
         };
       }
-      setDragging(true);
+      dispatch(setDragging(true));
     },
-    []
+    [dispatch, setDragging]
   );
 
   const endDrag = useCallback(() => {
-    setDragging(false);
+    dispatch(setDragging(false));
     dragParamsRef.current = {
       startCoords: [0, 0],
       startElementPosition: [0, 0],
     };
     setDragOffset([0, 0]);
-  }, []);
+  }, [dispatch, setDragging]);
 
   const updateOffset = useCallback(
     (event: MouseEvent) => {
@@ -134,7 +140,7 @@ const FlowingElement: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    if (dragging) {
+    if (draggingCurrent) {
       window.addEventListener("mousemove", updateOffset);
       window.addEventListener("mouseup", endDrag);
       window.addEventListener("mouseleave", endDrag);
@@ -146,7 +152,7 @@ const FlowingElement: React.FC<Props> = ({
       window.removeEventListener("mouseup", endDrag);
       window.removeEventListener("mouseleave", endDrag);
     };
-  }, [dragging, endDrag, updateOffset]);
+  }, [draggingCurrent, endDrag, updateOffset]);
 
   // const [dragging, setDragging] = useState(false);
   // const [initCoords, setInitCoords] = useState<[number, number]>([0, 0]);
@@ -205,7 +211,7 @@ const FlowingElement: React.FC<Props> = ({
             "flex flex-col items-center justify-center",
             "p-3 w-36",
             rectangular ? "h-36" : "h-10",
-            dragging && "z-50"
+            draggingCurrent && "z-50"
           )}
         >
           <div
@@ -220,10 +226,12 @@ const FlowingElement: React.FC<Props> = ({
               dim && "scale-95 opacity-50 grayscale-0 blur-sm",
               contract && "scale-95",
               expand && "scale-105",
-              dragging && "transition-none"
+              draggingCurrent && "transition-none"
             )}
-            onMouseEnter={() => dispatch(setHoveredElementId(id))}
-            onMouseLeave={() => dispatch(setHoveredElementId(null))}
+            onMouseEnter={() => !dragging && dispatch(setHoveredElementId(id))}
+            onMouseLeave={() =>
+              !dragging && dispatch(setHoveredElementId(null))
+            }
             style={{
               transform: `translate(${dragOffset[0]}px, ${dragOffset[1]}px)`,
             }}
@@ -237,7 +245,7 @@ const FlowingElement: React.FC<Props> = ({
                 "absolute inset-0",
                 "transition-all duration-700",
                 "opacity-0",
-                "hover:opacity-100"
+                hoveredElementId === id && "hover:opacity-100"
               )}
             >
               <div
@@ -263,7 +271,7 @@ const FlowingElement: React.FC<Props> = ({
               "absolute inset-2 z-0",
               "border-4 border-slate-400 border-dashed rounded-lg",
               "bg-slate-300 bg-opacity-50",
-              dragging ? "visible" : "invisible"
+              draggingCurrent ? "visible" : "invisible"
             )}
           />
         </div>

@@ -60,6 +60,9 @@ export const zonesAndTransformersSlice = createSlice({
     setConnectedToHoveredIds: (state, action: PayloadAction<ElementId[]>) => {
       state.connectedToHoveredIds = [...action.payload];
     },
+    setDragging: (state, action: PayloadAction<boolean>) => {
+      state.dragging = action.payload;
+    },
   },
 });
 

@@ -6,6 +6,8 @@ export type ZonesAndTransformers = {
 
   hoveredElementId: ElementId | null;
   connectedToHoveredIds: ElementId[];
+
+  dragging: boolean;
 };
 
 /**

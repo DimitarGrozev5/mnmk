@@ -114,5 +114,6 @@ export const mockZones = (): ZonesAndTransformers => {
     },
     hoveredElementId: null,
     connectedToHoveredIds: [],
+    dragging: false,
   };
 };
