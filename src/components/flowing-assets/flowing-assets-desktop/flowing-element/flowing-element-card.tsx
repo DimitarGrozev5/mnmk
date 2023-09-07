@@ -50,7 +50,7 @@ const FlowinfELementCard: React.FC<Props> = ({ id, rectangular, children }) => {
         "cursor-pointer",
         dim && "scale-95 opacity-50 grayscale-0 blur-sm",
         contract && "scale-95",
-        expand && "scale-105"
+        expand && "scale-105 active:scale-100 active:duration-200"
       )}
       onMouseEnter={() => dispatch(setHoveredElementId(id))}
       onMouseLeave={() => dispatch(setHoveredElementId(null))}
