@@ -50,10 +50,16 @@ export type ElementRecord<T extends Asset | Transformer> = Record<ElementId, T>;
  * Asset types
  */
 export type Asset = {
-  type: AssetType;
-} & Element;
+  [K in AssetType]: {
+    type: K;
+  } & Element;
+}[AssetType];
 
-export type AssetType = "test";
+// export type Asset = {
+//   type: AssetType;
+// } & Element;
+
+export type AssetType = "test" | "add_new";
 
 /**
  * Transformer types
