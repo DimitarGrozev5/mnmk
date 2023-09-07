@@ -1,14 +1,13 @@
-import { useMemo } from "react";
 import clsx from "clsx";
 import IconButton from "../../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
-import { zonesActions } from "../../../../store/slices/zones-and-transformers-slice";
 import {
   ElementId,
   ZoneType,
 } from "../../../../store/slices/flowing-assets-types";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { useAppSelector } from "../../../../store/hooks";
 import FlowingElementContainer from "./flowing-element-container";
+import FlowinfELementCard from "./flowing-element-card";
 
 type Props = {
   id: ElementId;
@@ -26,47 +25,10 @@ const FlowingElement: React.FC<Props> = ({
   const hoveredElementId = useAppSelector(
     (state) => state.zonesAndTransformers.hoveredElementId
   );
-  const connectedToHoveredIds = useAppSelector(
-    (state) => state.zonesAndTransformers.connectedToHoveredIds
-  );
-
-  const dispatch = useAppDispatch();
-  const { setHoveredElementId } = zonesActions;
-
-  // Calculate display properties
-  const dim = useMemo(
-    () =>
-      hoveredElementId !== null &&
-      !connectedToHoveredIds.includes(id) &&
-      hoveredElementId !== id,
-    [connectedToHoveredIds, hoveredElementId, id]
-  );
-
-  const contract = useMemo(
-    () => connectedToHoveredIds.includes(id) && hoveredElementId !== id,
-    [connectedToHoveredIds, hoveredElementId, id]
-  );
-
-  const expand = useMemo(() => hoveredElementId === id, [hoveredElementId, id]);
 
   return (
     <FlowingElementContainer id={id} type={type} rectangular={rectangular}>
-      <div
-        className={clsx(
-          "absolute inset-0 z-10",
-          "flex flex-col items-center justify-center",
-          "p-3 w-36 overflow-hidden",
-          rectangular ? "h-36" : "h-10",
-          "bg-slate-300 rounded-lg",
-          "shadow-lg transition-all duration-500",
-          "cursor-pointer",
-          dim && "scale-95 opacity-50 grayscale-0 blur-sm",
-          contract && "scale-95",
-          expand && "scale-105"
-        )}
-        onMouseEnter={() => dispatch(setHoveredElementId(id))}
-        onMouseLeave={() => dispatch(setHoveredElementId(null))}
-      >
+      <FlowinfELementCard id={id} rectangular={rectangular}>
         {children}
 
         <div
@@ -94,7 +56,7 @@ const FlowingElement: React.FC<Props> = ({
             </IconButton>
           </div>
         </div>
-      </div>
+      </FlowinfELementCard>
 
       <div
         className={clsx(
