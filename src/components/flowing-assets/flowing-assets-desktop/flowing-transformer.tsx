@@ -1,6 +1,6 @@
 import type { ElementId } from "../../../store/slices/flowing-assets-types";
 import { useAppSelector } from "../../../store/hooks";
-import FlowingElement from "./flowing-element";
+import FlowingElement from "./flowing-element/flowing-element";
 
 type Props = {
   transformerId: ElementId;

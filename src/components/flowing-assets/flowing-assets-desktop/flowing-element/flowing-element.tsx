@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
-import IconButton from "../../ui/button/icon-button";
+import IconButton from "../../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
-import { zonesActions } from "../../../store/slices/zones-and-transformers-slice";
+import { zonesActions } from "../../../../store/slices/zones-and-transformers-slice";
 import {
   ElementId,
   ElementRect,
   ZoneType,
-} from "../../../store/slices/flowing-assets-types";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+} from "../../../../store/slices/flowing-assets-types";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 type Props = {
   id: ElementId;
