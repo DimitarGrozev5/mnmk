@@ -7,6 +7,7 @@ import {
 } from "../../../../store/slices/flowing-assets-types";
 import { useAppDispatch } from "../../../../store/hooks";
 import { zonesActions } from "../../../../store/slices/zones-and-transformers-slice";
+import { useFlowingElementDisplayProps } from "../hooks/useFlowingElementDisplayProps";
 
 type Props = {
   id: ElementId;
@@ -22,7 +23,7 @@ const FlowingElementContainer: React.FC<Props> = ({
   children,
 }) => {
   const dispatch = useAppDispatch();
-  const { setElementRect } = zonesActions;
+  const { setElementRect, setHoveredElementId } = zonesActions;
 
   // Take a ref to the div element and
   const divRef = useRef<HTMLDivElement>(null);
@@ -57,6 +58,10 @@ const FlowingElementContainer: React.FC<Props> = ({
       window.removeEventListener("scroll", updateRect);
     };
   }, [updateRect]);
+
+  // Calculate display properties
+  const { dim, contract, expand } = useFlowingElementDisplayProps(id);
+
   return (
     <div
       ref={divRef}
@@ -64,8 +69,15 @@ const FlowingElementContainer: React.FC<Props> = ({
         "relative z-10",
         "flex flex-col items-center justify-center",
         "p-3 w-36",
-        rectangular ? "h-36" : "h-10"
+        "transition-all duration-500",
+        "cursor-pointer",
+        rectangular ? "h-36" : "h-10",
+        dim && "scale-95 opacity-50 grayscale-0 blur-sm",
+        contract && "scale-95",
+        expand && "scale-105 active:scale-100 active:duration-200"
       )}
+      onMouseEnter={() => dispatch(setHoveredElementId(id))}
+      onMouseLeave={() => dispatch(setHoveredElementId(null))}
     >
       {children}
     </div>
