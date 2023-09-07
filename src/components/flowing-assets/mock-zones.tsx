@@ -7,7 +7,7 @@ export const mockZones = (): ZonesAndTransformers => {
       "1": {
         id: "1",
         name: "Test1",
-        elementsIds: ["1", "2", "3", "16", "17", "18", "19", "20"],
+        elementsIds: ["0", "1", "2", "3", "16", "17", "18", "19", "20"],
         type: "assets",
         dx: 0,
         dy: 0,
@@ -51,6 +51,7 @@ export const mockZones = (): ZonesAndTransformers => {
       },
     },
     assets: {
+      "0": { id: "0", type: "add_new", title: "add_new", rect: undefined },
       "1": { id: "1", type: "test", title: "1", rect: undefined },
       "2": { id: "2", type: "test", title: "2", rect: undefined },
       "3": { id: "3", type: "test", title: "3", rect: undefined },
