@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import {
   ElementId,
   ElementRect,
+  ZoneType,
   ZonesAndTransformers,
 } from "./flowing-assets-types";
 import { mockZones } from "../../components/flowing-assets/mock-zones";
@@ -20,7 +21,7 @@ export const zonesAndTransformersSlice = createSlice({
       action: PayloadAction<{
         rect: ElementRect | undefined;
         id: ElementId;
-        type: keyof Pick<ZonesAndTransformers, "assets" | "transformers">;
+        type: ZoneType;
       }>
     ) => {
       // Update rect
@@ -28,6 +29,7 @@ export const zonesAndTransformersSlice = createSlice({
       state[type][id].rect = rect;
 
       // Recalculate zone dx and dy - distances between elements and between rows in the zone
+      // Recalculate items per row - number of elements per row in the zone
       const zone = state.zoneIds
         .map((z) => state.zones[z])
         .find((zone) => zone.elementsIds.includes(id));
@@ -50,8 +52,16 @@ export const zonesAndTransformersSlice = createSlice({
                 return dTop;
               }, 0);
 
+        const yOfFirst = zoneElements[0].rect?.top ?? 0;
+        const indexOfSecondRow = zoneElements.findIndex(
+          (element) => (element.rect?.top ?? 0) > yOfFirst
+        );
+
         state.zones[zone.id].dx = dx;
         state.zones[zone.id].dy = dy;
+
+        if (indexOfSecondRow >= 0)
+          state.zones[zone.id].itemsPerRow = indexOfSecondRow;
       }
     },
     setHoveredElementId: (state, action: PayloadAction<ElementId | null>) => {
@@ -59,9 +69,6 @@ export const zonesAndTransformersSlice = createSlice({
     },
     setConnectedToHoveredIds: (state, action: PayloadAction<ElementId[]>) => {
       state.connectedToHoveredIds = [...action.payload];
-    },
-    setDragging: (state, action: PayloadAction<boolean>) => {
-      state.dragging = action.payload;
     },
   },
 });
@@ -80,7 +87,7 @@ export const hoveredIsAssetSelector = (state: RootState) => {
   return asset !== undefined;
 };
 
-export const hoveredITransformerSelector = (state: RootState) => {
+export const hoveredIsTransformerSelector = (state: RootState) => {
   const hovered = state.zonesAndTransformers.hoveredElementId;
   if (hovered === null) return false;
 

@@ -14,14 +14,15 @@ export type ZonesAndTransformers = {
  * Zone types
  */
 export type Zone = {
-  id: string;
+  id: ZoneId;
   name: string;
   elementsIds: string[];
   type: ZoneType;
   dx: number;
   dy: number;
+  itemsPerRow: number;
 };
-1;
+export type ZoneId = string;
 export type ZoneType = "assets" | "transformers";
 
 /**

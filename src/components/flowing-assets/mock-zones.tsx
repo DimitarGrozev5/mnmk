@@ -11,6 +11,7 @@ export const mockZones = (): ZonesAndTransformers => {
         type: "assets",
         dx: 0,
         dy: 0,
+        itemsPerRow: 0,
       },
       "2": {
         id: "2",
@@ -19,6 +20,7 @@ export const mockZones = (): ZonesAndTransformers => {
         type: "transformers",
         dx: 0,
         dy: 0,
+        itemsPerRow: 0,
       },
       "3": {
         id: "3",
@@ -27,6 +29,7 @@ export const mockZones = (): ZonesAndTransformers => {
         type: "assets",
         dx: 0,
         dy: 0,
+        itemsPerRow: 0,
       },
       "4": {
         id: "4",
@@ -35,6 +38,7 @@ export const mockZones = (): ZonesAndTransformers => {
         type: "transformers",
         dx: 0,
         dy: 0,
+        itemsPerRow: 0,
       },
       "5": {
         id: "5",
@@ -43,6 +47,7 @@ export const mockZones = (): ZonesAndTransformers => {
         type: "assets",
         dx: 0,
         dy: 0,
+        itemsPerRow: 0,
       },
     },
     assets: {

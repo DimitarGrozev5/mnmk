@@ -4,26 +4,15 @@ import FlowingElement from "./flowing-element";
 
 type Props = {
   transformerId: ElementId;
-  snapX: (value: number) => number;
-  snapY: (value: number) => number;
 };
 
-const FlowingTransformer: React.FC<Props> = ({
-  transformerId,
-  snapX,
-  snapY,
-}) => {
+const FlowingTransformer: React.FC<Props> = ({ transformerId }) => {
   const transformer = useAppSelector(
     (state) => state.zonesAndTransformers.transformers[transformerId]
   );
 
   return (
-    <FlowingElement
-      snapX={snapX}
-      snapY={snapY}
-      id={transformerId}
-      type="transformers"
-    >
+    <FlowingElement id={transformerId} type="transformers">
       {transformer.title}
     </FlowingElement>
   );

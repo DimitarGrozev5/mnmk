@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { generateAssetLines } from "./generate-asset-lines";
 import { generateTransLines } from "./generate-trans-lines";
 import {
-  hoveredITransformerSelector,
+  hoveredIsTransformerSelector,
   hoveredIsAssetSelector,
   zonesActions,
 } from "../../../../store/slices/zones-and-transformers-slice";
@@ -16,7 +16,7 @@ export const useDrawLines = (
     (state) => state.zonesAndTransformers.hoveredElementId
   );
   const hoveredIsAsset = useAppSelector(hoveredIsAssetSelector);
-  const hoveredIsTrans = useAppSelector(hoveredITransformerSelector);
+  const hoveredIsTrans = useAppSelector(hoveredIsTransformerSelector);
 
   const assets = useAppSelector((state) => state.zonesAndTransformers.assets);
   const transformers = useAppSelector(
