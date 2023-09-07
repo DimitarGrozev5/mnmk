@@ -15,7 +15,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
       <FlowinfELementCard rectangular>
         <PlusIcon className={clsx("text-slate-500", "w-12 h-12")} />
       </FlowinfELementCard>
-      <FlowingElementCaption primaryText="Add new Asset" />
+      <FlowingElementCaption id={id} primaryText="Add new Asset" />
     </FlowingElementContainer>
   );
 };
