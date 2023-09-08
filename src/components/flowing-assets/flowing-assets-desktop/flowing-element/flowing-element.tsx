@@ -7,7 +7,7 @@ import {
 } from "../../../../store/slices/flowing-assets-types";
 import { useAppSelector } from "../../../../store/hooks";
 import FlowingElementContainer from "./flowing-element-container";
-import FlowinfELementCard from "./flowing-element-card";
+import FlowingElementCard from "./flowing-element-card";
 
 type Props = {
   id: ElementId;
@@ -28,7 +28,7 @@ const FlowingElement: React.FC<Props> = ({
 
   return (
     <FlowingElementContainer id={id} type={type} rectangular={rectangular}>
-      <FlowinfELementCard id={id} rectangular={rectangular}>
+      <FlowingElementCard rectangular={rectangular}>
         {children}
 
         <div
@@ -56,7 +56,7 @@ const FlowingElement: React.FC<Props> = ({
             </IconButton>
           </div>
         </div>
-      </FlowinfELementCard>
+      </FlowingElementCard>
 
       <div
         className={clsx(

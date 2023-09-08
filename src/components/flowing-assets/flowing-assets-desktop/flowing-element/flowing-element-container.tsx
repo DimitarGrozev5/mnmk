@@ -13,6 +13,7 @@ type Props = {
   id: ElementId;
   type: ZoneType;
   rectangular?: boolean;
+  onClick: () => void;
   children: React.ReactNode;
 };
 
@@ -20,6 +21,7 @@ const FlowingElementContainer: React.FC<Props> = ({
   id,
   type,
   rectangular,
+  onClick,
   children,
 }) => {
   const dispatch = useAppDispatch();
@@ -78,6 +80,7 @@ const FlowingElementContainer: React.FC<Props> = ({
       )}
       onMouseEnter={() => dispatch(setHoveredElementId(id))}
       onMouseLeave={() => dispatch(setHoveredElementId(null))}
+      onClick={onClick}
     >
       {children}
     </div>

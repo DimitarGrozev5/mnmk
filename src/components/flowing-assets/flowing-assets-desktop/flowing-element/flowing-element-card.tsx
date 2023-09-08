@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const FlowinfELementCard: React.FC<Props> = ({ rectangular, children }) => {
+const FlowingElementCard: React.FC<Props> = ({ rectangular, children }) => {
   return (
     <div
       className={clsx(
@@ -22,4 +22,4 @@ const FlowinfELementCard: React.FC<Props> = ({ rectangular, children }) => {
   );
 };
 
-export default FlowinfELementCard;
+export default FlowingElementCard;
