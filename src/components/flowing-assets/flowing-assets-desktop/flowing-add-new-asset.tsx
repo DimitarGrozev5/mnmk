@@ -6,6 +6,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import FlowingElementCaption from "./flowing-element/flowing-element-caption";
 import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import { useState } from "react";
+import Button from "../../ui/button/button";
 
 type Props = {
   id: ElementId;
@@ -32,7 +33,20 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
         show={showModal}
         onClose={() => setShowModal(false)}
       >
-        Add new
+        <div
+          className={clsx(
+            "flex-1 self-stretch",
+            "flex flex-col items-stretch gap-4",
+            "p-2"
+          )}
+        >
+          <Button uppercase={false} variant="contained">
+            Add New File
+          </Button>
+          <Button uppercase={false} variant="contained">
+            Copy and Paste Data
+          </Button>
+        </div>
       </FlowingElementModal>
     </>
   );
