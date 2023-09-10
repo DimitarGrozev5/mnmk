@@ -41,9 +41,10 @@ const FlowingElementModal: React.FC<Props> = ({
           height: show ? "60vh" : elementRect?.height,
           transform: show ? "translate(-50%, 0%)" : "translate(0%, 0%)",
         }}
-        onClick={onClose}
       >
-        <h2 className="text-2xl font-bold text-slate-500 text-center">{title}</h2>
+        <h2 className="text-2xl font-bold text-slate-500 text-center">
+          {title}
+        </h2>
         <div className={clsx("flex-1", "flex flex-col items-center gap-4")}>
           {children}
         </div>
