@@ -28,6 +28,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
       </FlowingElementContainer>
       <FlowingElementModal
         forId={id}
+        title="Add New Data Source"
         show={showModal}
         onClose={() => setShowModal(false)}
       >
