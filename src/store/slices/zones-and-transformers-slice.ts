@@ -4,6 +4,7 @@ import {
   Asset,
   ElementId,
   ElementRect,
+  ZoneId,
   ZoneType,
   ZonesAndTransformers,
 } from "./flowing-assets-types";
@@ -21,7 +22,7 @@ const initialState: ZonesAndTransformers = {
   zones: {
     "1": {
       id: "1",
-      name: "Добавени файлове",
+      name: "Raw files",
       elementsIds: ["0"],
       type: "assets",
       dx: 0,
@@ -30,7 +31,7 @@ const initialState: ZonesAndTransformers = {
     },
     "2": {
       id: "2",
-      name: "Транс1",
+      name: "Trans1",
       elementsIds: [],
       type: "transformers",
       dx: 0,
@@ -39,7 +40,7 @@ const initialState: ZonesAndTransformers = {
     },
     "3": {
       id: "3",
-      name: "Изходни данни",
+      name: "Source data",
       elementsIds: [],
       type: "assets",
       dx: 0,
@@ -48,7 +49,7 @@ const initialState: ZonesAndTransformers = {
     },
     "4": {
       id: "4",
-      name: "Транс2",
+      name: "Trans2",
       elementsIds: [],
       type: "transformers",
       dx: 0,
@@ -57,7 +58,7 @@ const initialState: ZonesAndTransformers = {
     },
     "5": {
       id: "5",
-      name: "Резултати",
+      name: "Results",
       elementsIds: [],
       type: "assets",
       dx: 0,
@@ -129,8 +130,14 @@ export const zonesAndTransformersSlice = createSlice({
     setConnectedToHoveredIds: (state, action: PayloadAction<ElementId[]>) => {
       state.connectedToHoveredIds = [...action.payload];
     },
-    addAssetAction: (state, action: PayloadAction<Asset>) => {
-      state.assets[action.payload.id] = action.payload;
+    addAssetAction: (
+      state,
+      action: PayloadAction<{ asset: Asset; forZone: ZoneId }>
+    ) => {
+      state.assets[action.payload.asset.id] = action.payload.asset;
+      state.zones[action.payload.forZone].elementsIds.push(
+        action.payload.asset.id
+      );
     },
   },
 });
@@ -161,15 +168,19 @@ export const getElementRectSelector = (id: string) => (state: RootState) =>
 
 // Thunks
 
-const addAsset =
-  (
-    data: Asset & { file: File }
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+const addAssetToZone =
+  (data: {
+    asset: Asset & { file: File };
+    forZone: ZoneId;
+  }): ThunkAction<void, RootState, unknown, AnyAction> =>
   async (dispatch) => {
-    const { file, ...asset } = data;
+    const { file, ...asset } = data.asset;
     assetFiles.set(asset.id, file);
-    dispatch(actions.addAssetAction(asset));
+    dispatch(actions.addAssetAction({ asset, forZone: data.forZone }));
   };
 
 // Action creators are generated for each case reducer function
-export const zonesActions = { addAsset, ...zonesAndTransformersSlice.actions };
+export const zonesActions = {
+  addAssetToZone,
+  ...zonesAndTransformersSlice.actions,
+};

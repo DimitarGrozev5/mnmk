@@ -9,12 +9,18 @@ import { useCallback, useRef, useState } from "react";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
 import Draggable from "../../util-components/draggable";
+import { useAppDispatch } from "../../../store/hooks";
+import { zonesActions } from "../../../store/slices/zones-and-transformers-slice";
+import { nanoid } from "nanoid";
 
 type Props = {
   id: ElementId;
 };
 
 const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
+  const dispatch = useAppDispatch();
+  const { addAssetToZone } = zonesActions;
+
   const [showOptionsModal, setShowOptionsModal] = useState(false);
 
   const [showAddFileModal, setShowAddFileModal] = useState(false);
@@ -26,15 +32,31 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
     setShowAddFileModal(false);
     setShowOptionsModal(true);
   }, []);
-  const closeAddFIleModalHandler = useCallback(() => {
+  const closeAddFileModalHandler = useCallback(() => {
     setShowAddFileModal(false);
   }, []);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const onOpenFile = useCallback((files: FileList) => {
-    
-  }, []);
+  const onOpenFile = useCallback(
+    (files: FileList) => {
+      const type = files[0].name.endsWith(".csv") ? "csv_file" : "txt_file";
+      dispatch(
+        addAssetToZone({
+          asset: {
+            id: nanoid(),
+            data: { fileName: files[0].name },
+            rect: undefined,
+            type,
+            file: files[0],
+          },
+          forZone: "1",
+        })
+      );
+      closeAddFileModalHandler();
+    },
+    [addAssetToZone, closeAddFileModalHandler, dispatch]
+  );
 
   return (
     <>
@@ -80,7 +102,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
         onClose={cancelAddFileModalHandler}
         title="Add New File"
         actions={
-          <Button variant="contained" onClick={closeAddFIleModalHandler}>
+          <Button variant="contained" onClick={closeAddFileModalHandler}>
             Ok
           </Button>
         }
