@@ -50,16 +50,22 @@ export type ElementRecord<T extends Asset | Transformer> = Record<ElementId, T>;
  * Asset types
  */
 export type Asset = {
-  [K in AssetType]: {
+  [K in keyof AssetType]: {
     type: K;
+    data: AssetType[K];
   } & Element;
-}[AssetType];
+}[keyof AssetType];
 
 // export type Asset = {
 //   type: AssetType;
 // } & Element;
 
-export type AssetType = "test" | "add_new";
+export type AssetType = {
+  test: "test";
+  add_new: "add_new";
+  txt_file: { fileName: string };
+  csv_file: { fileName: string };
+};
 
 /**
  * Transformer types
