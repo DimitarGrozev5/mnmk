@@ -35,9 +35,13 @@ const FlowingZone: React.FC<Props> = ({ zoneId }) => {
       </h1>
 
       <div className={clsx("flex flex-row items-stretch gap-10 flex-wrap")}>
-        {zone.elementsIds.map((assetId) => (
-          <FlowingAsset key={assetId} assetId={assetId} />
-        ))}
+        {zone.elementsIds.length === 0 ? (
+          <h2 className="text-lg italic text-slate-700">Nothing to show yet</h2>
+        ) : (
+          zone.elementsIds.map((assetId) => (
+            <FlowingAsset key={assetId} assetId={assetId} />
+          ))
+        )}
       </div>
     </div>
   );

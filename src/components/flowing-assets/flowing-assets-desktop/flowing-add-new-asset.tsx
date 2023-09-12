@@ -33,7 +33,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onOpenFile = useCallback((files: FileList) => {
-    console.log(files);
+    
   }, []);
 
   return (
