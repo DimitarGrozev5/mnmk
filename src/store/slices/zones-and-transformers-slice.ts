@@ -1,15 +1,74 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { AnyAction, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
 import {
+  Asset,
   ElementId,
   ElementRect,
   ZoneType,
   ZonesAndTransformers,
 } from "./flowing-assets-types";
-import { mockZones } from "../../components/flowing-assets/mock-zones";
 import type { RootState } from "../store";
 
-const initialState: ZonesAndTransformers = mockZones();
+const assetFiles: Map<ElementId, File> = new Map();
+
+// const initialState: ZonesAndTransformers = mockZones();
+const initialState: ZonesAndTransformers = {
+  assets: {
+    "0": { id: "0", type: "add_new", data: "add_new", rect: undefined },
+  },
+  transformers: {},
+  zoneIds: ["1", "2", "3", "4", "5"],
+  zones: {
+    "1": {
+      id: "1",
+      name: "Добавени файлове",
+      elementsIds: ["0"],
+      type: "assets",
+      dx: 0,
+      dy: 0,
+      itemsPerRow: 0,
+    },
+    "2": {
+      id: "2",
+      name: "Транс1",
+      elementsIds: [],
+      type: "transformers",
+      dx: 0,
+      dy: 0,
+      itemsPerRow: 0,
+    },
+    "3": {
+      id: "3",
+      name: "Изходни данни",
+      elementsIds: [],
+      type: "assets",
+      dx: 0,
+      dy: 0,
+      itemsPerRow: 0,
+    },
+    "4": {
+      id: "4",
+      name: "Транс2",
+      elementsIds: [],
+      type: "transformers",
+      dx: 0,
+      dy: 0,
+      itemsPerRow: 0,
+    },
+    "5": {
+      id: "5",
+      name: "Резултати",
+      elementsIds: [],
+      type: "assets",
+      dx: 0,
+      dy: 0,
+      itemsPerRow: 0,
+    },
+  },
+  hoveredElementId: null,
+  connectedToHoveredIds: [],
+  dragging: false,
+};
 
 export const zonesAndTransformersSlice = createSlice({
   name: "zonesAndTransformers",
@@ -70,12 +129,13 @@ export const zonesAndTransformersSlice = createSlice({
     setConnectedToHoveredIds: (state, action: PayloadAction<ElementId[]>) => {
       state.connectedToHoveredIds = [...action.payload];
     },
+    addAssetAction: (state, action: PayloadAction<Asset>) => {
+      state.assets[action.payload.id] = action.payload;
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const zonesActions = zonesAndTransformersSlice.actions;
-
+const actions = zonesAndTransformersSlice.actions;
 export default zonesAndTransformersSlice.reducer;
 
 // Selectors
@@ -98,3 +158,18 @@ export const hoveredIsTransformerSelector = (state: RootState) => {
 export const getElementRectSelector = (id: string) => (state: RootState) =>
   state.zonesAndTransformers.assets[id]?.rect ??
   state.zonesAndTransformers.transformers[id]?.rect;
+
+// Thunks
+
+const addAsset =
+  (
+    data: Asset & { file: File }
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  async (dispatch) => {
+    const { file, ...asset } = data;
+    assetFiles.set(asset.id, file);
+    dispatch(actions.addAssetAction(asset));
+  };
+
+// Action creators are generated for each case reducer function
+export const zonesActions = { addAsset, ...zonesAndTransformersSlice.actions };

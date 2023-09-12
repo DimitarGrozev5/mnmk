@@ -18,7 +18,7 @@ const FlowingAsset: React.FC<Props> = ({ assetId }) => {
 
   return (
     <FlowingElement id={assetId} type="assets" rectangular>
-      {asset.title}
+      {asset.id}
     </FlowingElement>
   );
 };

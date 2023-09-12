@@ -30,7 +30,6 @@ export type ZoneType = "assets" | "transformers";
  */
 export type Element = {
   id: ElementId;
-  title: string;
   rect: ElementRect | undefined;
 };
 
