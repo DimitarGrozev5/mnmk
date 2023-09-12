@@ -40,6 +40,10 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
 
   const onOpenFile = useCallback(
     (files: FileList) => {
+      if (files.length === 0) {
+        return;
+      }
+
       const type = files[0].name.endsWith(".csv") ? "csv_file" : "txt_file";
       dispatch(
         addAssetToZone({
