@@ -5,12 +5,14 @@ import Button from "../ui/button/button";
 type Props = {
   onDrop: (files: FileList) => void;
   acceptMultiple?: boolean;
+  acceptExtensions?: string[];
   children: React.ReactNode;
 };
 
 const Draggable: React.FC<Props> = ({
   onDrop,
   acceptMultiple = false,
+  acceptExtensions = [],
   children,
 }) => {
   const [dragging, setDragging] = useState(0);
@@ -67,10 +69,21 @@ const Draggable: React.FC<Props> = ({
       if (!acceptMultiple && event.dataTransfer.files.length > 1) {
         setWarning("Only one file is allowed");
         setDragging(0);
+        event.dataTransfer.clearData();
         return;
       }
 
-      onDrop(event.dataTransfer.files);
+      const files = event.dataTransfer.files;
+
+      if (
+        acceptExtensions.length === 0 ||
+        acceptExtensions.find((ext) => files[0].name.endsWith(ext))
+      ) {
+        onDrop(files);
+      } else {
+        setWarning("Unsupported file type");
+      }
+
       event.dataTransfer.clearData();
     }
     setDragging(0);

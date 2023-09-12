@@ -31,7 +31,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
   }, []);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const onOpenFile = useCallback((files: FileList) => {
     console.log(files);
   }, []);
@@ -95,7 +95,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
             event.target.files && onOpenFile(event.target.files)
           }
         />
-        <Draggable onDrop={onOpenFile}>
+        <Draggable onDrop={onOpenFile} acceptExtensions={[".txt", ".csv"]}>
           <div
             onClick={() => fileInputRef.current?.click()}
             className={clsx(
