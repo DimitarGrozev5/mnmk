@@ -39,10 +39,10 @@ const Modal: React.FC<Props> = ({
           transform: fullScreen ? "translate(0%, 0%)" : "translate(-50%, 0%)",
         }}
       >
-        {title ?? (
-          <h2 className="text-2xl font-bold text-slate-500 text-center">
+        {title && (
+          <h1 className={clsx("text-2xl font-bold text-slate-500 text-center")}>
             {title}
-          </h2>
+          </h1>
         )}
 
         <div className={clsx("flex-1", "flex flex-col items-center gap-4")}>
