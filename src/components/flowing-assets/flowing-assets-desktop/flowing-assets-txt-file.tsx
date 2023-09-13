@@ -11,6 +11,7 @@ import FlowingElementContainer from "./flowing-element/flowing-element-container
 import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import clsx from "clsx";
 import { txtParser } from "../../../fn/parsers/txt-parser";
+import Button from "../../ui/button/button";
 
 type Props = {
   id: ElementId;
@@ -32,7 +33,6 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
       } catch (err) {
         setFileContents(["Error parsing file"]);
       }
-      console.log("test");
     })();
   }, [assetFile]);
 
@@ -58,6 +58,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
         <FlowingElementModal
           forId={id}
           title={asset.data.fileName}
+          actions={<Button variant="contained">Parse</Button>}
           show={showPreviewModal}
           onClose={() => setShowPreviewModal(false)}
         >

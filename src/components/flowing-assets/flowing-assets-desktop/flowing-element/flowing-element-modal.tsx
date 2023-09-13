@@ -8,6 +8,7 @@ import Button from "../../../ui/button/button";
 type Props = {
   forId: ElementId;
   title: string;
+  actions?: React.ReactNode;
   show: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -16,6 +17,7 @@ type Props = {
 const FlowingElementModal: React.FC<Props> = ({
   forId,
   title,
+  actions,
   show,
   onClose,
   children,
@@ -55,8 +57,9 @@ const FlowingElementModal: React.FC<Props> = ({
         >
           {children}
         </div>
-        <div className={clsx("flex flex-row justify-end items-center")}>
+        <div className={clsx("flex flex-row justify-end items-center gap-3")}>
           <Button onClick={onClose}>Close</Button>
+          {actions}
         </div>
       </div>
     </>
