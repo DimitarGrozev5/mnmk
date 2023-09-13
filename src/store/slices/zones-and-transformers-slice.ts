@@ -165,6 +165,8 @@ export const hoveredIsTransformerSelector = (state: RootState) => {
 export const getAsset = (id: ElementId) => (state: RootState) =>
   state.zonesAndTransformers.assets[id];
 
+export const getAssetFile = (id: ElementId) => assetFiles.get(id);
+
 export const getElementRectSelector = (id: ElementId) => (state: RootState) =>
   state.zonesAndTransformers.assets[id]?.rect ??
   state.zonesAndTransformers.transformers[id]?.rect;

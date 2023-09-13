@@ -32,7 +32,8 @@ const FlowingElementModal: React.FC<Props> = ({
           "p-4 rounded-lg",
           "flex flex-col items-stretch gap-4",
           "bg-slate-300",
-          "transition-all duration-500"
+          "transition-all duration-500",
+          "overflow-hidden"
         )}
         style={{
           left: show ? "50vw" : elementRect?.left,
@@ -45,7 +46,13 @@ const FlowingElementModal: React.FC<Props> = ({
         <h2 className="text-2xl font-bold text-slate-500 text-center">
           {title}
         </h2>
-        <div className={clsx("flex-1", "flex flex-col items-center gap-4")}>
+        <div
+          className={clsx(
+            "relative",
+            "flex-1",
+            "flex flex-col items-center gap-4"
+          )}
+        >
           {children}
         </div>
         <div className={clsx("flex flex-row justify-end items-center")}>
