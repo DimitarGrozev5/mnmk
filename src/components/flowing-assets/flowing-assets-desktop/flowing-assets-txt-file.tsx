@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import { ElementId } from "../../../store/slices/flowing-assets-types";
 import {
@@ -12,6 +12,7 @@ import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import clsx from "clsx";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
+import Modal from "../../ui/modal/modal";
 
 type Props = {
   id: ElementId;
@@ -37,6 +38,17 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   }, [assetFile]);
 
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [showParseModal, setShowParseModal] = useState(false);
+
+  const openParseModalHandler = useCallback(() => {
+    setShowPreviewModal(false);
+    setShowParseModal(true);
+  }, []);
+
+  const closeParseModalHandler = useCallback(() => {
+    setShowPreviewModal(true);
+    setShowParseModal(false);
+  }, []);
 
   return (
     <>
@@ -58,7 +70,11 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
         <FlowingElementModal
           forId={id}
           title={asset.data.fileName}
-          actions={<Button variant="contained">Parse</Button>}
+          actions={
+            <Button onClick={openParseModalHandler} variant="contained">
+              Parse
+            </Button>
+          }
           show={showPreviewModal}
           onClose={() => setShowPreviewModal(false)}
         >
@@ -80,6 +96,10 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           </div>
         </FlowingElementModal>
       )}
+
+      <Modal show={showParseModal} onClose={closeParseModalHandler} fullScreen>
+        Parse Modal
+      </Modal>
     </>
   );
 };

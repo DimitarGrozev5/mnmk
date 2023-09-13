@@ -8,6 +8,7 @@ type Props = {
   title?: string;
   children: React.ReactNode;
   actions?: React.ReactNode;
+  fullScreen?: boolean;
 };
 
 const Modal: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const Modal: React.FC<Props> = ({
   onClose,
   children,
   actions = null,
+  fullScreen = false,
 }) => {
   return (
     <>
@@ -30,11 +32,11 @@ const Modal: React.FC<Props> = ({
           "transition-all duration-500"
         )}
         style={{
-          left: "50vw",
-          top: show ? "10vh" : "-50vh",
-          width: "40vw",
-          height: "60vh",
-          transform: "translate(-50%, 0%)",
+          left: fullScreen ? "5vw" : "50vw",
+          top: show ? (fullScreen ? "5vh" : "10vh") : "-50vh",
+          width: fullScreen ? "90vw" : "40vw",
+          height: fullScreen ? "90vh" : "60vh",
+          transform: fullScreen ? "translate(0%, 0%)" : "translate(-50%, 0%)",
         }}
       >
         {title ?? (
