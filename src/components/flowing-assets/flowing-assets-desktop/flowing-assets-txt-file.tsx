@@ -16,9 +16,9 @@ type Props = {
   id: ElementId;
 };
 
-const FlowingTxtFile: React.FC<Props> = ({ id }) => {
+const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const asset = useAppSelector(getAsset(id));
-  if (asset.type !== "txt_file") throw new Error();
+  if (asset.type !== "txt_file" && asset.type !== "csv_file") throw new Error();
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -33,7 +33,6 @@ const FlowingTxtFile: React.FC<Props> = ({ id }) => {
         setFileContents(["Error parsing file"]);
       }
       console.log("test");
-      
     })();
   }, [assetFile]);
 
@@ -48,7 +47,9 @@ const FlowingTxtFile: React.FC<Props> = ({ id }) => {
         onClick={() => setShowPreviewModal(true)}
       >
         <FlowingElementCard rectangular>
-          <h1 className="text-5xl text-slate-500">.txt</h1>
+          <h1 className="text-5xl text-slate-500">
+            .{asset.data.fileName.split(".").pop()}
+          </h1>
         </FlowingElementCard>
         <FlowingElementCaption id={id} primaryText={asset.data.fileName} />
       </FlowingElementContainer>
@@ -82,4 +83,4 @@ const FlowingTxtFile: React.FC<Props> = ({ id }) => {
   );
 };
 
-export default FlowingTxtFile;
+export default FlowingTextFile;
