@@ -9,8 +9,6 @@ type Props = {
 };
 
 const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
-  console.log("rerender");
-
   const childrenArray = Array.isArray(children) ? children : [children];
   const tabs = childrenArray.map((tab, index) => (
     <TabRenderElement

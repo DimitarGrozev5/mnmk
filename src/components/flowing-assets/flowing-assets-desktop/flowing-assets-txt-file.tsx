@@ -15,6 +15,8 @@ import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
 import Tabs from "../../ui/tabs/tabs";
 import Tab from "../../ui/tabs/tab";
+import TabPanels from "../../ui/tabs/tab-panels";
+import TabPanel from "../../ui/tabs/tab-panel";
 
 type Props = {
   id: ElementId;
@@ -54,14 +56,6 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
   // Selector
   const [tabIndex, setTabIndex] = useState(0);
-  const [selectedPanelIndex, setSelectedPanelIndex] = useState(0);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSelectedPanelIndex(tabIndex);
-    }, 10);
-
-    () => clearTimeout(timer);
-  }, [tabIndex]);
 
   return (
     <>
@@ -129,71 +123,25 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             <Tab label="Edit File" />
           </Tabs>
 
-          <div
-            className={clsx(
-              "flex flex-col items-stretch",
-              "relative",
-              "transition-all duration-100, overflow-hidden"
-            )}
-          >
-            <div
-              className={clsx(
-                "flex flex-col items-center gap-2",
-                "transition-all duration-500 ease-out",
-                "absolute inset-0 opacity-0",
-                tabIndex > 0 && "-translate-x-full",
-                tabIndex < 0 && "translate-x-full",
-                tabIndex === 0 && "relative",
-                selectedPanelIndex === 0 && "translate-x-0 opacity-100"
-              )}
-            >
+          <TabPanels value={tabIndex}>
+            <TabPanel>
               Select File Type
               <br />
               Select File Type
-            </div>
-            <div
-              className={clsx(
-                "flex flex-col items-center gap-2",
-                "transition-all duration-500 ease-out",
-                "absolute inset-0 opacity-0",
-                tabIndex > 1 && "-translate-x-full",
-                tabIndex < 1 && "translate-x-full",
-                tabIndex === 1 && "relative",
-                selectedPanelIndex === 1 && "translate-x-0 opacity-100"
-              )}
-            >
+            </TabPanel>
+            <TabPanel>
               Set divider and header
               <br />
               Set divider and header
               <br />
               Set divider and header
-            </div>
-            <div
-              className={clsx(
-                "flex flex-col items-center gap-2",
-                "transition-all duration-500 ease-out",
-                "absolute inset-0 opacity-0",
-                tabIndex > 2 && "-translate-x-full",
-                tabIndex < 2 && "translate-x-full",
-                tabIndex === 2 && "relative",
-                selectedPanelIndex === 2 && "translate-x-0 opacity-100"
-              )}
-            >
+            </TabPanel>
+            <TabPanel>
               Set column names and types
               <br />
               Set column names and types
-            </div>
-            <div
-              className={clsx(
-                "flex flex-col items-center gap-2",
-                "transition-all duration-500 ease-out",
-                "absolute inset-0 opacity-0",
-                tabIndex > 3 && "-translate-x-full",
-                tabIndex < 3 && "translate-x-full",
-                tabIndex === 3 && "relative",
-                selectedPanelIndex === 3 && "translate-x-0 opacity-100"
-              )}
-            >
+            </TabPanel>
+            <TabPanel>
               Remove and edit false data
               <br />
               Remove and edit false data
@@ -201,8 +149,8 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
               Remove and edit false data
               <br />
               Remove and edit false data
-            </div>
-          </div>
+            </TabPanel>
+          </TabPanels>
 
           <div
             className={clsx(
