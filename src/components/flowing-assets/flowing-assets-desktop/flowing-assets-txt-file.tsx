@@ -50,6 +50,17 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setShowParseModal(false);
   }, []);
 
+  // Selector
+  const [tabIndex, setTabIndex] = useState(0);
+  const [selectedPanelIndex, setSelectedPanelIndex] = useState(0);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSelectedPanelIndex(tabIndex);
+    }, 10);
+
+    () => clearTimeout(timer);
+  }, [tabIndex]);
+
   return (
     <>
       <FlowingElementContainer
@@ -81,7 +92,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           <div
             className={clsx(
               "absolute inset-0",
-              "border border-slate-400 bg-slate-200",
+              "border border-slate-400 bg-slfullate-200",
               "p-2",
               "flex flex-col items-start",
               "text-slate-500 text-clip",
@@ -97,8 +108,180 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
         </FlowingElementModal>
       )}
 
-      <Modal show={showParseModal} onClose={closeParseModalHandler} fullScreen>
-        Parse Modal
+      <Modal
+        show={showParseModal}
+        onClose={closeParseModalHandler}
+        title={`Parse File: ${asset.data.fileName}`}
+        fullScreen
+      >
+        <div
+          className={clsx(
+            "flex-1 self-stretch",
+            "flex flex-col items-stretch gap-4"
+          )}
+        >
+          <div
+            className={clsx(
+              "flex flex-row gap-2 items-center justify-center",
+              "self-center"
+            )}
+          >
+            <button
+              className={clsx(
+                "border border-slate-500",
+                "px-4 py-2",
+                "text-slate-500",
+                "transition-all duration-200",
+                tabIndex === 0 && "text-slate-800 bg-slate-400"
+              )}
+              onClick={() => setTabIndex(0)}
+            >
+              File Type
+            </button>
+            <button
+              className={clsx(
+                "border border-slate-500",
+                "px-4 py-2",
+                "text-slate-500",
+                "transition-all duration-200",
+                tabIndex === 1 && "text-slate-800 bg-slate-400"
+              )}
+              onClick={() => setTabIndex(1)}
+            >
+              Divider
+            </button>
+            <button
+              className={clsx(
+                "border border-slate-500",
+                "px-4 py-2",
+                "text-slate-500",
+                "transition-all duration-200",
+                tabIndex === 2 && "text-slate-800 bg-slate-400"
+              )}
+              onClick={() => setTabIndex(2)}
+            >
+              Fields
+            </button>
+            <button
+              className={clsx(
+                "border border-slate-500",
+                "px-4 py-2",
+                "text-slate-500",
+                "transition-all duration-200",
+                tabIndex === 3 && "text-slate-800 bg-slate-400"
+              )}
+              onClick={() => setTabIndex(3)}
+            >
+              Edit
+            </button>
+          </div>
+
+          <div
+            className={clsx(
+              "flex flex-col items-stretch",
+              "relative",
+              "transition-all duration-100, overflow-hidden"
+            )}
+          >
+            <div
+              className={clsx(
+                "flex flex-col items-center gap-2",
+                "transition-all duration-500 ease-out",
+                "absolute inset-0 opacity-0",
+                tabIndex > 0 && "-translate-x-full",
+                tabIndex < 0 && "translate-x-full",
+                tabIndex === 0 && "relative",
+                selectedPanelIndex === 0 && "translate-x-0 opacity-100"
+              )}
+            >
+              Select File Type
+              <br />
+              Select File Type
+            </div>
+            <div
+              className={clsx(
+                "flex flex-col items-center gap-2",
+                "transition-all duration-500 ease-out",
+                "absolute inset-0 opacity-0",
+                tabIndex > 1 && "-translate-x-full",
+                tabIndex < 1 && "translate-x-full",
+                tabIndex === 1 && "relative",
+                selectedPanelIndex === 1 && "translate-x-0 opacity-100"
+              )}
+            >
+              Set divider and header
+              <br />
+              Set divider and header
+              <br />
+              Set divider and header
+            </div>
+            <div
+              className={clsx(
+                "flex flex-col items-center gap-2",
+                "transition-all duration-500 ease-out",
+                "absolute inset-0 opacity-0",
+                tabIndex > 2 && "-translate-x-full",
+                tabIndex < 2 && "translate-x-full",
+                tabIndex === 2 && "relative",
+                selectedPanelIndex === 2 && "translate-x-0 opacity-100"
+              )}
+            >
+              Set column names and types
+              <br />
+              Set column names and types
+            </div>
+            <div
+              className={clsx(
+                "flex flex-col items-center gap-2",
+                "transition-all duration-500 ease-out",
+                "absolute inset-0 opacity-0",
+                tabIndex > 3 && "-translate-x-full",
+                tabIndex < 3 && "translate-x-full",
+                tabIndex === 3 && "relative",
+                selectedPanelIndex === 3 && "translate-x-0 opacity-100"
+              )}
+            >
+              Remove and edit false data
+              <br />
+              Remove and edit false data
+              <br />
+              Remove and edit false data
+              <br />
+              Remove and edit false data
+            </div>
+          </div>
+
+          <div
+            className={clsx(
+              "flex-1",
+              "border border-slate-400 bg-slate-200",
+              "p-2",
+              "flex flex-col items-start gap-1",
+              "text-slate-500 text-clip",
+              "overflow-auto"
+            )}
+          >
+            {fileContents.map((line, i) => (
+              <div
+                key={i}
+                className={clsx(
+                  "w-[max-content]",
+                  "flex flex-row items-center gap-1"
+                )}
+              >
+                <div
+                  className={clsx(
+                    "border border-slate-400 px-2",
+                    "text-sm text-slate-400"
+                  )}
+                >
+                  {i + 1}
+                </div>
+                <div>{line}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </Modal>
     </>
   );
