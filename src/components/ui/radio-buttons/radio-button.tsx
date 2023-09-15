@@ -1,4 +1,5 @@
 import { tw } from "../../../util/tw";
+import InputLabel from "../input-label/input-label";
 
 type Props = {
   value: string;
@@ -62,12 +63,9 @@ export const RadioRenderElement: React.FC<RenderElementProps> = ({
           checked && "after:bg-sky-500"
         )}
       />
-      <label
-        htmlFor={`radio-button-${groupName}-${value}`}
-        className={tw("cursor-pointer")}
-      >
+      <InputLabel htmlFor={`radio-button-${groupName}-${value}`}>
         {label}
-      </label>
+      </InputLabel>
     </div>
   );
 };

@@ -19,6 +19,7 @@ import TabPanel from "../../ui/tabs/tab-panel";
 import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
+import Switch from "../../ui/switch/switch";
 
 type Props = {
   id: ElementId;
@@ -58,6 +59,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
   const [tabIndex, setTabIndex] = useState(0);
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
+  const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -138,6 +140,11 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
                   <RadioButton value="meas" label="Measurment data" />
                 </RadioGroup>
               </div>
+              <Switch
+                value={ignoreFirstLine}
+                onChange={setIgnoreFirstLine}
+                label="Ignore first line"
+              />
             </TabPanel>
             <TabPanel>
               Set column names and types
