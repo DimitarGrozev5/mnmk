@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 type Props = {
   value: string;
   label: string;
@@ -24,17 +26,24 @@ export const RadioRenderElement: React.FC<RenderElementProps> = ({
   value,
   label,
 }) => {
+  const checked = value === groupValue;
   return (
-    <>
+    <div
+      className={clsx(
+        "p-2",
+        "border border-transparent",
+        checked && "border-cyan-500 border-opacity-100"
+      )}
+    >
       <input
         type="radio"
         id={`radio-button-${groupName}-${value}`}
         name={groupName}
         value={value}
         onChange={onChange}
-        checked={groupValue === value}
+        checked={checked}
       />
-      <label htmlFor={`radio-button-${groupName}-${value}`}>{label}</label>;
-    </>
+      <label htmlFor={`radio-button-${groupName}-${value}`}>{label}</label>
+    </div>
   );
 };

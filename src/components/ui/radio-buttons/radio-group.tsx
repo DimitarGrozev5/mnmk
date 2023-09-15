@@ -25,7 +25,7 @@ const RadioGroup: React.FC<Props> = ({ value, onChange, children }) => {
       />
     ));
   }, [children, groupId, onChange, value]);
-  return <div>{buttons}</div>;
+  return <>{buttons}</>;
 };
 
 export default RadioGroup;
