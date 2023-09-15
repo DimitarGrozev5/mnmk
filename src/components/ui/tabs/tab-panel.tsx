@@ -12,7 +12,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ children }) => {
 type RenderElementProps = {
   index: number;
   value: number;
-  tabPanel: React.ReactElement<typeof TabPanel>;
+  tabPanel: React.ReactComponentElement<typeof TabPanel>;
 };
 
 export const TabPanelRenderElement: React.FC<RenderElementProps> = ({

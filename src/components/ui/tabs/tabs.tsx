@@ -5,7 +5,9 @@ import Tab, { TabRenderElement } from "./tab";
 type Props = {
   value: number;
   onChange: (value: number) => void;
-  children: React.ReactElement<typeof Tab> | React.ReactElement<typeof Tab>[];
+  children:
+    | React.ReactComponentElement<typeof Tab>
+    | React.ReactComponentElement<typeof Tab>[];
 };
 
 const Tabs: React.FC<Props> = ({ value, onChange, children }) => {

@@ -4,8 +4,8 @@ import TabPanel, { TabPanelRenderElement } from "./tab-panel";
 type Props = {
   value: number;
   children:
-    | React.ReactElement<typeof TabPanel>
-    | React.ReactElement<typeof TabPanel>[];
+    | React.ReactComponentElement<typeof TabPanel>
+    | React.ReactComponentElement<typeof TabPanel>[];
 };
 
 const TabPanels: React.FC<Props> = ({ value, children }) => {

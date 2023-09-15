@@ -12,7 +12,7 @@ type RenderElementProps = {
   index: number;
   value: number;
   onChange: (value: number) => void;
-  tabLabel: React.ReactElement<typeof Tab>;
+  tabLabel: React.ReactComponentElement<typeof Tab>;
 };
 
 export const TabRenderElement: React.FC<RenderElementProps> = ({
