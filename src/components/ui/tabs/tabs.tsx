@@ -12,6 +12,7 @@ const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   const tabs = childrenArray.map((tab, index) => (
     <TabRenderElement
+      key={index}
       index={index}
       value={value}
       onChange={onChange}

@@ -11,7 +11,12 @@ type Props = {
 const TabPanels: React.FC<Props> = ({ value, children }) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   const tabPanels = childrenArray.map((tabPanel, index) => (
-    <TabPanelRenderElement index={index} value={value} tabPanel={tabPanel} />
+    <TabPanelRenderElement
+      key={index}
+      index={index}
+      value={value}
+      tabPanel={tabPanel}
+    />
   ));
 
   return (
