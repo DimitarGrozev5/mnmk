@@ -125,25 +125,19 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           )}
         >
           <Tabs value={tabIndex} onChange={setTabIndex}>
-            <Tab label="File Type" />
-            <Tab label="Divider" />
+            <Tab label="Settings" />
             <Tab label="Fields" />
             <Tab label="Edit File" />
           </Tabs>
 
           <TabPanels value={tabIndex}>
             <TabPanel>
-              <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
-                <RadioButton value="xy" label="Coordinate data" />
-                <RadioButton value="meas" label="Measurment data" />
-              </RadioGroup>
-            </TabPanel>
-            <TabPanel>
-              Set divider and header
-              <br />
-              Set divider and header
-              <br />
-              Set divider and header
+              <div className={tw("flex flex-row items-center gap-2")}>
+                <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
+                  <RadioButton value="xy" label="Coordinate data" />
+                  <RadioButton value="meas" label="Measurment data" />
+                </RadioGroup>
+              </div>
             </TabPanel>
             <TabPanel>
               Set column names and types
