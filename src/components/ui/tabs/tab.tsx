@@ -24,11 +24,11 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
   return (
     <button
       className={tw(
-        "border border-slate-500",
+        "border border-slate-500 rounded-md",
         "px-4 py-2",
         "text-slate-500",
         "transition-all duration-200",
-        value === index && "text-slate-800 bg-slate-400"
+        value === index && "text-sky-700 bg-sky-400 border-sky-600"
       )}
       onClick={() => onChange(index)}
     >
