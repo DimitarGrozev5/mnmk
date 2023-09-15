@@ -17,6 +17,8 @@ import Tabs from "../../ui/tabs/tabs";
 import Tab from "../../ui/tabs/tab";
 import TabPanels from "../../ui/tabs/tab-panels";
 import TabPanel from "../../ui/tabs/tab-panel";
+import RadioGroup from "../../ui/radio-buttons/radio-group";
+import RadioButton from "../../ui/radio-buttons/radio-button";
 
 type Props = {
   id: ElementId;
@@ -54,8 +56,14 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setShowParseModal(false);
   }, []);
 
-  // Selector
   const [tabIndex, setTabIndex] = useState(0);
+  const [fileType, setFileType] = useState<"xy" | "meas">("xy");
+
+  const changeFileTypeHandler = useCallback((type: string) => {
+    if (type !== "xy" && type !== "meas") return;
+
+    setFileType(type);
+  }, []);
 
   return (
     <>
@@ -125,9 +133,10 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
           <TabPanels value={tabIndex}>
             <TabPanel>
-              Select File Type
-              <br />
-              Select File Type
+              <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
+                <RadioButton value="xy" label="Coordinate data" />
+                <RadioButton value="meas" label="Measurment data" />
+              </RadioGroup>
             </TabPanel>
             <TabPanel>
               Set divider and header
