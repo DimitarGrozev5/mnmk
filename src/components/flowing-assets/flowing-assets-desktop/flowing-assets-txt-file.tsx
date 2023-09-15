@@ -13,6 +13,8 @@ import clsx from "clsx";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
+import Tabs from "../../ui/tabs/tabs";
+import Tab from "../../ui/tabs/tab";
 
 type Props = {
   id: ElementId;
@@ -120,61 +122,12 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             "flex flex-col items-stretch gap-4"
           )}
         >
-          <div
-            className={clsx(
-              "flex flex-row gap-2 items-center justify-center",
-              "self-center"
-            )}
-          >
-            <button
-              className={clsx(
-                "border border-slate-500",
-                "px-4 py-2",
-                "text-slate-500",
-                "transition-all duration-200",
-                tabIndex === 0 && "text-slate-800 bg-slate-400"
-              )}
-              onClick={() => setTabIndex(0)}
-            >
-              File Type
-            </button>
-            <button
-              className={clsx(
-                "border border-slate-500",
-                "px-4 py-2",
-                "text-slate-500",
-                "transition-all duration-200",
-                tabIndex === 1 && "text-slate-800 bg-slate-400"
-              )}
-              onClick={() => setTabIndex(1)}
-            >
-              Divider
-            </button>
-            <button
-              className={clsx(
-                "border border-slate-500",
-                "px-4 py-2",
-                "text-slate-500",
-                "transition-all duration-200",
-                tabIndex === 2 && "text-slate-800 bg-slate-400"
-              )}
-              onClick={() => setTabIndex(2)}
-            >
-              Fields
-            </button>
-            <button
-              className={clsx(
-                "border border-slate-500",
-                "px-4 py-2",
-                "text-slate-500",
-                "transition-all duration-200",
-                tabIndex === 3 && "text-slate-800 bg-slate-400"
-              )}
-              onClick={() => setTabIndex(3)}
-            >
-              Edit
-            </button>
-          </div>
+          <Tabs value={tabIndex} onChange={setTabIndex}>
+            <Tab label="File Type" />
+            <Tab label="Divider" />
+            <Tab label="Fields" />
+            <Tab label="Edit File" />
+          </Tabs>
 
           <div
             className={clsx(
