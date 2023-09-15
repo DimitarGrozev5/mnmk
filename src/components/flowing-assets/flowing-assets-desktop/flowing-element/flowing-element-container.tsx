@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from "react";
-import clsx from "clsx";
 import {
   ElementId,
   ElementRect,
@@ -8,6 +7,7 @@ import {
 import { useAppDispatch } from "../../../../store/hooks";
 import { zonesActions } from "../../../../store/slices/zones-and-transformers-slice";
 import { useFlowingElementDisplayProps } from "../hooks/useFlowingElementDisplayProps";
+import { tw } from "../../../../util/tw";
 
 type Props = {
   id: ElementId;
@@ -67,7 +67,7 @@ const FlowingElementContainer: React.FC<Props> = ({
   return (
     <div
       ref={divRef}
-      className={clsx(
+      className={tw(
         "relative z-10",
         "flex flex-col items-center justify-center",
         "p-3 w-36",

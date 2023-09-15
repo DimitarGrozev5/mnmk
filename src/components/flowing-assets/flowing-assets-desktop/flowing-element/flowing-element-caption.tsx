@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import { useFlowingElementDisplayProps } from "../hooks/useFlowingElementDisplayProps";
 import { ElementId } from "../../../../store/slices/flowing-assets-types";
+import { tw } from "../../../../util/tw";
 
 type Props = {
   id: ElementId;
@@ -12,7 +12,7 @@ const FlowingElementCaption: React.FC<Props> = ({ id, primaryText }) => {
 
   return (
     <div
-      className={clsx(
+      className={tw(
         "absolute inset-0 bottom-3 z-20",
         "flex flex-col items-center justify-end",
         "text-slate-400",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import clsx from "clsx";
 import Button from "../ui/button/button";
+import { tw } from "../../util/tw";
 
 type Props = {
   onDrop: (files: FileList) => void;
@@ -95,7 +95,7 @@ const Draggable: React.FC<Props> = ({
       onDragLeave={dragOutHandler}
       onDragOver={dragHandler}
       onDrop={dropHandler}
-      className={clsx(
+      className={tw(
         "border-4 border-dashed border-slate-500 bg-slate-200",
         "self-stretch flex-1 m-2",
         "flex flex-col items-center justify-center gap-2",

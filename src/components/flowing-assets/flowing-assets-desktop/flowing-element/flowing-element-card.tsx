@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { tw } from "../../../../util/tw";
 
 type Props = {
   rectangular?: boolean;
@@ -8,7 +8,7 @@ type Props = {
 const FlowingElementCard: React.FC<Props> = ({ rectangular, children }) => {
   return (
     <div
-      className={clsx(
+      className={tw(
         "absolute inset-0 z-10",
         "flex flex-col items-center justify-center",
         "p-3 w-36 overflow-hidden",

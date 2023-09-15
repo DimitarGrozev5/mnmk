@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { tw } from "../../../util/tw";
 
 type Props = {
   value: string;
@@ -29,7 +29,7 @@ export const RadioRenderElement: React.FC<RenderElementProps> = ({
   const checked = value === groupValue;
   return (
     <div
-      className={clsx(
+      className={tw(
         "p-2",
         "border border-transparent",
         checked && "border-cyan-500 border-opacity-100"

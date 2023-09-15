@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import Overlay from "./overlay";
 import Button from "../button/button";
+import { tw } from "../../../util/tw";
 
 type Props = {
   show: boolean;
@@ -23,7 +23,7 @@ const Modal: React.FC<Props> = ({
     <>
       <Overlay show={show} onClose={onClose} blur />
       <div
-        className={clsx(
+        className={tw(
           show ? "visible opacity-100" : "invisible opacity-5",
           "fixed z-50",
           "p-4 rounded-lg",
@@ -40,16 +40,16 @@ const Modal: React.FC<Props> = ({
         }}
       >
         {title && (
-          <h1 className={clsx("text-2xl font-bold text-slate-500 text-center")}>
+          <h1 className={tw("text-2xl font-bold text-slate-500 text-center")}>
             {title}
           </h1>
         )}
 
-        <div className={clsx("flex-1", "flex flex-col items-center gap-4")}>
+        <div className={tw("flex-1", "flex flex-col items-center gap-4")}>
           {children}
         </div>
 
-        <div className={clsx("flex flex-row gap-4 justify-end items-center")}>
+        <div className={tw("flex flex-row gap-4 justify-end items-center")}>
           <Button onClick={onClose}>Close</Button>
           {actions}
         </div>

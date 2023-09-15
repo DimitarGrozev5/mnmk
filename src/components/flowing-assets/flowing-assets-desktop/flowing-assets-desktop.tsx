@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import clsx from "clsx";
 import FlowingZone from "./flowing-zone";
 import { useDrawLines } from "./hooks/useDrawLines";
 import { useAppSelector } from "../../../store/hooks";
+import { tw } from "../../../util/tw";
 
 const FlowingAssets_Desktop: React.FC = () => {
   const zones = useAppSelector((state) => state.zonesAndTransformers.zoneIds);
@@ -22,12 +22,12 @@ const FlowingAssets_Desktop: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className={clsx("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
+      className={tw("relative", "flex flex-col gap-4", "bg-slate-200", "p-3")}
     >
-      <div className={clsx("absolute inset-0 z-0")}>
+      <div className={tw("absolute inset-0 z-0")}>
         <canvas ref={canvasRef}></canvas>
       </div>
-      <div className={clsx("relative inset-0 z-10", "flex flex-col gap-4")}>
+      <div className={tw("relative inset-0 z-10", "flex flex-col gap-4")}>
         {zones.map((zoneId) => (
           <FlowingZone key={zoneId} zoneId={zoneId} />
         ))}

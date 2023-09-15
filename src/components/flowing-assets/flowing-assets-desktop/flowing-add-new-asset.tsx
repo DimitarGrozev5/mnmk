@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { ElementId } from "../../../store/slices/flowing-assets-types";
 import FlowingElementCard from "./flowing-element/flowing-element-card";
 import FlowingElementContainer from "./flowing-element/flowing-element-container";
@@ -12,6 +11,7 @@ import Draggable from "../../util-components/draggable";
 import { useAppDispatch } from "../../../store/hooks";
 import { zonesActions } from "../../../store/slices/zones-and-transformers-slice";
 import { nanoid } from "nanoid";
+import { tw } from "../../../util/tw";
 
 type Props = {
   id: ElementId;
@@ -71,7 +71,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
         onClick={() => !showOptionsModal && setShowOptionsModal(true)}
       >
         <FlowingElementCard rectangular>
-          <PlusIcon className={clsx("text-slate-500", "w-12 h-12")} />
+          <PlusIcon className={tw("text-slate-500", "w-12 h-12")} />
         </FlowingElementCard>
         <FlowingElementCaption id={id} primaryText="Add new Asset" />
       </FlowingElementContainer>
@@ -82,7 +82,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
         onClose={() => setShowOptionsModal(false)}
       >
         <div
-          className={clsx(
+          className={tw(
             "flex-1 self-stretch",
             "flex flex-col items-stretch gap-4",
             "p-2"
@@ -124,7 +124,7 @@ const FlowingAddNewAsset: React.FC<Props> = ({ id }) => {
         <Draggable onDrop={onOpenFile} acceptExtensions={[".txt", ".csv"]}>
           <div
             onClick={() => fileInputRef.current?.click()}
-            className={clsx(
+            className={tw(
               "flex-1 self-stretch",
               "flex flex-col items-center justify-center",
               "cursor-default"

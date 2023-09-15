@@ -1,6 +1,6 @@
 import React from "react";
-import clsx from "clsx";
 import Tab, { TabRenderElement } from "./tab";
+import { tw } from "../../../util/tw";
 
 type Props = {
   value: number;
@@ -24,7 +24,7 @@ const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
 
   return (
     <div
-      className={clsx(
+      className={tw(
         "flex flex-row gap-2 items-center justify-center",
         "self-center"
       )}

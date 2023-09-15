@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { tw } from "../../../util/tw";
 import TabPanel, { TabPanelRenderElement } from "./tab-panel";
 
 type Props = {
@@ -21,7 +21,7 @@ const TabPanels: React.FC<Props> = ({ value, children }) => {
 
   return (
     <div
-      className={clsx(
+      className={tw(
         "flex flex-col items-stretch",
         "relative",
         "transition-all duration-100, overflow-hidden"

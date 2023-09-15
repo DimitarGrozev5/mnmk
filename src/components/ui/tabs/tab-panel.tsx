@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { tw } from "../../../util/tw";
 
 type TabPanelProps = {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ export const TabPanelRenderElement: React.FC<RenderElementProps> = ({
 
   return (
     <div
-      className={clsx(
+      className={tw(
         "flex flex-col items-center gap-2",
         "transition-all duration-500 ease-out",
         "absolute inset-0 opacity-0",

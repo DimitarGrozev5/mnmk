@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { tw } from "../../../util/tw";
 
 type TabProps = {
   label: string;
@@ -23,7 +23,7 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
 }) => {
   return (
     <button
-      className={clsx(
+      className={tw(
         "border border-slate-500",
         "px-4 py-2",
         "text-slate-500",

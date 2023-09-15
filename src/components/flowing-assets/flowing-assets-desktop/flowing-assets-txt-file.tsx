@@ -9,7 +9,6 @@ import FlowingElementCaption from "./flowing-element/flowing-element-caption";
 import FlowingElementCard from "./flowing-element/flowing-element-card";
 import FlowingElementContainer from "./flowing-element/flowing-element-container";
 import FlowingElementModal from "./flowing-element/flowing-element-modal";
-import clsx from "clsx";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
@@ -19,6 +18,7 @@ import TabPanels from "../../ui/tabs/tab-panels";
 import TabPanel from "../../ui/tabs/tab-panel";
 import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
+import { tw } from "../../../util/tw";
 
 type Props = {
   id: ElementId;
@@ -94,7 +94,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           onClose={() => setShowPreviewModal(false)}
         >
           <div
-            className={clsx(
+            className={tw(
               "absolute inset-0",
               "border border-slate-400 bg-slfullate-200",
               "p-2",
@@ -119,7 +119,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
         fullScreen
       >
         <div
-          className={clsx(
+          className={tw(
             "flex-1 self-stretch",
             "flex flex-col items-stretch gap-4"
           )}
@@ -162,7 +162,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           </TabPanels>
 
           <div
-            className={clsx(
+            className={tw(
               "flex-1",
               "border border-slate-400 bg-slate-200",
               "p-2",
@@ -174,13 +174,13 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             {fileContents.map((line, i) => (
               <div
                 key={i}
-                className={clsx(
+                className={tw(
                   "w-[max-content]",
                   "flex flex-row items-center gap-1"
                 )}
               >
                 <div
-                  className={clsx(
+                  className={tw(
                     "border border-slate-400 px-2",
                     "text-sm text-slate-400"
                   )}

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import IconButton from "../../../ui/button/icon-button";
 import { Bars2Icon } from "@heroicons/react/20/solid";
 import {
@@ -8,6 +7,7 @@ import {
 import { useAppSelector } from "../../../../store/hooks";
 import FlowingElementContainer from "./flowing-element-container";
 import FlowingElementCard from "./flowing-element-card";
+import { tw } from "../../../../util/tw";
 
 type Props = {
   id: ElementId;
@@ -27,12 +27,17 @@ const FlowingElement: React.FC<Props> = ({
   );
 
   return (
-    <FlowingElementContainer id={id} type={type} rectangular={rectangular}>
+    <FlowingElementContainer
+      id={id}
+      type={type}
+      rectangular={rectangular}
+      onClick={() => {}}
+    >
       <FlowingElementCard rectangular={rectangular}>
         {children}
 
         <div
-          className={clsx(
+          className={tw(
             "flex flex-col items-stretch",
             "border-2 border-slate-500 rounded-lg overflow-hidden",
             "absolute inset-0",
@@ -42,7 +47,7 @@ const FlowingElement: React.FC<Props> = ({
           )}
         >
           <div
-            className={clsx(
+            className={tw(
               "flex flex-row items-center justify-end gap-2",
               "p-2",
               "bg-slate-200 bg-opacity-50 shadow-md"
@@ -59,7 +64,7 @@ const FlowingElement: React.FC<Props> = ({
       </FlowingElementCard>
 
       <div
-        className={clsx(
+        className={tw(
           "absolute inset-2 z-0",
           "border-4 border-slate-400 border-dashed rounded-lg",
           "bg-slate-300 bg-opacity-50",

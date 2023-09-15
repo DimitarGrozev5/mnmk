@@ -1,5 +1,5 @@
 import React from "react";
-import clsx from "clsx";
+import { tw } from "../../../util/tw";
 
 type Props = {
   onClick?: () => void;
@@ -14,7 +14,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
       <button
         ref={ref}
         onClick={onClick}
-        className={clsx(
+        className={tw(
           "inline-flex flex-col items-stretch",
           "p-1",
           "transition-all duration-100",

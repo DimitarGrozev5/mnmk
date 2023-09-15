@@ -1,9 +1,9 @@
-import clsx from "clsx";
 import { useAppSelector } from "../../../../store/hooks";
 import { ElementId } from "../../../../store/slices/flowing-assets-types";
 import { getElementRectSelector } from "../../../../store/slices/zones-and-transformers-slice";
 import Overlay from "../../../ui/modal/overlay";
 import Button from "../../../ui/button/button";
+import { tw } from "../../../../util/tw";
 
 type Props = {
   forId: ElementId;
@@ -28,7 +28,7 @@ const FlowingElementModal: React.FC<Props> = ({
     <>
       <Overlay show={show} onClose={onClose} blur />
       <div
-        className={clsx(
+        className={tw(
           show ? "visible opacity-100" : "invisible opacity-5",
           "fixed z-50",
           "p-4 rounded-lg",
@@ -49,7 +49,7 @@ const FlowingElementModal: React.FC<Props> = ({
           {title}
         </h2>
         <div
-          className={clsx(
+          className={tw(
             "relative",
             "flex-1",
             "flex flex-col items-center gap-4"
@@ -57,7 +57,7 @@ const FlowingElementModal: React.FC<Props> = ({
         >
           {children}
         </div>
-        <div className={clsx("flex flex-row justify-end items-center gap-3")}>
+        <div className={tw("flex flex-row justify-end items-center gap-3")}>
           <Button onClick={onClose}>Close</Button>
           {actions}
         </div>

@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { tw } from "../../../util/tw";
 
 type Props = {
   show: boolean;
@@ -10,7 +10,7 @@ const Overlay: React.FC<Props> = ({ show, onClose, blur }) => {
   return (
     <div
       onClick={onClose}
-      className={clsx(
+      className={tw(
         show ? "visible opacity-100" : "invisible opacity-0",
         "fixed inset-0 z-50",
         "bg-black bg-opacity-40",
