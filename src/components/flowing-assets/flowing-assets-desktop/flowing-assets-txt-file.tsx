@@ -20,9 +20,16 @@ import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
+import Spacer from "../../ui/spacer/spacer";
 
 type Props = {
   id: ElementId;
+};
+
+const dividers = {
+  tab: "Tab",
+  space: "Space",
+  comma: "Comma",
 };
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
@@ -60,11 +67,18 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
+  const [divider, setDivider] = useState<keyof typeof dividers>("tab");
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
 
     setFileType(type);
+  }, []);
+
+  const changeDividerHandler = useCallback((type: string) => {
+    if (!Object.keys(dividers).includes(type)) return;
+
+    setDivider(type as keyof typeof dividers);
   }, []);
 
   return (
@@ -134,10 +148,26 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
           <TabPanels value={tabIndex}>
             <TabPanel>
+              <h1 className="text-xl text-slate-500">
+                Select the type of data in the file:
+              </h1>
               <div className={tw("flex flex-row items-center gap-2")}>
                 <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
                   <RadioButton value="xy" label="Coordinate data" />
                   <RadioButton value="meas" label="Measurment data" />
+                </RadioGroup>
+              </div>
+
+              <Spacer />
+
+              <h1 className="text-xl text-slate-500">
+                Select the Field divider:
+              </h1>
+              <div className={tw("flex flex-row items-center gap-2")}>
+                <RadioGroup value={divider} onChange={changeDividerHandler}>
+                  <RadioButton value="tab" label={dividers.tab} />
+                  <RadioButton value="space" label={dividers.space} />
+                  <RadioButton value="comma" label={dividers.comma} />
                 </RadioGroup>
               </div>
               <Switch
