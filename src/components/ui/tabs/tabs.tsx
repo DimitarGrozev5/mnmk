@@ -8,9 +8,15 @@ type Props = {
   children:
     | React.ReactComponentElement<typeof Tab>
     | React.ReactComponentElement<typeof Tab>[];
+  numbered?: boolean;
 };
 
-const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
+const Tabs: React.FC<Props> = ({
+  value,
+  onChange,
+  children,
+  numbered = false,
+}) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   const tabs = childrenArray.map((tab, index) => (
     <TabRenderElement
@@ -19,6 +25,7 @@ const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
       value={value}
       onChange={onChange}
       tabLabel={tab}
+      numbered={numbered}
     />
   ));
 

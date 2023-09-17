@@ -140,7 +140,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             "flex flex-col items-stretch gap-4"
           )}
         >
-          <Tabs value={tabIndex} onChange={setTabIndex}>
+          <Tabs value={tabIndex} onChange={setTabIndex} numbered>
             <Tab label="Settings" />
             <Tab label="Fields" />
             <Tab label="Edit File" />
