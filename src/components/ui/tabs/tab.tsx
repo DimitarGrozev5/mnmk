@@ -26,7 +26,7 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
   return (
     <button
       className={tw(
-        "flex flex-row gap-3 items-center justify-center",
+        "flex flex-row gap-2 items-center justify-center",
         "border border-slate-500 rounded-md",
         "px-4 py-2",
         "text-slate-500",
@@ -38,8 +38,9 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
       {numbered && (
         <span
           className={tw(
-            "w-7 h-7 rounded-full",
-            "border border-slate-500 text-slate-500",
+            "flex flex-col items-center justify-center",
+            "w-5 h-5 rounded-full",
+            "text-xs border border-slate-500 text-slate-500",
             value === index && "border-sky-600 text-sky-700"
           )}
         >
