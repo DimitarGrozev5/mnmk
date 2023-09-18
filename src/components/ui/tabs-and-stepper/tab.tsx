@@ -3,10 +3,11 @@ import { tw } from "../../../util/tw";
 
 type TabProps = {
   label: string;
+  completed?: boolean;
 };
 
-const Tab: React.FC<TabProps> = ({ label }) => {
-  return label;
+const Tab: React.FC<TabProps> = () => {
+  return <></>;
 };
 
 type RenderElementProps = {
