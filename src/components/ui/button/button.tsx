@@ -1,15 +1,20 @@
 import React from "react";
 import { tw } from "../../../util/tw";
+import { ClassValue } from "clsx";
 
 type Props = {
   onClick?: () => void;
   variant?: "plain" | "contained";
   uppercase?: boolean;
   children: React.ReactNode;
+  className?: ClassValue;
 };
 
 const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ onClick, variant = "plain", uppercase = true, children }, ref) => {
+  (
+    { onClick, variant = "plain", uppercase = true, children, className },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
@@ -26,7 +31,8 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
           variant === "contained" && "border border-slate-400 rounded-lg",
           variant === "contained" && "py-2 px-4",
           variant === "contained" &&
-            "hover:bg-slate-300 hover:border-slate-500 hover:text-slate-700"
+            "hover:bg-slate-300 hover:border-slate-500 hover:text-slate-700",
+          className
         )}
       >
         {children}
