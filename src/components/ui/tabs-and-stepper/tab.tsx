@@ -18,6 +18,7 @@ type RenderElementProps = {
   numbered: boolean;
   trackCompleted: boolean;
   completed: boolean;
+  disableClick?: boolean;
 };
 
 export const TabRenderElement: React.FC<RenderElementProps> = ({
@@ -28,6 +29,7 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
   numbered,
   trackCompleted,
   completed,
+  disableClick = false,
 }) => {
   return (
     <button
@@ -37,9 +39,10 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
         "px-4 py-2",
         "text-slate-500",
         "transition-all duration-200",
-        value === index && "text-sky-700 bg-sky-400 border-sky-600"
+        value === index && "text-sky-700 bg-sky-400 border-sky-600",
+        disableClick && "pointer-events-none"
       )}
-      onClick={() => onChange(index)}
+      onClick={() => !disableClick && onChange(index)}
     >
       {numbered && (
         <span
