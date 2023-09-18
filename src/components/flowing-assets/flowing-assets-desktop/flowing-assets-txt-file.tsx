@@ -12,10 +12,10 @@ import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
-import Tabs from "../../ui/tabs/tabs";
-import Tab from "../../ui/tabs/tab";
-import TabPanels from "../../ui/tabs/tab-panels";
-import TabPanel from "../../ui/tabs/tab-panel";
+import Tabs from "../../ui/tabs-and-stepper/tabs";
+import Tab from "../../ui/tabs-and-stepper/tab";
+import TabPanels from "../../ui/tabs-and-stepper/tab-panels";
+import TabPanel from "../../ui/tabs-and-stepper/tab-panel";
 import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
@@ -140,7 +140,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             "flex flex-col items-stretch gap-4"
           )}
         >
-          <Tabs value={tabIndex} onChange={setTabIndex} numbered trackVisited>
+          <Tabs value={tabIndex} onChange={setTabIndex}>
             <Tab label="Settings" />
             <Tab label="Fields" />
             <Tab label="Edit File" />
