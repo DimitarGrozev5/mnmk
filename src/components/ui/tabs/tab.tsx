@@ -1,3 +1,4 @@
+import { XMarkIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
 import { tw } from "../../../util/tw";
 
 type TabProps = {
@@ -14,6 +15,8 @@ type RenderElementProps = {
   onChange: (value: number) => void;
   tabLabel: React.ReactComponentElement<typeof Tab>;
   numbered: boolean;
+  trackCompleted: boolean;
+  completed: boolean;
 };
 
 export const TabRenderElement: React.FC<RenderElementProps> = ({
@@ -22,6 +25,8 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
   onChange,
   tabLabel,
   numbered,
+  trackCompleted,
+  completed,
 }) => {
   return (
     <button
@@ -48,6 +53,18 @@ export const TabRenderElement: React.FC<RenderElementProps> = ({
         </span>
       )}
       {tabLabel}
+      {trackCompleted &&
+        (completed ? (
+          <CheckCircleIcon
+            className={tw(
+              "w-6 h-6",
+              "text-sky-500",
+              value === index && "text-sky-700"
+            )}
+          />
+        ) : (
+          <XMarkIcon className={tw("w-6 h-6", "text-red-500")} />
+        ))}
     </button>
   );
 };

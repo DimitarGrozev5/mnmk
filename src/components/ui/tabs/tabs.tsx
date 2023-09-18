@@ -1,4 +1,4 @@
-import React from "react";
+import React, {   useMemo,  } from "react";
 import Tab, { TabRenderElement } from "./tab";
 import { tw } from "../../../util/tw";
 
@@ -8,16 +8,14 @@ type Props = {
   children:
     | React.ReactComponentElement<typeof Tab>
     | React.ReactComponentElement<typeof Tab>[];
-  numbered?: boolean;
 };
 
-const Tabs: React.FC<Props> = ({
-  value,
-  onChange,
-  children,
-  numbered = false,
-}) => {
-  const childrenArray = Array.isArray(children) ? children : [children];
+const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
+  const childrenArray = useMemo(
+    () => (Array.isArray(children) ? children : [children]),
+    [children]
+  );
+
   const tabs = childrenArray.map((tab, index) => (
     <TabRenderElement
       key={index}
@@ -25,7 +23,9 @@ const Tabs: React.FC<Props> = ({
       value={value}
       onChange={onChange}
       tabLabel={tab}
-      numbered={numbered}
+      numbered={false}
+      trackCompleted={false}
+      completed={false}
     />
   ));
 
