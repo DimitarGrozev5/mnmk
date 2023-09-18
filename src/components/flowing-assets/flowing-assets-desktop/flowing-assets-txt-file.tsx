@@ -12,15 +12,14 @@ import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
-import Tabs from "../../ui/tabs-and-stepper/tabs";
 import Tab from "../../ui/tabs-and-stepper/tab";
-import TabPanels from "../../ui/tabs-and-stepper/tab-panels";
 import TabPanel from "../../ui/tabs-and-stepper/tab-panel";
 import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
 import Spacer from "../../ui/spacer/spacer";
+import Wizard from "../../ui/tabs-and-stepper/wizard";
 
 type Props = {
   id: ElementId;
@@ -64,7 +63,6 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setShowParseModal(false);
   }, []);
 
-  const [tabIndex, setTabIndex] = useState(0);
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
   const [divider, setDivider] = useState<keyof typeof dividers>("tab");
@@ -140,57 +138,59 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             "flex flex-col items-stretch gap-4"
           )}
         >
-          <Tabs value={tabIndex} onChange={setTabIndex}>
-            <Tab label="Settings" />
-            <Tab label="Fields" />
-            <Tab label="Edit File" />
-          </Tabs>
+          <div className="w-1/2 self-center">
+            <Wizard
+              tabs={[
+                <Tab label="Settings" completed />,
+                <Tab label="Fields" completed />,
+                <Tab label="Edit File" completed />,
+              ]}
+            >
+              <TabPanel>
+                <h1 className="text-xl text-slate-500">
+                  Select the type of data in the file:
+                </h1>
+                <div className={tw("flex flex-row items-center gap-2")}>
+                  <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
+                    <RadioButton value="xy" label="Coordinate data" />
+                    <RadioButton value="meas" label="Measurment data" />
+                  </RadioGroup>
+                </div>
 
-          <TabPanels value={tabIndex}>
-            <TabPanel>
-              <h1 className="text-xl text-slate-500">
-                Select the type of data in the file:
-              </h1>
-              <div className={tw("flex flex-row items-center gap-2")}>
-                <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
-                  <RadioButton value="xy" label="Coordinate data" />
-                  <RadioButton value="meas" label="Measurment data" />
-                </RadioGroup>
-              </div>
+                <Spacer />
 
-              <Spacer />
-
-              <h1 className="text-xl text-slate-500">
-                Select the Field divider:
-              </h1>
-              <div className={tw("flex flex-row items-center gap-2")}>
-                <RadioGroup value={divider} onChange={changeDividerHandler}>
-                  <RadioButton value="tab" label={dividers.tab} />
-                  <RadioButton value="space" label={dividers.space} />
-                  <RadioButton value="comma" label={dividers.comma} />
-                </RadioGroup>
-              </div>
-              <Switch
-                value={ignoreFirstLine}
-                onChange={setIgnoreFirstLine}
-                label="Ignore first line"
-              />
-            </TabPanel>
-            <TabPanel>
-              Set column names and types
-              <br />
-              Set column names and types
-            </TabPanel>
-            <TabPanel>
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-            </TabPanel>
-          </TabPanels>
+                <h1 className="text-xl text-slate-500">
+                  Select the Field divider:
+                </h1>
+                <div className={tw("flex flex-row items-center gap-2")}>
+                  <RadioGroup value={divider} onChange={changeDividerHandler}>
+                    <RadioButton value="tab" label={dividers.tab} />
+                    <RadioButton value="space" label={dividers.space} />
+                    <RadioButton value="comma" label={dividers.comma} />
+                  </RadioGroup>
+                </div>
+                <Switch
+                  value={ignoreFirstLine}
+                  onChange={setIgnoreFirstLine}
+                  label="Ignore first line"
+                />
+              </TabPanel>
+              <TabPanel>
+                Set column names and types
+                <br />
+                Set column names and types
+              </TabPanel>
+              <TabPanel>
+                Remove and edit false data
+                <br />
+                Remove and edit false data
+                <br />
+                Remove and edit false data
+                <br />
+                Remove and edit false data
+              </TabPanel>
+            </Wizard>
+          </div>
 
           <div
             className={tw(
