@@ -22,7 +22,7 @@ const Tabs: React.FC<Props> = ({ value, onChange, children }) => {
       index={index}
       value={value}
       onChange={onChange}
-      tabLabel={tab}
+      tabLabel={tab.props.label}
       numbered={false}
       trackCompleted={false}
       completed={false}

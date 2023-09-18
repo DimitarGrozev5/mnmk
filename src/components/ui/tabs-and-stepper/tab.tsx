@@ -13,7 +13,7 @@ type RenderElementProps = {
   index: number;
   value: number;
   onChange: (value: number) => void;
-  tabLabel: React.ReactComponentElement<typeof Tab>;
+  tabLabel: string;
   numbered: boolean;
   trackCompleted: boolean;
   completed: boolean;
