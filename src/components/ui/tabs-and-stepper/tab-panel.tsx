@@ -5,14 +5,14 @@ type TabPanelProps = {
   children: React.ReactNode;
 };
 
-const TabPanel: React.FC<TabPanelProps> = ({ children }) => {
-  return children;
+const TabPanel: React.FC<TabPanelProps> = () => {
+  return <></>;
 };
 
 type RenderElementProps = {
   index: number;
   value: number;
-  tabPanel: React.ReactComponentElement<typeof TabPanel>;
+  tabPanel: React.ReactNode;
 };
 
 export const TabPanelRenderElement: React.FC<RenderElementProps> = ({
