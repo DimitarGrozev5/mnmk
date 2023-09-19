@@ -3,36 +3,18 @@ import { tw } from "../../../util/tw";
 import Tab, { TabRenderElement } from "./tab";
 import TabPanel from "./tab-panel";
 import { ChevronDoubleRightIcon } from "@heroicons/react/20/solid";
-import TabPanels, { AccessFunctionProps } from "./tab-panels";
+import TabPanels from "./tab-panels";
 import Button from "../button/button";
-import { produce } from "immer";
 
 type Props = {
   tabs: React.ReactComponentElement<typeof Tab>[];
   children:
-    | ((
-        props: AccessFunctionProps
-      ) => React.ReactComponentElement<typeof TabPanel>)
-    | ((
-        props: AccessFunctionProps
-      ) => React.ReactComponentElement<typeof TabPanel>)[];
+    | React.ReactComponentElement<typeof TabPanel>
+    | React.ReactComponentElement<typeof TabPanel>[];
 };
 
 const Wizard: React.FC<Props> = ({ tabs, children }) => {
   const [panelIndex, setPanelIndex] = useState(0);
-  const [completed, setCompleted] = useState(
-    tabs.map((tab) => !!tab.props.completed)
-  );
-
-  const setCompletedHandler = useCallback(
-    (index: number) => (completed: boolean) =>
-      setCompleted(
-        produce((draft) => {
-          draft[index] = completed;
-        })
-      ),
-    []
-  );
 
   const ch = Array.isArray(children) ? children : [children];
   if (ch.length !== tabs.length)
@@ -48,8 +30,7 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
         tabLabel={tab.props.label}
         numbered={true}
         trackCompleted={true}
-        completed={completed[index]}
-        disableClick
+        completed={false}
       />
     ));
 
@@ -62,7 +43,7 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
         </React.Fragment>
       )),
     ];
-  }, [completed, panelIndex, tabs]);
+  }, [panelIndex, tabs]);
 
   const prevStepHandler = useCallback(() => {
     if (panelIndex > 0) {
@@ -71,13 +52,13 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
   }, [panelIndex]);
 
   const nextStepHandler = useCallback(() => {
-    if (!completed[panelIndex]) {
+    if (!tabs[panelIndex].props.completed) {
       return;
     }
     if (panelIndex + 1 < tabs.length) {
       setPanelIndex(panelIndex + 1);
     }
-  }, [completed, panelIndex, tabs.length]);
+  }, [panelIndex, tabs]);
 
   return (
     <div className={tw("flex flex-col items-stretch gap-2")}>
@@ -89,9 +70,7 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
         {tabsComponents}
       </div>
 
-      <TabPanels value={panelIndex} setCompleted={setCompletedHandler}>
-        {children}
-      </TabPanels>
+      <TabPanels value={panelIndex}>{children}</TabPanels>
 
       <div className={tw("flex flex-row justify-between items-center")}>
         <Button
@@ -103,7 +82,7 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
         </Button>
         <Button
           variant="contained"
-          disabled={panelIndex === tabs.length - 1 || !completed[panelIndex]}
+          disabled={panelIndex === tabs.length - 1}
           onClick={nextStepHandler}
         >
           Next
