@@ -14,13 +14,21 @@ import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
 import Tab from "../../ui/tabs-and-stepper/tab";
 import TabPanel from "../../ui/tabs-and-stepper/tab-panel";
+import RadioGroup from "../../ui/radio-buttons/radio-group";
+import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
+import Switch from "../../ui/switch/switch";
+import Spacer from "../../ui/spacer/spacer";
 import Wizard from "../../ui/tabs-and-stepper/wizard";
-import ParseTextSettingsPanelCotents from "../modals/parse-text/settings-panel-contents";
-import { Divider, dividers } from "./dividers";
 
 type Props = {
   id: ElementId;
+};
+
+const dividers = {
+  tab: "Tab",
+  space: "Space",
+  comma: "Comma",
 };
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
@@ -57,7 +65,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
-  const [divider, setDivider] = useState<Divider>("tab");
+  const [divider, setDivider] = useState<keyof typeof dividers>("tab");
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -68,7 +76,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const changeDividerHandler = useCallback((type: string) => {
     if (!Object.keys(dividers).includes(type)) return;
 
-    setDivider(type as Divider);
+    setDivider(type as keyof typeof dividers);
   }, []);
 
   return (
@@ -138,26 +146,50 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
                 <Tab label="Edit File" />,
               ]}
             >
-              {(accessProps) => (
+              {() => {
+                return (
+                  <TabPanel>
+                    <h1 className="text-xl text-slate-500">
+                      Select the type of data in the file:
+                    </h1>
+                    <div className={tw("flex flex-row items-center gap-2")}>
+                      <RadioGroup
+                        value={fileType}
+                        onChange={changeFileTypeHandler}
+                      >
+                        <RadioButton value="xy" label="Coordinate data" />
+                        <RadioButton value="meas" label="Measurment data" />
+                      </RadioGroup>
+                    </div>
+
+                    <Spacer />
+
+                    <h1 className="text-xl text-slate-500">
+                      Select the Field divider:
+                    </h1>
+                    <div className={tw("flex flex-row items-center gap-2")}>
+                      <RadioGroup
+                        value={divider}
+                        onChange={changeDividerHandler}
+                      >
+                        <RadioButton value="tab" label={dividers.tab} />
+                        <RadioButton value="space" label={dividers.space} />
+                        <RadioButton value="comma" label={dividers.comma} />
+                      </RadioGroup>
+                    </div>
+                    <Switch
+                      value={ignoreFirstLine}
+                      onChange={setIgnoreFirstLine}
+                      label="Ignore first line"
+                    />
+                  </TabPanel>
+                );
+              }}
+              {() => (
                 <TabPanel>
-                  <ParseTextSettingsPanelCotents
-                    accessProps={accessProps}
-                    fileType={fileType}
-                    onChangeFileType={changeFileTypeHandler}
-                    divider={divider}
-                    onChangeDivider={changeDividerHandler}
-                    ignoreFirstLine={ignoreFirstLine}
-                    onChangeIgnoreFirstLine={setIgnoreFirstLine}
-                  />
-                </TabPanel>
-              )}
-              {({ setCompleted }) => (
-                <TabPanel>
-                  <div onClick={() => setCompleted(true)}>
-                    Set column names and types
-                    <br />
-                    Set column names and types
-                  </div>
+                  Set column names and types
+                  <br />
+                  Set column names and types
                 </TabPanel>
               )}
               {() => (
