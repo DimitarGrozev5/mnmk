@@ -34,6 +34,16 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
     []
   );
 
+  const invalidatePanel = useCallback(
+    (index: number) =>
+      setCompleted(
+        produce((draft) => {
+          draft[index] = false;
+        })
+      ),
+    []
+  );
+
   const ch = Array.isArray(children) ? children : [children];
   if (ch.length !== tabs.length)
     console.warn("Tabs and children must be the same length");
@@ -89,7 +99,11 @@ const Wizard: React.FC<Props> = ({ tabs, children }) => {
         {tabsComponents}
       </div>
 
-      <TabPanels value={panelIndex} setCompleted={setCompletedHandler}>
+      <TabPanels
+        value={panelIndex}
+        setCompleted={setCompletedHandler}
+        invalidatePanel={invalidatePanel}
+      >
         {children}
       </TabPanels>
 

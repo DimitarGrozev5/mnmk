@@ -4,6 +4,7 @@ import TabPanel, { TabPanelRenderElement } from "./tab-panel";
 export type AccessFunctionProps = {
   index: number;
   setCompleted: (completed: boolean) => void;
+  invalidatePanel: (index: number) => void;
 };
 
 type Props = { value: number } & (
@@ -13,6 +14,7 @@ type Props = { value: number } & (
 
 type CoponentChildrenProps = {
   setCompleted?: never;
+  invalidatePanel?: never;
   children:
     | React.ReactComponentElement<typeof TabPanel>
     | React.ReactComponentElement<typeof TabPanel>[];
@@ -20,6 +22,7 @@ type CoponentChildrenProps = {
 
 type FunctionChildrenProps = {
   setCompleted: (index: number) => (completed: boolean) => void;
+  invalidatePanel: (index: number) => void;
   children:
     | ((
         props: AccessFunctionProps
@@ -29,12 +32,21 @@ type FunctionChildrenProps = {
       ) => React.ReactComponentElement<typeof TabPanel>)[];
 };
 
-const TabPanels: React.FC<Props> = ({ value, children, setCompleted }) => {
+const TabPanels: React.FC<Props> = ({
+  value,
+  children,
+  setCompleted,
+  invalidatePanel,
+}) => {
   const childrenArray = Array.isArray(children) ? children : [children];
   const tabPanels = childrenArray.map((tabPanel, index) => {
     const panel = (() => {
       if (typeof tabPanel === "function" && setCompleted) {
-        return tabPanel({ index, setCompleted: setCompleted(index) });
+        return tabPanel({
+          index,
+          setCompleted: setCompleted(index),
+          invalidatePanel,
+        });
       }
 
       return tabPanel as React.ReactComponentElement<typeof TabPanel>;
