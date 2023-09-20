@@ -26,7 +26,7 @@ const FlowingElementModal: React.FC<Props> = ({
 
   return (
     <>
-      <Overlay show={show} onClose={onClose} blur />
+      <Overlay show={show} onClose={onClose} />
       <div
         className={tw(
           show ? "visible opacity-100" : "invisible opacity-5",
