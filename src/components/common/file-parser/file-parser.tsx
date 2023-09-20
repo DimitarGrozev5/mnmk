@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { Divider, dividers } from "./dividers";
 import { tw } from "../../../util/tw";
-import { FileColumn, fileColumns } from "./column-types";
+import { FileColumn } from "./column-types";
+import FileColumnSelector from "./select-column-type";
 
 type Props = {
   fields: FileColumn[];
@@ -61,7 +62,7 @@ const FileParser: React.FC<Props> = ({
                 key={indexField}
                 className={tw("border border-slate-300 px-3", "text-slate-800")}
               >
-                {fileColumns[field].label}
+                {<FileColumnSelector value={field} onChange={() => {}} />}
               </th>
             ))}
           </tr>
