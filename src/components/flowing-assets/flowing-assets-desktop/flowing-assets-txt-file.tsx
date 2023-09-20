@@ -18,6 +18,7 @@ import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
 import { Divider, dividers } from "../../common/file-parser/dividers";
 import FileParser from "../../common/file-parser/file-parser";
+import { FileColumn } from "../../common/file-parser/column-types";
 
 type Props = {
   id: ElementId;
@@ -58,6 +59,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
   const [divider, setDivider] = useState<Divider>("tab");
+  const [fields, setFields] = useState<FileColumn[]>([]);
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -175,7 +177,13 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             />
           </div>
 
-          <FileParser lines={fileContents} divider={divider} ignoreFirstLine={ignoreFirstLine} />
+          <FileParser
+            lines={fileContents}
+            divider={divider}
+            ignoreFirstLine={ignoreFirstLine}
+            fields={fields}
+            setFields={setFields}
+          />
         </div>
       </Modal>
     </>

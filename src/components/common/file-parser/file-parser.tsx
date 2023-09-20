@@ -1,14 +1,23 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Divider, dividers } from "./dividers";
 import { tw } from "../../../util/tw";
+import { FileColumn, fileColumns } from "./column-types";
 
 type Props = {
+  fields: FileColumn[];
+  setFields: (fields: FileColumn[]) => void;
   lines: string[];
   divider: Divider;
   ignoreFirstLine: boolean;
 };
 
-const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
+const FileParser: React.FC<Props> = ({
+  fields,
+  setFields,
+  lines,
+  divider,
+  ignoreFirstLine,
+}) => {
   const [parsedLlines, maxLineLen, firstLine] = useMemo(() => {
     let maxLineLen = 0;
 
@@ -26,6 +35,10 @@ const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
     return [parsedLines, maxLineLen, firstLine];
   }, [divider, ignoreFirstLine, lines]);
 
+  useEffect(() => {
+    setFields(Array(maxLineLen).fill("unset"));
+  }, [divider, ignoreFirstLine, maxLineLen, setFields]);
+
   return (
     <div
       className={tw(
@@ -41,7 +54,17 @@ const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
         className={tw("border-separate border-spacing-x-2 border-spacing-y-1")}
       >
         <thead>
-          <tr></tr>
+          <tr>
+            <th />
+            {fields.map((field, indexField) => (
+              <th
+                key={indexField}
+                className={tw("border border-slate-300 px-3", "text-slate-800")}
+              >
+                {fileColumns[field].label}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
           {firstLine.length > 0 && (
@@ -52,7 +75,7 @@ const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
                   key={`first-line-${indexField}`}
                   className={tw(
                     "border border-slate-300 px-3",
-                    "text-slate-800"
+                    "text-slate-400 font-normal"
                   )}
                 >
                   {field}
