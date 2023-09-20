@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Divider, dividers } from "../../../util/dividers";
 import { tw } from "../../../util/tw";
 
@@ -8,6 +9,23 @@ type Props = {
 };
 
 const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
+  const [parsedLlines, maxLineLen, firstLine] = useMemo(() => {
+    let maxLineLen = 0;
+
+    const parsedLines = lines.map((line) => {
+      const parsedLine = line.split(dividers[divider].regex);
+      maxLineLen = Math.max(maxLineLen, parsedLine.length);
+      return parsedLine;
+    });
+
+    let firstLine: string[] = [];
+    if (ignoreFirstLine) {
+      firstLine = parsedLines.shift() ?? [];
+    }
+
+    return [parsedLines, maxLineLen, firstLine];
+  }, [divider, ignoreFirstLine, lines]);
+
   return (
     <div
       className={tw(
@@ -26,7 +44,23 @@ const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
           <tr></tr>
         </thead>
         <tbody>
-          {lines.slice(Number(ignoreFirstLine)).map((line, indexLine) => (
+          {firstLine.length > 0 && (
+            <tr className={tw("w-[max-content]", "odd:bg-slate-300")}>
+              <th />
+              {firstLine.map((field, indexField) => (
+                <th
+                  key={`first-line-${indexField}`}
+                  className={tw(
+                    "border border-slate-300 px-3",
+                    "text-slate-800"
+                  )}
+                >
+                  {field}
+                </th>
+              ))}
+            </tr>
+          )}
+          {parsedLlines.map((line, indexLine) => (
             <tr
               key={indexLine}
               className={tw("w-[max-content]", "odd:bg-slate-300")}
@@ -39,7 +73,7 @@ const FileParser: React.FC<Props> = ({ lines, divider, ignoreFirstLine }) => {
               >
                 {indexLine + 1}
               </th>
-              {line.split(dividers[divider].regex).map((field, indexField) => (
+              {line.map((field, indexField) => (
                 <td
                   key={`${indexLine}-${indexField}`}
                   className={tw(
