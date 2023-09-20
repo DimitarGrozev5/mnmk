@@ -58,10 +58,7 @@ const FileParser: React.FC<Props> = ({
           <tr>
             <th />
             {fields.map((field, indexField) => (
-              <th
-                key={indexField}
-                className={tw("border border-slate-300 px-3", "text-slate-800")}
-              >
+              <th key={indexField}>
                 {<FileColumnSelector value={field} onChange={() => {}} />}
               </th>
             ))}
