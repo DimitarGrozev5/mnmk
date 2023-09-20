@@ -12,24 +12,15 @@ import FlowingElementModal from "./flowing-element/flowing-element-modal";
 import { txtParser } from "../../../fn/parsers/txt-parser";
 import Button from "../../ui/button/button";
 import Modal from "../../ui/modal/modal";
-import Tabs from "../../ui/tabs-and-stepper/tabs";
-import Tab from "../../ui/tabs-and-stepper/tab";
-import TabPanels from "../../ui/tabs-and-stepper/tab-panels";
-import TabPanel from "../../ui/tabs-and-stepper/tab-panel";
 import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
-import Spacer from "../../ui/spacer/spacer";
+import { Divider, dividers } from "../../../util/dividers";
+import FileParser from "../../common/file-parser/file-parser";
 
 type Props = {
   id: ElementId;
-};
-
-const dividers = {
-  tab: "Tab",
-  space: "Space",
-  comma: "Comma",
 };
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
@@ -64,10 +55,9 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setShowParseModal(false);
   }, []);
 
-  const [tabIndex, setTabIndex] = useState(0);
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
-  const [divider, setDivider] = useState<keyof typeof dividers>("tab");
+  const [divider, setDivider] = useState<Divider>("tab");
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -78,7 +68,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const changeDividerHandler = useCallback((type: string) => {
     if (!Object.keys(dividers).includes(type)) return;
 
-    setDivider(type as keyof typeof dividers);
+    setDivider(type as Divider);
   }, []);
 
   return (
@@ -140,88 +130,52 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             "flex flex-col items-stretch gap-4"
           )}
         >
-          <Tabs value={tabIndex} onChange={setTabIndex}>
-            <Tab label="Settings" />
-            <Tab label="Fields" />
-            <Tab label="Edit File" />
-          </Tabs>
-
-          <TabPanels value={tabIndex}>
-            <TabPanel>
-              <h1 className="text-xl text-slate-500">
-                Select the type of data in the file:
-              </h1>
+          <div
+            className={tw(
+              "flex flex-row justify-center gap-4 flex-wrap items-stretch"
+            )}
+          >
+            <div
+              className={tw(
+                "flex flex-col items-center gap-2",
+                "border border-slate-400 rounded-md",
+                "p-2"
+              )}
+            >
+              <h1 className="text-xl text-slate-500">File Type</h1>
               <div className={tw("flex flex-row items-center gap-2")}>
                 <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
                   <RadioButton value="xy" label="Coordinate data" />
                   <RadioButton value="meas" label="Measurment data" />
                 </RadioGroup>
               </div>
+            </div>
 
-              <Spacer />
-
-              <h1 className="text-xl text-slate-500">
-                Select the Field divider:
-              </h1>
+            <div
+              className={tw(
+                "flex flex-col items-center gap-2",
+                "border border-slate-400 rounded-md",
+                "p-2"
+              )}
+            >
+              <h1 className="text-xl text-slate-500">Field Divider</h1>
               <div className={tw("flex flex-row items-center gap-2")}>
                 <RadioGroup value={divider} onChange={changeDividerHandler}>
-                  <RadioButton value="tab" label={dividers.tab} />
-                  <RadioButton value="space" label={dividers.space} />
-                  <RadioButton value="comma" label={dividers.comma} />
+                  <RadioButton value="tab" label={dividers.tab.label} />
+                  <RadioButton value="space" label={dividers.space.label} />
+                  <RadioButton value="comma" label={dividers.comma.label} />
                 </RadioGroup>
               </div>
-              <Switch
-                value={ignoreFirstLine}
-                onChange={setIgnoreFirstLine}
-                label="Ignore first line"
-              />
-            </TabPanel>
-            <TabPanel>
-              Set column names and types
-              <br />
-              Set column names and types
-            </TabPanel>
-            <TabPanel>
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-              <br />
-              Remove and edit false data
-            </TabPanel>
-          </TabPanels>
+            </div>
 
-          <div
-            className={tw(
-              "flex-1",
-              "border border-slate-400 bg-slate-200",
-              "p-2",
-              "flex flex-col items-start gap-1",
-              "text-slate-500 text-clip",
-              "overflow-auto"
-            )}
-          >
-            {fileContents.map((line, i) => (
-              <div
-                key={i}
-                className={tw(
-                  "w-[max-content]",
-                  "flex flex-row items-center gap-1"
-                )}
-              >
-                <div
-                  className={tw(
-                    "border border-slate-400 px-2",
-                    "text-sm text-slate-400"
-                  )}
-                >
-                  {i + 1}
-                </div>
-                <div>{line}</div>
-              </div>
-            ))}
+            <Switch
+              value={ignoreFirstLine}
+              onChange={setIgnoreFirstLine}
+              label="Ignore first line"
+            />
           </div>
+
+          <FileParser lines={fileContents} divider={divider} ignoreFirstLine={ignoreFirstLine} />
         </div>
       </Modal>
     </>
