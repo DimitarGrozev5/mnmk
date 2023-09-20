@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Divider, dividers } from "../../../util/dividers";
+import { Divider, dividers } from "./dividers";
 import { tw } from "../../../util/tw";
 
 type Props = {

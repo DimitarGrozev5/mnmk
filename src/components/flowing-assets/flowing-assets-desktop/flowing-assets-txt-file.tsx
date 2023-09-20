@@ -16,7 +16,7 @@ import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
-import { Divider, dividers } from "../../../util/dividers";
+import { Divider, dividers } from "../../common/file-parser/dividers";
 import FileParser from "../../common/file-parser/file-parser";
 
 type Props = {
