@@ -1,12 +1,13 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Divider, dividers } from "./dividers";
 import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
+import { produce } from "immer";
 
 type Props = {
   fields: FileColumn[];
-  setFields: (fields: FileColumn[]) => void;
+  setFields: React.Dispatch<React.SetStateAction<FileColumn[]>>;
   lines: string[];
   divider: Divider;
   ignoreFirstLine: boolean;
@@ -38,7 +39,18 @@ const FileParser: React.FC<Props> = ({
 
   useEffect(() => {
     setFields(Array(maxLineLen).fill("unset"));
-  }, [divider, ignoreFirstLine, maxLineLen, setFields]);
+  }, [divider, maxLineLen, setFields]);
+
+  const onChangeField = useCallback(
+    (index: number) => (fieldKey: FileColumn) => {
+      setFields(
+        produce((draft) => {
+          draft[index] = fieldKey;
+        })
+      );
+    },
+    [setFields]
+  );
 
   return (
     <div
@@ -59,7 +71,12 @@ const FileParser: React.FC<Props> = ({
             <th />
             {fields.map((field, indexField) => (
               <th key={indexField}>
-                {<FileColumnSelector value={field} onChange={() => {}} />}
+                {
+                  <FileColumnSelector
+                    value={field}
+                    onChange={onChangeField(indexField)}
+                  />
+                }
               </th>
             ))}
           </tr>
