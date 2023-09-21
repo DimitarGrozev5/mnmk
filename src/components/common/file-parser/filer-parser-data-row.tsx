@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn, fileColumns } from "./column-types";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 
 type Props = {
@@ -23,12 +23,12 @@ const FileParserDataRow: React.FC<Props> = ({ line, index, fields }) => {
   const rowIsValid = fieldsValidity.every((isValid) => isValid);
 
   return (
-    <tr className={tw("group", "w-[max-content]", "odd:bg-slate-3001")}>
+    <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
       <th
         className={tw(
           "border border-slate-400 px-2",
           "text-sm text-slate-400 font-normal",
-          "group-odd:bg-slate-300",
+          "group-odd/row:bg-slate-300",
           !rowIsValid && "text-red-500 border-red-500 bg-red-50"
         )}
       >
@@ -38,13 +38,28 @@ const FileParserDataRow: React.FC<Props> = ({ line, index, fields }) => {
         <td
           key={`${index}-${indexField}`}
           className={tw(
+            "relative",
+            "group/field",
             "border border-slate-300 px-3",
             "text-slate-800",
-            "group-odd:bg-slate-300",
+            "group-odd/row:bg-slate-300",
             !fieldsValidity[indexField] && "text-red-500"
           )}
         >
           {field}
+          <div
+            className={tw(
+              "absolute right-1 inset-y-0",
+              "flex flex-col justify-center",
+              "transition-all duration-500",
+              "opacity-0 invisible",
+              "group-hover/field:opacity-100 group-hover/field:visible"
+            )}
+          >
+            <IconButton label="Delete line">
+              <PencilIcon className="w-4 h-4 text-sky-500" />
+            </IconButton>
+          </div>
         </td>
       ))}
       <td
@@ -52,11 +67,11 @@ const FileParserDataRow: React.FC<Props> = ({ line, index, fields }) => {
           "flex flex-col items-center justify-center",
           "transition-all duration-500",
           "opacity-0 invisible",
-          "group-hover:opacity-100 group-hover:visible"
+          "group-hover/row:opacity-100 group-hover/row:visible"
         )}
       >
         <IconButton label="Delete line">
-          <XMarkIcon className="w-6 h-6" />
+          <XMarkIcon className="w-6 h-6 text-sky-500" />
         </IconButton>
       </td>
     </tr>
