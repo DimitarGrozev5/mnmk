@@ -4,6 +4,7 @@ import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
 import { produce } from "immer";
+import FileParserDataRow from "./filer-parser-data-row";
 
 type Props = {
   fields: FileColumn[];
@@ -20,7 +21,7 @@ const FileParser: React.FC<Props> = ({
   divider,
   ignoreFirstLine,
 }) => {
-  const [parsedLlines, maxLineLen, firstLine] = useMemo(() => {
+  const [parsedLines, maxLineLen, firstLine] = useMemo(() => {
     let maxLineLen = 0;
 
     const parsedLines = lines.map((line) => {
@@ -98,31 +99,13 @@ const FileParser: React.FC<Props> = ({
               ))}
             </tr>
           )}
-          {parsedLlines.map((line, indexLine) => (
-            <tr
+          {parsedLines.map((line, indexLine) => (
+            <FileParserDataRow
               key={indexLine}
-              className={tw("w-[max-content]", "odd:bg-slate-300")}
-            >
-              <th
-                className={tw(
-                  "border border-slate-400 px-2",
-                  "text-sm text-slate-400 font-normal"
-                )}
-              >
-                {indexLine + 1}
-              </th>
-              {line.map((field, indexField) => (
-                <td
-                  key={`${indexLine}-${indexField}`}
-                  className={tw(
-                    "border border-slate-300 px-3",
-                    "text-slate-800"
-                  )}
-                >
-                  {field}
-                </td>
-              ))}
-            </tr>
+              line={line}
+              index={indexLine}
+              fields={fields}
+            />
           ))}
         </tbody>
       </table>
