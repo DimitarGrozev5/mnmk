@@ -1,9 +1,10 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "../../../../store/hooks";
 import { ElementId } from "../../../../store/slices/flowing-assets-types";
 import { getElementRectSelector } from "../../../../store/slices/zones-and-transformers-slice";
-import Overlay from "../../../ui/modal/overlay";
 import Button from "../../../ui/button/button";
 import { tw } from "../../../../util/tw";
+import { Dialog } from "@headlessui/react";
 
 type Props = {
   forId: ElementId;
@@ -24,12 +25,45 @@ const FlowingElementModal: React.FC<Props> = ({
 }) => {
   const elementRect = useAppSelector(getElementRectSelector(forId));
 
+  const [inTransition, setInTransition] = useState(false);
+  useEffect(() => {
+    if (show) {
+      setInTransition(true);
+    } else {
+      const timer = setTimeout(() => {
+        setInTransition(false);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [show]);
+
+  const display = useMemo(
+    () => show || (!show && inTransition),
+    [inTransition, show]
+  );
+
+  const initPosition = useMemo(
+    () => (show && !inTransition) || (!show && inTransition),
+    [inTransition, show]
+  );
+
   return (
-    <>
-      <Overlay show={show} onClose={onClose} />
+    <Dialog as="div" className="relative z-10" open={display} onClose={onClose}>
+      <div
+        onClick={onClose}
+        className={tw(
+          "fixed inset-0",
+          "bg-black",
+          "transition-all duration-500",
+          initPosition ? "bg-opacity-0" : "bg-opacity-40"
+        )}
+      />
+
       <div
         className={tw(
-          show ? "visible opacity-100" : "invisible opacity-5",
+          // show ? "visible opacity-100" : "invisible opacity-5",
+          initPosition ? "opacity-0" : "opacity-100",
           "fixed z-50",
           "p-4 rounded-lg",
           "flex flex-col items-stretch gap-4",
@@ -38,31 +72,38 @@ const FlowingElementModal: React.FC<Props> = ({
           "overflow-hidden"
         )}
         style={{
-          left: show ? "50vw" : elementRect?.left,
-          top: show ? "10vh" : elementRect?.top,
-          width: show ? "40vw" : elementRect?.width,
-          height: show ? "60vh" : elementRect?.height,
-          transform: show ? "translate(-50%, 0%)" : "translate(0%, 0%)",
+          left: initPosition ? elementRect?.left : "50vw",
+          top: initPosition ? elementRect?.top : "10vh",
+          width: initPosition ? elementRect?.width : "40vw",
+          height: initPosition ? elementRect?.height : "60vh",
+          transform: initPosition ? "translate(0%, 0%)" : "translate(-50%, 0%)",
         }}
       >
-        <h2 className="text-2xl font-bold text-slate-500 text-center">
-          {title}
-        </h2>
-        <div
-          className={tw(
-            "relative",
-            "flex-1",
-            "flex flex-col items-center gap-4"
-          )}
+        <Dialog.Panel
+          className={tw("flex-1", "flex flex-col items-stretch gap-4")}
         >
-          {children}
-        </div>
-        <div className={tw("flex flex-row justify-end items-center gap-3")}>
-          <Button onClick={onClose}>Close</Button>
-          {actions}
-        </div>
+          <Dialog.Title
+            as="h2"
+            className="text-2xl font-bold text-slate-500 text-center"
+          >
+            {title}
+          </Dialog.Title>
+          <div
+            className={tw(
+              "relative",
+              "flex-1",
+              "flex flex-col items-center gap-4"
+            )}
+          >
+            {children}
+          </div>
+          <div className={tw("flex flex-row justify-end items-center gap-3")}>
+            <Button onClick={onClose}>Close</Button>
+            {actions}
+          </div>
+        </Dialog.Panel>
       </div>
-    </>
+    </Dialog>
   );
 };
 
