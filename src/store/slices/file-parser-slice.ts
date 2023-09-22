@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
+import { RootState } from "../store";
 
 type FileParserState = {
   linesArray: string[];
@@ -47,6 +48,14 @@ const actions = fileParserSlice.actions;
 export default fileParserSlice.reducer;
 
 // Selectors
+export const getAllLinesIds = () => (state: RootState) =>
+  state.fileParser.linesArray;
+
+export const getLineById = (id: string) => (state: RootState) =>
+  state.fileParser.lines[id];
+
+export const getLineWithFields = (id: string) => (state: RootState) =>
+  state.fileParser.lines[id].map((fieldId) => state.fileParser.fields[fieldId]);
 
 // Action creators are generated for each case reducer function
 export const fileParserActions = {
