@@ -3,14 +3,18 @@ import { tw } from "../../../util/tw";
 import { FileColumn, fileColumns } from "./column-types";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
+import { useAppSelector } from "../../../store/hooks";
+import { getLineWithFields } from "../../../store/slices/file-parser-slice";
 
 type Props = {
-  line: string[];
+  rowId: string;
   index: number;
   fields: FileColumn[];
 };
 
-const FileParserDataRow: React.FC<Props> = ({ line, index, fields }) => {
+const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
+  const line = useAppSelector(getLineWithFields(rowId));
+
   const fieldsValidity = useMemo(
     () =>
       line.map((field) => {

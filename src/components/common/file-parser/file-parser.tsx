@@ -5,6 +5,11 @@ import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
 import { produce } from "immer";
 import FileParserDataRow from "./filer-parser-data-row";
+import {
+  fileParserActions,
+  getAllLinesIds,
+} from "../../../store/slices/file-parser-slice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 type Props = {
   fields: FileColumn[];
@@ -21,6 +26,11 @@ const FileParser: React.FC<Props> = ({
   divider,
   ignoreFirstLine,
 }) => {
+  const linesIds = useAppSelector(getAllLinesIds());
+
+  const disaptch = useAppDispatch();
+  const { setAllLines } = fileParserActions;
+
   const [parsedLines, maxLineLen, firstLine] = useMemo(() => {
     let maxLineLen = 0;
 
@@ -37,6 +47,10 @@ const FileParser: React.FC<Props> = ({
 
     return [parsedLines, maxLineLen, firstLine];
   }, [divider, ignoreFirstLine, lines]);
+
+  useEffect(() => {
+    disaptch(setAllLines(parsedLines));
+  }, [disaptch, parsedLines, setAllLines]);
 
   useEffect(() => {
     setFields(Array(maxLineLen).fill("unset"));
@@ -99,10 +113,10 @@ const FileParser: React.FC<Props> = ({
               ))}
             </tr>
           )}
-          {parsedLines.map((line, indexLine) => (
+          {linesIds.map((rowId, indexLine) => (
             <FileParserDataRow
               key={indexLine}
-              line={line}
+              rowId={rowId}
               index={indexLine}
               fields={fields}
             />
