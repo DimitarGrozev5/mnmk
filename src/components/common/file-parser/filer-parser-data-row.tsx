@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn, fileColumns } from "./column-types";
-import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 
 type Props = {
@@ -57,7 +57,7 @@ const FileParserDataRow: React.FC<Props> = ({ line, index, fields }) => {
             )}
           >
             <IconButton label="Delete line">
-              <PencilIcon className="w-4 h-4 text-sky-500" />
+              <PencilSquareIcon className="w-4 h-4 text-sky-500" />
             </IconButton>
           </div>
         </td>
