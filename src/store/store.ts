@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import zonesAndTransformersSlice from "./slices/zones-and-transformers-slice";
+import fileParserSlice from "./slices/file-parser-slice";
 
 export const store = configureStore({
-  reducer: { zonesAndTransformers: zonesAndTransformersSlice },
+  reducer: {
+    zonesAndTransformers: zonesAndTransformersSlice,
+    fileParser: fileParserSlice,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
