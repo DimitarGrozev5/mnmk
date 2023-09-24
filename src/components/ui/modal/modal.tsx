@@ -3,13 +3,26 @@ import { tw } from "../../../util/tw";
 import { Dialog, Transition } from "@headlessui/react";
 import React from "react";
 
-type Props = {
+type Props = BaseProps & (NormalProps | CompactProps);
+
+type BaseProps = {
   show: boolean;
   onClose: () => void;
-  title?: string;
   children: React.ReactNode;
+};
+
+type NormalProps = {
+  title?: string;
   actions?: React.ReactNode;
   fullScreen?: boolean;
+  compact?: never;
+};
+
+type CompactProps = {
+  title?: never;
+  actions?: never;
+  fullScreen?: never;
+  compact?: boolean;
 };
 
 const Modal: React.FC<Props> = ({
@@ -19,6 +32,7 @@ const Modal: React.FC<Props> = ({
   children,
   actions = null,
   fullScreen = false,
+  compact = false,
 }) => {
   return (
     <Transition appear show={show} as={React.Fragment}>
@@ -40,18 +54,18 @@ const Modal: React.FC<Props> = ({
 
         <div
           className={tw(
-            "fixed z-50",
-            "p-4 rounded-lg",
-            "flex flex-col items-stretch gap-4",
-            "bg-slate-300"
+            "fixed inset-0 z-50",
+            "flex flex-col items-center justify-center"
           )}
-          style={{
-            left: fullScreen ? "5vw" : "50vw",
-            top: fullScreen ? "5vh" : "10vh",
-            width: fullScreen ? "90vw" : "40vw",
-            height: fullScreen ? "90vh" : "60vh",
-            transform: fullScreen ? "translate(0%, 0%)" : "translate(-50%, 0%)",
-          }}
+          style={
+            {
+              // left: fullScreen ? "5vw" : "50vw",
+              // top: fullScreen ? "5vh" : "10vh",
+              // width: fullScreen ? "90vw" : "40vw",
+              // height: fullScreen ? "90vh" : "60vh",
+              // transform: fullScreen ? "translate(0%, 0%)" : "translate(-50%, 0%)",
+            }
+          }
         >
           <Transition.Child
             as={React.Fragment}
@@ -63,7 +77,14 @@ const Modal: React.FC<Props> = ({
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel
-              className={tw("flex-1", "flex flex-col items-stretch gap-4")}
+              className={tw(
+                "w-[40vw] h-[60vh]",
+                fullScreen && "w-[90vw] h-[90vh]",
+                compact && "w-auto h-auto",
+                "p-4 rounded-lg",
+                "flex flex-col items-stretch gap-4",
+                "bg-slate-300"
+              )}
             >
               {title && (
                 <Dialog.Title
@@ -80,12 +101,14 @@ const Modal: React.FC<Props> = ({
                 {children}
               </div>
 
-              <div
-                className={tw("flex flex-row gap-4 justify-end items-center")}
-              >
-                <Button onClick={onClose}>Close</Button>
-                {actions}
-              </div>
+              {!compact && (
+                <div
+                  className={tw("flex flex-row gap-4 justify-end items-center")}
+                >
+                  <Button onClick={onClose}>Close</Button>
+                  {actions}
+                </div>
+              )}
             </Dialog.Panel>
           </Transition.Child>
         </div>

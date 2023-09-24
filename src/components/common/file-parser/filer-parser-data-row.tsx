@@ -9,6 +9,8 @@ import {
   getLineWithFields,
 } from "../../../store/slices/file-parser-slice";
 import Modal from "../../ui/modal/modal";
+import Button from "../../ui/button/button";
+import InputField from "../../ui/input/input";
 
 type Props = {
   rowId: string;
@@ -106,18 +108,22 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
       <Modal
         show={selectedFieldId !== null}
         onClose={() => setSelectedFieldId(null)}
+        compact
       >
         <div
           className={tw(
             "self-stretch",
-            "flex flex-row justify-between items-center gap-2",
-            "border border-red-500"
+            "flex flex-row justify-between items-center gap-2"
           )}
         >
-          <input
+          <InputField
+            label="Edit Field"
             value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
+            onChange={setEditValue}
           />
+          <Button>Save</Button>
+          <Button>Delete</Button>
+          <Button>Cancel</Button>
         </div>
       </Modal>
     </>
