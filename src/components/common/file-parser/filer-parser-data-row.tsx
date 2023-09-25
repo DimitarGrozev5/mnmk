@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn, fileColumns } from "./column-types";
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import {
+  CheckIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
@@ -9,7 +14,6 @@ import {
   getLineWithFields,
 } from "../../../store/slices/file-parser-slice";
 import Modal from "../../ui/modal/modal";
-import Button from "../../ui/button/button";
 import InputField from "../../ui/input/input";
 
 type Props = {
@@ -116,14 +120,20 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
             "flex flex-row justify-between items-center gap-2"
           )}
         >
+          <IconButton label="Clear">
+            <TrashIcon className="w-6 h-6 text-slate-500" />
+          </IconButton>
           <InputField
             label="Edit Field"
             value={editValue}
             onChange={setEditValue}
           />
-          <Button>Save</Button>
-          <Button>Delete</Button>
-          <Button>Cancel</Button>
+          <IconButton label="Save">
+            <CheckIcon className="w-6 h-6 text-slate-500" />
+          </IconButton>
+          <IconButton label="Cancel" onClick={() => setSelectedFieldId(null)}>
+            <XMarkIcon className="w-6 h-6 text-slate-500" />
+          </IconButton>
         </div>
       </Modal>
     </>
