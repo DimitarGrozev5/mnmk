@@ -60,7 +60,7 @@ const Select = <T,>({
           >
             <Listbox.Options
               className={tw(
-                "absolute",
+                "absolute z-10",
                 "mt-1 py-1 max-h-60 w-full min-w-fit",
                 "overflow-auto rounded-md",
                 "border border-sky-300 bg-sky-100",
