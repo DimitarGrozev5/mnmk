@@ -25,7 +25,7 @@ type Props = {
 const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
   const dispatch = useAppDispatch();
-  const { removeLine } = fileParserActions;
+  const { removeLine, editField } = fileParserActions;
 
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -50,6 +50,19 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
   const onRemoveLine = useCallback(() => {
     dispatch(removeLine(rowId));
   }, [dispatch, removeLine, rowId]);
+
+  const onEditField = useCallback(() => {
+    if (selectedFieldId === null) return;
+    dispatch(editField({ id: selectedFieldId, value: editValue }));
+    setSelectedFieldId(null);
+    setSelectedFieldId(null);
+  }, [dispatch, editField, editValue, selectedFieldId]);
+
+  const onClearField = useCallback(() => {
+    if (selectedFieldId === null) return;
+    dispatch(editField({ id: selectedFieldId, value: "" }));
+    setSelectedFieldId(null);
+  }, [dispatch, editField, selectedFieldId]);
 
   return (
     <>
@@ -77,7 +90,7 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
             )}
           >
             {field.value}
-            <div
+            <span
               className={tw(
                 "absolute right-1 inset-y-0",
                 "flex flex-col justify-center",
@@ -92,7 +105,7 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
               >
                 <PencilSquareIcon className="w-4 h-4 text-sky-500" />
               </IconButton>
-            </div>
+            </span>
           </td>
         ))}
         <td
@@ -120,7 +133,7 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
             "flex flex-row justify-between items-center gap-2"
           )}
         >
-          <IconButton label="Clear">
+          <IconButton label="Clear" onClick={onClearField}>
             <TrashIcon className="w-6 h-6 text-slate-500" />
           </IconButton>
           <InputField
@@ -128,7 +141,7 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
             value={editValue}
             onChange={setEditValue}
           />
-          <IconButton label="Save">
+          <IconButton label="Save" onClick={onEditField}>
             <CheckIcon className="w-6 h-6 text-slate-500" />
           </IconButton>
           <IconButton label="Cancel" onClick={() => setSelectedFieldId(null)}>
