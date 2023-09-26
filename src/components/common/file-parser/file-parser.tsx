@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Divider, dividers } from "./dividers";
 import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
@@ -10,6 +10,7 @@ import {
   getAllLinesIds,
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import FileParserEditFieldModal from "./edit-field-modal";
 
 type Props = {
   fields: FileColumn[];
@@ -28,7 +29,7 @@ const FileParser: React.FC<Props> = ({
 }) => {
   const linesIds = useAppSelector(getAllLinesIds());
 
-  const disaptch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { setAllLines } = fileParserActions;
 
   const [parsedLines, maxLineLen, firstLine] = useMemo(() => {
@@ -49,8 +50,8 @@ const FileParser: React.FC<Props> = ({
   }, [divider, ignoreFirstLine, lines]);
 
   useEffect(() => {
-    disaptch(setAllLines(parsedLines));
-  }, [disaptch, parsedLines, setAllLines]);
+    dispatch(setAllLines(parsedLines));
+  }, [dispatch, parsedLines, setAllLines]);
 
   useEffect(() => {
     setFields(Array(maxLineLen).fill("unset"));
@@ -66,6 +67,9 @@ const FileParser: React.FC<Props> = ({
     },
     [setFields]
   );
+
+  // Edit fields
+  const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
 
   return (
     <div
@@ -119,10 +123,16 @@ const FileParser: React.FC<Props> = ({
               rowId={rowId}
               index={indexLine}
               fields={fields}
+              selectField={setSelectedFieldId}
             />
           ))}
         </tbody>
       </table>
+
+      <FileParserEditFieldModal
+        selectedFieldId={selectedFieldId}
+        setSelectedFieldId={setSelectedFieldId}
+      />
     </div>
   );
 };

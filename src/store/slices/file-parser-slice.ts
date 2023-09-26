@@ -91,6 +91,9 @@ export const getLineWithFields1 = (id: string) => (state: RootState) =>
     value: state.fileParser.fields[fieldId],
   }));
 
+export const getFieldById = (id: string) => (state: RootState) =>
+  state.fileParser.fields[id];
+
 export const getLineWithFields = createSelector(
   [
     (state: RootState) => state.fileParser.lines,

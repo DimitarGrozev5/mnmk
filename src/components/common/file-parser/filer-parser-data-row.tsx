@@ -1,40 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn, fileColumns } from "./column-types";
-import {
-  CheckIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  XMarkIcon,
-} from "@heroicons/react/20/solid";
+import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   fileParserActions,
   getLineWithFields,
 } from "../../../store/slices/file-parser-slice";
-import Modal from "../../ui/modal/modal";
-import InputField from "../../ui/input/input";
 
 type Props = {
   rowId: string;
   index: number;
   fields: FileColumn[];
+  selectField: (fieldId: string) => void;
 };
 
-const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
+const FileParserDataRow: React.FC<Props> = ({
+  rowId,
+  index,
+  fields,
+  selectField,
+}) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
   const dispatch = useAppDispatch();
-  const { removeLine, editField } = fileParserActions;
-
-  const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
-  const [editValue, setEditValue] = useState("");
-  useEffect(() => {
-    selectedFieldId !== null &&
-      setEditValue(
-        line.find((field) => field.id === selectedFieldId)?.value ?? ""
-      );
-  }, [line, selectedFieldId]);
+  const { removeLine } = fileParserActions;
 
   const fieldsValidity = useMemo(
     () =>
@@ -51,105 +41,62 @@ const FileParserDataRow: React.FC<Props> = ({ rowId, index, fields }) => {
     dispatch(removeLine(rowId));
   }, [dispatch, removeLine, rowId]);
 
-  const onEditField = useCallback(() => {
-    if (selectedFieldId === null) return;
-    dispatch(editField({ id: selectedFieldId, value: editValue }));
-    setSelectedFieldId(null);
-    setSelectedFieldId(null);
-  }, [dispatch, editField, editValue, selectedFieldId]);
-
-  const onClearField = useCallback(() => {
-    if (selectedFieldId === null) return;
-    dispatch(editField({ id: selectedFieldId, value: "" }));
-    setSelectedFieldId(null);
-  }, [dispatch, editField, selectedFieldId]);
-
   return (
-    <>
-      <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
-        <th
+    <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
+      <th
+        className={tw(
+          "border border-slate-400 px-2",
+          "text-sm text-slate-400 font-normal",
+          "group-odd/row:bg-slate-300",
+          !rowIsValid && "text-red-500 border-red-500 bg-red-50"
+        )}
+      >
+        {index + 1}
+      </th>
+      {line.map((field, indexField) => (
+        <td
+          key={field.id}
           className={tw(
-            "border border-slate-400 px-2",
-            "text-sm text-slate-400 font-normal",
+            "relative",
+            "group/field",
+            "border border-slate-300 px-3",
+            "text-slate-800",
             "group-odd/row:bg-slate-300",
-            !rowIsValid && "text-red-500 border-red-500 bg-red-50"
+            !fieldsValidity[indexField] && "text-red-500"
           )}
         >
-          {index + 1}
-        </th>
-        {line.map((field, indexField) => (
-          <td
-            key={field.id}
+          {field.value}
+          <span
             className={tw(
-              "relative",
-              "group/field",
-              "border border-slate-300 px-3",
-              "text-slate-800",
-              "group-odd/row:bg-slate-300",
-              !fieldsValidity[indexField] && "text-red-500"
+              "absolute right-1 inset-y-0",
+              "flex flex-col justify-center",
+              "transition-all duration-500",
+              "opacity-0 invisible",
+              "group-hover/field:opacity-100 group-hover/field:visible"
             )}
           >
-            {field.value}
-            <span
-              className={tw(
-                "absolute right-1 inset-y-0",
-                "flex flex-col justify-center",
-                "transition-all duration-500",
-                "opacity-0 invisible",
-                "group-hover/field:opacity-100 group-hover/field:visible"
-              )}
+            <IconButton
+              label="Delete line"
+              onClick={() => selectField(field.id)}
             >
-              <IconButton
-                label="Delete line"
-                onClick={() => setSelectedFieldId(field.id)}
-              >
-                <PencilSquareIcon className="w-4 h-4 text-sky-500" />
-              </IconButton>
-            </span>
-          </td>
-        ))}
-        <td
-          className={tw(
-            "flex flex-col items-center justify-center",
-            "transition-all duration-500",
-            "opacity-0 invisible",
-            "group-hover/row:opacity-100 group-hover/row:visible"
-          )}
-        >
-          <IconButton onClick={onRemoveLine} label="Delete line">
-            <XMarkIcon className="w-6 h-6 text-sky-500" />
-          </IconButton>
+              <PencilSquareIcon className="w-4 h-4 text-sky-500" />
+            </IconButton>
+          </span>
         </td>
-      </tr>
-
-      <Modal
-        show={selectedFieldId !== null}
-        onClose={() => setSelectedFieldId(null)}
-        compact
+      ))}
+      <td
+        className={tw(
+          "flex flex-col items-center justify-center",
+          "transition-all duration-500",
+          "opacity-0 invisible",
+          "group-hover/row:opacity-100 group-hover/row:visible"
+        )}
       >
-        <div
-          className={tw(
-            "self-stretch",
-            "flex flex-row justify-between items-center gap-2"
-          )}
-        >
-          <IconButton label="Clear" onClick={onClearField}>
-            <TrashIcon className="w-6 h-6 text-slate-500" />
-          </IconButton>
-          <InputField
-            label="Edit Field"
-            value={editValue}
-            onChange={setEditValue}
-          />
-          <IconButton label="Save" onClick={onEditField}>
-            <CheckIcon className="w-6 h-6 text-slate-500" />
-          </IconButton>
-          <IconButton label="Cancel" onClick={() => setSelectedFieldId(null)}>
-            <XMarkIcon className="w-6 h-6 text-slate-500" />
-          </IconButton>
-        </div>
-      </Modal>
-    </>
+        <IconButton onClick={onRemoveLine} label="Delete line">
+          <XMarkIcon className="w-6 h-6 text-sky-500" />
+        </IconButton>
+      </td>
+    </tr>
   );
 };
 
