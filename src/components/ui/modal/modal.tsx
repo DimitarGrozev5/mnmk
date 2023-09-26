@@ -1,7 +1,7 @@
 import Button from "../button/button";
 import { tw } from "../../../util/tw";
 import { Dialog, Transition } from "@headlessui/react";
-import React from "react";
+import React, { useRef } from "react";
 
 type Props = BaseProps & (NormalProps | CompactProps);
 
@@ -34,9 +34,11 @@ const Modal: React.FC<Props> = ({
   fullScreen = false,
   compact = false,
 }) => {
+  const initFocusRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <Transition appear show={show} as={React.Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-10" onClose={onClose} initialFocus={initFocusRef}>
         <Transition.Child
           as={React.Fragment}
           enter="ease-out duration-300"
@@ -105,7 +107,9 @@ const Modal: React.FC<Props> = ({
                 <div
                   className={tw("flex flex-row gap-4 justify-end items-center")}
                 >
-                  <Button onClick={onClose}>Close</Button>
+                  <Button onClick={onClose} ref={initFocusRef}>
+                    Close
+                  </Button>
                   {actions}
                 </div>
               )}

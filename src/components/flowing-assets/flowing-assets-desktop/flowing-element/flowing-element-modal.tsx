@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useAppSelector } from "../../../../store/hooks";
 import { ElementId } from "../../../../store/slices/flowing-assets-types";
 import { getElementRectSelector } from "../../../../store/slices/zones-and-transformers-slice";
@@ -48,8 +48,16 @@ const FlowingElementModal: React.FC<Props> = ({
     [inTransition, show]
   );
 
+  const initFocusRef = useRef<HTMLButtonElement | null>(null);
+
   return (
-    <Dialog as="div" className="relative z-10" open={display} onClose={onClose}>
+    <Dialog
+      as="div"
+      className="relative z-10"
+      open={display}
+      onClose={onClose}
+      initialFocus={initFocusRef}
+    >
       <div
         onClick={onClose}
         className={tw(
@@ -98,7 +106,9 @@ const FlowingElementModal: React.FC<Props> = ({
             {children}
           </div>
           <div className={tw("flex flex-row justify-end items-center gap-3")}>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={onClose} ref={initFocusRef}>
+              Close
+            </Button>
             {actions}
           </div>
         </Dialog.Panel>
