@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { tw } from "../../../util/tw";
 
 type Props = {
   label: string;
@@ -35,6 +36,7 @@ const IconButton = forwardRef<HTMLButtonElement | null, Props>(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
+        className={tw("active:scale-75", "transition-all duration-200")}
       >
         {children}
       </button>
