@@ -28,11 +28,11 @@ const FileParserDataRow: React.FC<Props> = ({
 
   const fieldsValidity = useMemo(
     () =>
-      line.map((field) => {
-        const fieldType = fileColumns[fields[index] ?? "unset"];
+      line.map((field, fieldIndex) => {
+        const fieldType = fileColumns[fields[fieldIndex] ?? "unset"];
         return fieldType.validate(field.value);
       }),
-    [fields, index, line]
+    [fields, line]
   );
 
   const rowIsValid = fieldsValidity.every((isValid) => isValid);
@@ -84,6 +84,10 @@ const FileParserDataRow: React.FC<Props> = ({
           </span>
         </td>
       ))}
+      {fields.length > line.length &&
+        Array(fields.length - line.length)
+          .fill(0)
+          .map((_, indexField) => <td key={indexField} />)}
       <td
         className={tw(
           "flex flex-col items-center justify-center",
