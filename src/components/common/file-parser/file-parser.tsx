@@ -1,61 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Divider, dividers } from "./dividers";
+import { useCallback, useState } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
 import { produce } from "immer";
 import FileParserDataRow from "./filer-parser-data-row";
-import {
-  fileParserActions,
-  getAllLinesIds,
-} from "../../../store/slices/file-parser-slice";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getAllLinesIds } from "../../../store/slices/file-parser-slice";
+import { useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
 
 type Props = {
   fields: FileColumn[];
   setFields: React.Dispatch<React.SetStateAction<FileColumn[]>>;
-  lines: string[];
-  divider: Divider;
   ignoreFirstLine: boolean;
 };
 
 const FileParser: React.FC<Props> = ({
   fields,
   setFields,
-  lines,
-  divider,
   ignoreFirstLine,
 }) => {
   const linesIds = useAppSelector(getAllLinesIds());
 
-  const dispatch = useAppDispatch();
-  const { setAllLines } = fileParserActions;
-
-  const [parsedLines, maxLineLen, firstLine] = useMemo(() => {
-    let maxLineLen = 0;
-
-    const parsedLines = lines.map((line) => {
-      const parsedLine = line.split(dividers[divider].regex);
-      maxLineLen = Math.max(maxLineLen, parsedLine.length);
-      return parsedLine;
-    });
-
-    let firstLine: string[] = [];
-    if (ignoreFirstLine) {
-      firstLine = parsedLines.shift() ?? [];
-    }
-
-    return [parsedLines, maxLineLen, firstLine];
-  }, [divider, ignoreFirstLine, lines]);
-
-  useEffect(() => {
-    dispatch(setAllLines(parsedLines));
-  }, [dispatch, parsedLines, setAllLines]);
-
-  useEffect(() => {
-    setFields(Array(maxLineLen).fill("unset"));
-  }, [divider, maxLineLen, setFields]);
+  const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 
   const onChangeField = useCallback(
     (index: number) => (fieldKey: FileColumn) => {
@@ -101,7 +67,7 @@ const FileParser: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {firstLine.length > 0 && (
+          {/* {firstLine !== undefined && (
             <tr className={tw("w-[max-content]", "odd:bg-slate-300")}>
               <th />
               {firstLine.map((field, indexField) => (
@@ -116,8 +82,8 @@ const FileParser: React.FC<Props> = ({
                 </th>
               ))}
             </tr>
-          )}
-          {linesIds.map((rowId, indexLine) => (
+          )} */}
+          {linesIds.slice(+!!firstLine).map((rowId, indexLine) => (
             <FileParserDataRow
               key={indexLine}
               rowId={rowId}

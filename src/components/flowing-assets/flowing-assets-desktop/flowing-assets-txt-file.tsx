@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { useAppSelector } from "../../../store/hooks";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { ElementId } from "../../../store/slices/flowing-assets-types";
 import {
   getAsset,
@@ -19,12 +19,16 @@ import Switch from "../../ui/switch/switch";
 import { Divider, dividers } from "../../common/file-parser/dividers";
 import FileParser from "../../common/file-parser/file-parser";
 import { FileColumn } from "../../common/file-parser/column-types";
+import { fileParserActions } from "../../../store/slices/file-parser-slice";
 
 type Props = {
   id: ElementId;
 };
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
+  const dispatch = useAppDispatch();
+  const { setAllLines } = fileParserActions;
+
   const asset = useAppSelector(getAsset(id));
   if (asset.type !== "txt_file" && asset.type !== "csv_file") throw new Error();
 
@@ -46,20 +50,46 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showParseModal, setShowParseModal] = useState(false);
 
-  const openParseModalHandler = useCallback(() => {
-    setShowPreviewModal(false);
-    setShowParseModal(true);
-  }, []);
-
-  const closeParseModalHandler = useCallback(() => {
-    setShowPreviewModal(true);
-    setShowParseModal(false);
-  }, []);
-
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
   const [divider, setDivider] = useState<Divider>("tab");
   const [fields, setFields] = useState<FileColumn[]>([]);
+
+  const parsedLines = useMemo(
+    () =>
+      fileContents.map((line) => {
+        const parsedLine = line.split(dividers[divider].regex);
+        return parsedLine;
+      }),
+    [divider, fileContents]
+  );
+
+  const maxLineLen = useMemo(
+    () =>
+      parsedLines.length
+        ? Math.max(...parsedLines.map((line) => line.length))
+        : 1,
+    [parsedLines]
+  );
+
+  useEffect(() => {
+    dispatch(setAllLines(parsedLines));
+    setFields(Array(maxLineLen).fill("unset"));
+  }, [dispatch, divider, maxLineLen, parsedLines, setAllLines, setFields]);
+
+  const openParseModalHandler = useCallback(() => {
+    dispatch(setAllLines(parsedLines));
+
+    setShowPreviewModal(false);
+    setShowParseModal(true);
+  }, [dispatch, parsedLines, setAllLines]);
+
+  const closeParseModalHandler = useCallback(() => {
+    dispatch(setAllLines([]));
+
+    setShowPreviewModal(true);
+    setShowParseModal(false);
+  }, [dispatch, setAllLines]);
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -178,8 +208,6 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
           </div>
 
           <FileParser
-            lines={fileContents}
-            divider={divider}
             ignoreFirstLine={ignoreFirstLine}
             fields={fields}
             setFields={setFields}
