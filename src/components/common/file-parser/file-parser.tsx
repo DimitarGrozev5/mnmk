@@ -67,22 +67,15 @@ const FileParser: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {/* {firstLine !== undefined && (
-            <tr className={tw("w-[max-content]", "odd:bg-slate-300")}>
-              <th />
-              {firstLine.map((field, indexField) => (
-                <th
-                  key={`first-line-${indexField}`}
-                  className={tw(
-                    "border border-slate-300 px-3",
-                    "text-slate-400 font-normal"
-                  )}
-                >
-                  {field}
-                </th>
-              ))}
-            </tr>
-          )} */}
+          {firstLine !== undefined && (
+            <FileParserDataRow
+              rowId={firstLine}
+              index={0}
+              fields={fields}
+              selectField={setSelectedFieldId}
+              ignored
+            />
+          )}
           {linesIds.slice(+!!firstLine).map((rowId, indexLine) => (
             <FileParserDataRow
               key={indexLine}

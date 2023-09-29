@@ -14,6 +14,7 @@ type Props = {
   index: number;
   fields: FileColumn[];
   selectField: (fieldId: string) => void;
+  ignored?: boolean;
 };
 
 const FileParserDataRow: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const FileParserDataRow: React.FC<Props> = ({
   index,
   fields,
   selectField,
+  ignored = false,
 }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
   const dispatch = useAppDispatch();
@@ -48,10 +50,10 @@ const FileParserDataRow: React.FC<Props> = ({
           "border border-slate-400 px-2",
           "text-sm text-slate-400 font-normal",
           "group-odd/row:bg-slate-300",
-          !rowIsValid && "text-red-500 border-red-500 bg-red-50"
+          !rowIsValid && !ignored && "text-red-500 border-red-500 bg-red-50"
         )}
       >
-        {index + 1}
+        {ignored ? null : index + 1}
       </th>
       {line.map((field, indexField) => (
         <td
@@ -61,8 +63,9 @@ const FileParserDataRow: React.FC<Props> = ({
             "group/field",
             "border border-slate-300 px-3",
             "text-slate-800",
+            ignored && "text-slate-400 font-normal",
             "group-odd/row:bg-slate-300",
-            !fieldsValidity[indexField] && "text-red-500"
+            !fieldsValidity[indexField] && !ignored && "text-red-500"
           )}
         >
           {field.value}
@@ -72,7 +75,8 @@ const FileParserDataRow: React.FC<Props> = ({
               "flex flex-col justify-center",
               "transition-all duration-500",
               "opacity-0 invisible",
-              "group-hover/field:opacity-100 group-hover/field:visible"
+              "group-hover/field:opacity-100 group-hover/field:visible",
+              ignored && "group-hover/field:hidden"
             )}
           >
             <IconButton
@@ -93,7 +97,8 @@ const FileParserDataRow: React.FC<Props> = ({
           "flex flex-col items-center justify-center",
           "transition-all duration-500",
           "opacity-0 invisible",
-          "group-hover/row:opacity-100 group-hover/row:visible"
+          "group-hover/row:opacity-100 group-hover/row:visible",
+          ignored && "group-hover/row:hidden"
         )}
       >
         <IconButton onClick={onRemoveLine} label="Delete line">
