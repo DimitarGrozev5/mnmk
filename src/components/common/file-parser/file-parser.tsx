@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
@@ -11,6 +11,7 @@ import {
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
+import Modal from "../../ui/modal/modal";
 
 const FileParser: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const FileParser: React.FC = () => {
 
   // Edit fields
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
+  const [addFieldAtIndex, setAddFieldAtIndex] = useState<number | null>(null);
 
   return (
     <div
@@ -50,14 +52,17 @@ const FileParser: React.FC = () => {
           <tr>
             <th />
             {columns.map((field, indexField) => (
-              <th key={indexField}>
-                {
-                  <FileColumnSelector
-                    value={field}
-                    onChange={onChangeField(indexField)}
-                  />
-                }
-              </th>
+              <React.Fragment key={indexField}>
+                <th>
+                  {
+                    <FileColumnSelector
+                      value={field}
+                      onChange={onChangeField(indexField)}
+                    />
+                  }
+                </th>
+                <th></th>
+              </React.Fragment>
             ))}
           </tr>
         </thead>
@@ -67,6 +72,7 @@ const FileParser: React.FC = () => {
               rowId={firstLine}
               index={0}
               selectField={setSelectedFieldId}
+              addFieldAtIndex={setAddFieldAtIndex}
               ignored
             />
           )}
@@ -76,6 +82,7 @@ const FileParser: React.FC = () => {
               rowId={rowId}
               index={indexLine}
               selectField={setSelectedFieldId}
+              addFieldAtIndex={setAddFieldAtIndex}
             />
           ))}
         </tbody>
@@ -85,6 +92,14 @@ const FileParser: React.FC = () => {
         selectedFieldId={selectedFieldId}
         setSelectedFieldId={setSelectedFieldId}
       />
+
+      <Modal
+        show={addFieldAtIndex !== null}
+        onClose={() => setAddFieldAtIndex(null)}
+        compact
+      >
+        asd
+      </Modal>
     </div>
   );
 };

@@ -1,7 +1,11 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { tw } from "../../../util/tw";
 import { fileColumns } from "./column-types";
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import {
+  PencilSquareIcon,
+  PlusCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
@@ -14,6 +18,7 @@ type Props = {
   rowId: string;
   index: number;
   selectField: (fieldId: string) => void;
+  addFieldAtIndex: (index: number) => void;
   ignored?: boolean;
 };
 
@@ -21,6 +26,7 @@ const FileParserDataRow: React.FC<Props> = ({
   rowId,
   index,
   selectField,
+  addFieldAtIndex,
   ignored = false,
 }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
@@ -57,37 +63,57 @@ const FileParserDataRow: React.FC<Props> = ({
         {ignored ? null : index + 1}
       </th>
       {line.map((field, indexField) => (
-        <td
-          key={field.id}
-          className={tw(
-            "relative",
-            "group/field",
-            "border border-slate-300 px-3",
-            "text-slate-800",
-            ignored && "text-slate-400 font-normal",
-            "group-odd/row:bg-slate-300",
-            !fieldsValidity[indexField] && !ignored && "text-red-500"
-          )}
-        >
-          {field.value}
-          <span
+        <React.Fragment key={field.id}>
+          <td
             className={tw(
-              "absolute right-1 inset-y-0",
-              "flex flex-col justify-center",
-              "transition-all duration-500",
-              "opacity-0 invisible",
-              "group-hover/field:opacity-100 group-hover/field:visible",
-              ignored && "group-hover/field:hidden"
+              "relative",
+              "group/field",
+              "border border-slate-300 px-3",
+              "text-slate-800",
+              ignored && "text-slate-400 font-normal",
+              "group-odd/row:bg-slate-300",
+              !fieldsValidity[indexField] && !ignored && "text-red-500"
             )}
           >
-            <IconButton
-              label="Delete line"
-              onClick={() => selectField(field.id)}
+            {field.value}
+            <span
+              className={tw(
+                "absolute right-1 inset-y-0",
+                "flex flex-col justify-center",
+                "transition-all duration-500",
+                "opacity-0 invisible",
+                "group-hover/field:opacity-100 group-hover/field:visible",
+                ignored && "group-hover/field:hidden"
+              )}
             >
-              <PencilSquareIcon className="w-4 h-4 text-sky-500" />
-            </IconButton>
-          </span>
-        </td>
+              <IconButton
+                label="Edit field"
+                onClick={() => selectField(field.id)}
+              >
+                <PencilSquareIcon className="w-4 h-4 text-sky-500" />
+              </IconButton>
+            </span>
+          </td>
+          <th className="relative group/add">
+            <span
+              className={tw(
+                "absolute top-0 -left-1 -right-1 bottom-0",
+                "flex flex-col items-center justify-center",
+                "transition-all duration-500",
+                "opacity-0 invisible",
+                "group-hover/add:opacity-100 group-hover/add:visible",
+                ignored && "group-hover/row:hidden"
+              )}
+            >
+              <IconButton
+                label="Add field"
+                onClick={() => addFieldAtIndex(indexField + 1)}
+              >
+                <PlusCircleIcon className="w-5 h-5 text-sky-500" />
+              </IconButton>
+            </span>
+          </th>
+        </React.Fragment>
       ))}
       {columns.length > line.length &&
         Array(columns.length - line.length)
