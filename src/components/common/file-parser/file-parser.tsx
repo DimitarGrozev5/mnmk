@@ -2,36 +2,31 @@ import { useCallback, useState } from "react";
 import { tw } from "../../../util/tw";
 import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
-import { produce } from "immer";
 import FileParserDataRow from "./filer-parser-data-row";
-import { getAllLinesIds } from "../../../store/slices/file-parser-slice";
-import { useAppSelector } from "../../../store/hooks";
+import {
+  fileParserActions,
+  getAllLinesIds,
+  getColumns,
+  getIgnoreFirstLine,
+} from "../../../store/slices/file-parser-slice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
 
-type Props = {
-  fields: FileColumn[];
-  setFields: React.Dispatch<React.SetStateAction<FileColumn[]>>;
-  ignoreFirstLine: boolean;
-};
+const FileParser: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { setColumn: setField } = fileParserActions;
 
-const FileParser: React.FC<Props> = ({
-  fields,
-  setFields,
-  ignoreFirstLine,
-}) => {
   const linesIds = useAppSelector(getAllLinesIds());
+  const columns = useAppSelector(getColumns());
+  const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
 
   const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 
   const onChangeField = useCallback(
     (index: number) => (fieldKey: FileColumn) => {
-      setFields(
-        produce((draft) => {
-          draft[index] = fieldKey;
-        })
-      );
+      dispatch(setField({ index, type: fieldKey }));
     },
-    [setFields]
+    [dispatch, setField]
   );
 
   // Edit fields
@@ -54,7 +49,7 @@ const FileParser: React.FC<Props> = ({
         <thead>
           <tr>
             <th />
-            {fields.map((field, indexField) => (
+            {columns.map((field, indexField) => (
               <th key={indexField}>
                 {
                   <FileColumnSelector
@@ -71,7 +66,6 @@ const FileParser: React.FC<Props> = ({
             <FileParserDataRow
               rowId={firstLine}
               index={0}
-              fields={fields}
               selectField={setSelectedFieldId}
               ignored
             />
@@ -81,7 +75,6 @@ const FileParser: React.FC<Props> = ({
               key={indexLine}
               rowId={rowId}
               index={indexLine}
-              fields={fields}
               selectField={setSelectedFieldId}
             />
           ))}
