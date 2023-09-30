@@ -7,20 +7,18 @@ import {
   fileParserActions,
   getAllLinesIds,
   getColumns,
+  getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
 
-type Props = {
-  ignoreFirstLine: boolean;
-};
-
-const FileParser: React.FC<Props> = ({ ignoreFirstLine }) => {
+const FileParser: React.FC = () => {
   const dispatch = useAppDispatch();
   const { setColumn: setField } = fileParserActions;
 
   const linesIds = useAppSelector(getAllLinesIds());
   const columns = useAppSelector(getColumns());
+  const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
 
   const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 

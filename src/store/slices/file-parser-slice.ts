@@ -14,6 +14,7 @@ type FileParserState = {
   dataFields: Record<string, string>;
   divider: Divider;
   columns: FileColumn[];
+  ignoreFirstLine: boolean;
 };
 
 const initialState: FileParserState = {
@@ -22,6 +23,7 @@ const initialState: FileParserState = {
   dataFields: {},
   divider: "tab",
   columns: [],
+  ignoreFirstLine: false,
 };
 
 export const fileParserSlice = createSlice({
@@ -97,6 +99,14 @@ export const fileParserSlice = createSlice({
         });
       }
     },
+
+    toggleIgnoreFirstLine: (
+      state,
+      action: PayloadAction<boolean | undefined>
+    ) => {
+      state.ignoreFirstLine =
+        action.payload !== undefined ? action.payload : !state.ignoreFirstLine;
+    },
   },
 });
 
@@ -139,6 +149,8 @@ const actions = fileParserSlice.actions;
 export default fileParserSlice.reducer;
 
 // Selectors
+export const getIgnoreFirstLine = () => (state: RootState) =>
+  state.fileParser.ignoreFirstLine;
 export const getDivider = () => (state: RootState) => state.fileParser.divider;
 export const getColumns = () => (state: RootState) => state.fileParser.columns;
 

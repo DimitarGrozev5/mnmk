@@ -21,6 +21,7 @@ import FileParser from "../../common/file-parser/file-parser";
 import {
   fileParserActions,
   getDivider,
+  getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
 
 type Props = {
@@ -29,11 +30,13 @@ type Props = {
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const { setAllLines, clearAllData, changeDivider } = fileParserActions;
+  const { setAllLines, clearAllData, changeDivider, toggleIgnoreFirstLine } =
+    fileParserActions;
 
   const asset = useAppSelector(getAsset(id));
   if (asset.type !== "txt_file" && asset.type !== "csv_file") throw new Error();
   const divider = useAppSelector(getDivider());
+  const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -54,11 +57,13 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const [showParseModal, setShowParseModal] = useState(false);
 
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
-  const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(setAllLines({ rawLines: fileContents, divider: "tab" }));
-  // }, [dispatch, fileContents, setAllLines]);
+  const ignoreFirstLineHandler = useCallback(
+    (value: boolean) => {
+      dispatch(toggleIgnoreFirstLine(value));
+    },
+    [dispatch, toggleIgnoreFirstLine]
+  );
 
   const openParseModalHandler = useCallback(() => {
     dispatch(setAllLines({ rawLines: fileContents, divider: "tab" }));
@@ -188,12 +193,12 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
             <Switch
               value={ignoreFirstLine}
-              onChange={setIgnoreFirstLine}
+              onChange={ignoreFirstLineHandler}
               label="Ignore first line"
             />
           </div>
 
-          <FileParser ignoreFirstLine={ignoreFirstLine} />
+          <FileParser />
         </div>
       </Modal>
     </>
