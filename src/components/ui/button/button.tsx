@@ -27,11 +27,11 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
           uppercase && "uppercase",
           "hover:text-slate-400",
           "active:scale-95",
-          variant === "contained" && "bg-slate-200",
-          variant === "contained" && "border border-slate-400 rounded-lg",
+          variant === "contained" && "text-sky-500 bg-sky-200",
+          variant === "contained" && "border border-sky-400 rounded-lg",
           variant === "contained" && "py-2 px-4",
           variant === "contained" &&
-            "hover:bg-slate-300 hover:border-slate-500 hover:text-slate-700",
+            "hover:bg-sky-300 hover:border-sky-500 hover:text-sky-700",
           className
         )}
       >
