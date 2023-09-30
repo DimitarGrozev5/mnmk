@@ -1,17 +1,20 @@
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 import { RootState } from "../store";
+import { Divider } from "../../components/common/file-parser/dividers";
 
 type FileParserState = {
   linesArray: string[];
   lines: Record<string, string[]>;
   fields: Record<string, string>;
+  divider: Divider;
 };
 
 const initialState: FileParserState = {
   linesArray: [],
   lines: {},
   fields: {},
+  divider: "tab",
 };
 
 export const fileParserSlice = createSlice({
