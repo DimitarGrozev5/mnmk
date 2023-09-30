@@ -1,46 +1,30 @@
-import { useEffect, useRef } from "react";
-import clsx from "clsx";
-import { type IdRefs, type Asset } from "../flowing-assets-types";
+import { useAppSelector } from "../../../store/hooks";
+import type { ElementId } from "../../../store/slices/flowing-assets-types";
+import FlowingAddNewAsset from "./flowing-add-new-asset";
+import FlowingTextFile from "./flowing-assets-txt-file";
+import FlowingElement from "./flowing-element/flowing-element";
 
 type Props = {
-  asset: Asset;
-  addAssetRef: (ref: IdRefs) => void;
-  removeAssetRef: (ref: IdRefs) => void;
-  setHoveredAsset: (assetId: string | null) => void;
+  assetId: ElementId;
 };
 
-const FLowingAsset: React.FC<Props> = ({
-  asset,
-  addAssetRef,
-  removeAssetRef,
-  setHoveredAsset,
-}) => {
-  // Take a ref to the div element and
-  const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (divRef.current) {
-      addAssetRef({ [asset.id]: divRef });
-    }
-    () => {
-      removeAssetRef({ [asset.id]: divRef });
-    };
-  }, [addAssetRef, asset.id, removeAssetRef]);
-
-  return (
-    <div
-      ref={divRef}
-      className={clsx(
-        "relative z-10",
-        "p-3 w-36 h-36",
-        "bg-slate-300 rounded-lg",
-        "shadow-lg"
-      )}
-      onMouseEnter={() => setHoveredAsset(asset.id)}
-      onMouseLeave={() => setHoveredAsset(null)}
-    >
-      {asset.component}
-    </div>
+const FlowingAsset: React.FC<Props> = ({ assetId }) => {
+  const asset = useAppSelector(
+    (state) => state.zonesAndTransformers.assets[assetId]
   );
+
+  switch (asset.type) {
+    case "add_new":
+      return <FlowingAddNewAsset id={assetId} />;
+    case "txt_file":
+    case "csv_file":
+      return <FlowingTextFile id={assetId} />;
+
+    default:
+      <FlowingElement id={assetId} type="assets" rectangular>
+        {asset.id}
+      </FlowingElement>;
+  }
 };
 
-export default FLowingAsset;
+export default FlowingAsset;
