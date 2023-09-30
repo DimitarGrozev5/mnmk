@@ -153,6 +153,15 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
         show={showParseModal}
         onClose={closeParseModalHandler}
         title={`Parse File: ${asset.data.fileName}`}
+        actions={
+          <>
+            {fileType === "ts" ? (
+              <Button variant="contained">Next</Button>
+            ) : (
+              <Button variant="contained">Parse</Button>
+            )}
+          </>
+        }
         fullScreen
       >
         <div
