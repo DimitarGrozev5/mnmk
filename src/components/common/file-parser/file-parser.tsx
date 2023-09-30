@@ -11,7 +11,7 @@ import {
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
-import Modal from "../../ui/modal/modal";
+import FileParserAddFieldModal from "./add-field-modal";
 
 const FileParser: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,16 @@ const FileParser: React.FC = () => {
 
   // Edit fields
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
-  const [addFieldAtIndex, setAddFieldAtIndex] = useState<number | null>(null);
+  const [addFieldAtIndex, setAddFieldAtIndex] = useState<{
+    lineId: string;
+    atIndex: number;
+  } | null>(null);
+  const setAddFieldAtIndexCallback = useCallback(
+    (rowId: string) => (atIndex: number) => {
+      setAddFieldAtIndex({ lineId: rowId, atIndex });
+    },
+    []
+  );
 
   return (
     <div
@@ -72,7 +81,7 @@ const FileParser: React.FC = () => {
               rowId={firstLine}
               index={0}
               selectField={setSelectedFieldId}
-              addFieldAtIndex={setAddFieldAtIndex}
+              addFieldAtIndex={setAddFieldAtIndexCallback("0")}
               ignored
             />
           )}
@@ -82,7 +91,7 @@ const FileParser: React.FC = () => {
               rowId={rowId}
               index={indexLine}
               selectField={setSelectedFieldId}
-              addFieldAtIndex={setAddFieldAtIndex}
+              addFieldAtIndex={setAddFieldAtIndexCallback(rowId)}
             />
           ))}
         </tbody>
@@ -93,13 +102,11 @@ const FileParser: React.FC = () => {
         setSelectedFieldId={setSelectedFieldId}
       />
 
-      <Modal
-        show={addFieldAtIndex !== null}
+      <FileParserAddFieldModal
+        forRowId={addFieldAtIndex?.lineId}
+        atIndex={addFieldAtIndex?.atIndex}
         onClose={() => setAddFieldAtIndex(null)}
-        compact
-      >
-        asd
-      </Modal>
+      />
     </div>
   );
 };

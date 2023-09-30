@@ -102,6 +102,16 @@ export const fileParserSlice = createSlice({
         });
       }
     },
+    addField: (
+      state,
+      action: PayloadAction<{ rowId: string; atIndex: number; value: string }>
+    ) => {
+      const { rowId, atIndex, value } = action.payload;
+      const fieldId = nanoid();
+
+      state.dataFields[fieldId] = value;
+      state.lines[rowId].splice(atIndex, 0, fieldId);
+    },
 
     toggleIgnoreFirstLine: (
       state,
