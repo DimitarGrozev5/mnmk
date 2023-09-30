@@ -21,8 +21,10 @@ import FileParser from "../../common/file-parser/file-parser";
 import {
   fileParserActions,
   getDivider,
+  getFileType,
   getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
+import { FileType, fileTypes } from "../../common/file-parser/file-types";
 
 type Props = {
   id: ElementId;
@@ -30,13 +32,19 @@ type Props = {
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const { setAllLines, clearAllData, changeDivider, toggleIgnoreFirstLine } =
-    fileParserActions;
+  const {
+    setAllLines,
+    clearAllData,
+    changeDivider,
+    toggleIgnoreFirstLine,
+    setFileType,
+  } = fileParserActions;
 
   const asset = useAppSelector(getAsset(id));
   if (asset.type !== "txt_file" && asset.type !== "csv_file") throw new Error();
   const divider = useAppSelector(getDivider());
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
+  const fileType = useAppSelector(getFileType());
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -56,7 +64,13 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showParseModal, setShowParseModal] = useState(false);
 
-  const [fileType, setFileType] = useState<"xy" | "meas">("xy");
+  const setFileTypeHandler = useCallback(
+    (type: string) => {
+      if (!Object.keys(fileTypes).includes(type)) return;
+      dispatch(setFileType(type as FileType));
+    },
+    [dispatch, setFileType]
+  );
 
   const ignoreFirstLineHandler = useCallback(
     (value: boolean) => {
@@ -78,12 +92,6 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setShowPreviewModal(true);
     setShowParseModal(false);
   }, [clearAllData, dispatch]);
-
-  const changeFileTypeHandler = useCallback((type: string) => {
-    if (type !== "xy" && type !== "meas") return;
-
-    setFileType(type);
-  }, []);
 
   const changeDividerHandler = useCallback(
     (type: string) => {
@@ -167,9 +175,10 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             >
               <h1 className="text-xl text-slate-500">File Type</h1>
               <div className={tw("flex flex-row items-center gap-2")}>
-                <RadioGroup value={fileType} onChange={changeFileTypeHandler}>
-                  <RadioButton value="xy" label="Coordinate data" />
-                  <RadioButton value="meas" label="Measurment data" />
+                <RadioGroup value={fileType} onChange={setFileTypeHandler}>
+                  {Object.entries(fileTypes).map(([key, value]) => (
+                    <RadioButton key={key} value={key} label={value} />
+                  ))}
                 </RadioGroup>
               </div>
             </div>
