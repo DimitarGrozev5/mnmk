@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { ElementId } from "../../../store/slices/flowing-assets-types";
 import {
@@ -18,8 +18,10 @@ import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
 import { Divider, dividers } from "../../common/file-parser/dividers";
 import FileParser from "../../common/file-parser/file-parser";
-import { FileColumn } from "../../common/file-parser/column-types";
-import { fileParserActions } from "../../../store/slices/file-parser-slice";
+import {
+  fileParserActions,
+  getDivider,
+} from "../../../store/slices/file-parser-slice";
 
 type Props = {
   id: ElementId;
@@ -27,10 +29,11 @@ type Props = {
 
 const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const { setAllLines } = fileParserActions;
+  const { setAllLines, clearAllData, changeDivider } = fileParserActions;
 
   const asset = useAppSelector(getAsset(id));
   if (asset.type !== "txt_file" && asset.type !== "csv_file") throw new Error();
+  const divider = useAppSelector(getDivider());
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -52,44 +55,24 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
   const [fileType, setFileType] = useState<"xy" | "meas">("xy");
   const [ignoreFirstLine, setIgnoreFirstLine] = useState(false);
-  const [divider, setDivider] = useState<Divider>("tab");
-  const [fields, setFields] = useState<FileColumn[]>([]);
 
-  const parsedLines = useMemo(
-    () =>
-      fileContents.map((line) => {
-        const parsedLine = line.split(dividers[divider].regex);
-        return parsedLine;
-      }),
-    [divider, fileContents]
-  );
-
-  const maxLineLen = useMemo(
-    () =>
-      parsedLines.length
-        ? Math.max(...parsedLines.map((line) => line.length))
-        : 1,
-    [parsedLines]
-  );
-
-  useEffect(() => {
-    dispatch(setAllLines(parsedLines));
-    setFields(Array(maxLineLen).fill("unset"));
-  }, [dispatch, divider, maxLineLen, parsedLines, setAllLines, setFields]);
+  // useEffect(() => {
+  //   dispatch(setAllLines({ rawLines: fileContents, divider: "tab" }));
+  // }, [dispatch, fileContents, setAllLines]);
 
   const openParseModalHandler = useCallback(() => {
-    dispatch(setAllLines(parsedLines));
+    dispatch(setAllLines({ rawLines: fileContents, divider: "tab" }));
 
     setShowPreviewModal(false);
     setShowParseModal(true);
-  }, [dispatch, parsedLines, setAllLines]);
+  }, [dispatch, fileContents, setAllLines]);
 
   const closeParseModalHandler = useCallback(() => {
-    dispatch(setAllLines([]));
+    dispatch(clearAllData());
 
     setShowPreviewModal(true);
     setShowParseModal(false);
-  }, [dispatch, setAllLines]);
+  }, [clearAllData, dispatch]);
 
   const changeFileTypeHandler = useCallback((type: string) => {
     if (type !== "xy" && type !== "meas") return;
@@ -97,11 +80,14 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     setFileType(type);
   }, []);
 
-  const changeDividerHandler = useCallback((type: string) => {
-    if (!Object.keys(dividers).includes(type)) return;
+  const changeDividerHandler = useCallback(
+    (type: string) => {
+      if (!Object.keys(dividers).includes(type)) return;
 
-    setDivider(type as Divider);
-  }, []);
+      dispatch(changeDivider(type as Divider));
+    },
+    [changeDivider, dispatch]
+  );
 
   return (
     <>
@@ -207,11 +193,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
             />
           </div>
 
-          <FileParser
-            ignoreFirstLine={ignoreFirstLine}
-            fields={fields}
-            setFields={setFields}
-          />
+          <FileParser ignoreFirstLine={ignoreFirstLine} />
         </div>
       </Modal>
     </>

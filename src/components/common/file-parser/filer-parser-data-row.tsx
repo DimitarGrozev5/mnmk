@@ -1,18 +1,18 @@
 import { useCallback, useMemo } from "react";
 import { tw } from "../../../util/tw";
-import { FileColumn, fileColumns } from "./column-types";
+import { fileColumns } from "./column-types";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import IconButton from "../../ui/button/icon-button";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   fileParserActions,
+  getColumns,
   getLineWithFields,
 } from "../../../store/slices/file-parser-slice";
 
 type Props = {
   rowId: string;
   index: number;
-  fields: FileColumn[];
   selectField: (fieldId: string) => void;
   ignored?: boolean;
 };
@@ -20,21 +20,22 @@ type Props = {
 const FileParserDataRow: React.FC<Props> = ({
   rowId,
   index,
-  fields,
   selectField,
   ignored = false,
 }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
+  const columns = useAppSelector(getColumns());
+
   const dispatch = useAppDispatch();
   const { removeLine } = fileParserActions;
 
   const fieldsValidity = useMemo(
     () =>
       line.map((field, fieldIndex) => {
-        const fieldType = fileColumns[fields[fieldIndex] ?? "unset"];
+        const fieldType = fileColumns[columns[fieldIndex] ?? "unset"];
         return fieldType.validate(field.value);
       }),
-    [fields, line]
+    [columns, line]
   );
 
   const rowIsValid = fieldsValidity.every((isValid) => isValid);
@@ -88,8 +89,8 @@ const FileParserDataRow: React.FC<Props> = ({
           </span>
         </td>
       ))}
-      {fields.length > line.length &&
-        Array(fields.length - line.length)
+      {columns.length > line.length &&
+        Array(columns.length - line.length)
           .fill(0)
           .map((_, indexField) => <td key={indexField} />)}
       <td
