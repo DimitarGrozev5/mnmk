@@ -16,7 +16,7 @@ import RadioGroup from "../../ui/radio-buttons/radio-group";
 import RadioButton from "../../ui/radio-buttons/radio-button";
 import { tw } from "../../../util/tw";
 import Switch from "../../ui/switch/switch";
-import { Divider, dividers } from "../../common/file-parser/dividers";
+import { Divider, dividers } from "../../../store/types/dividers";
 import FileParser from "../../common/file-parser/file-parser";
 import {
   fileParserActions,
@@ -24,7 +24,7 @@ import {
   getFileType,
   getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
-import { FileType, fileTypes } from "../../common/file-parser/file-types";
+import { FileType, fileTypes } from "../../../store/types/file-types";
 
 type Props = {
   id: ElementId;

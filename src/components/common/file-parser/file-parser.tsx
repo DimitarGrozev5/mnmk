@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import { tw } from "../../../util/tw";
-import { FileColumn } from "./column-types";
 import FileColumnSelector from "./select-column-type";
 import FileParserDataRow from "./filer-parser-data-row";
 import {
@@ -12,6 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
 import FileParserAddFieldModal from "./add-field-modal";
+import { FileColumn } from "../../../store/types/column-types";
 
 const FileParser: React.FC = () => {
   const dispatch = useAppDispatch();

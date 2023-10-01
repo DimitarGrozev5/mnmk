@@ -4,10 +4,10 @@ import { RootState } from "../store";
 import {
   Divider,
   dividers,
-} from "../../components/common/file-parser/dividers";
-import { FileColumn } from "../../components/common/file-parser/column-types";
+} from "../types/dividers";
 import { Draft } from "immer";
-import { FileType } from "../../components/common/file-parser/file-types";
+import { FileColumn } from "../types/column-types";
+import { FileType } from "../types/file-types";
 
 type FileParserState = {
   linesArray: string[];

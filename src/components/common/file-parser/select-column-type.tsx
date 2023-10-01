@@ -1,6 +1,6 @@
+import { FileColumn, fileColumns } from "../../../store/types/column-types";
 import Option from "../../ui/select/option";
 import Select from "../../ui/select/select";
-import { FileColumn, fileColumns } from "./column-types";
 
 type Props = {
   value: FileColumn;

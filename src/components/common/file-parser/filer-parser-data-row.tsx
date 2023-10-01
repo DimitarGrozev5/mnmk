@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from "react";
 import { tw } from "../../../util/tw";
-import { fileColumns } from "./column-types";
 import {
   PencilSquareIcon,
   PlusCircleIcon,
@@ -13,6 +12,7 @@ import {
   getColumns,
   getLineWithFields,
 } from "../../../store/slices/file-parser-slice";
+import { fileColumns } from "../../../store/types/column-types";
 
 type Props = {
   rowId: string;
