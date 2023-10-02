@@ -38,7 +38,12 @@ const Modal: React.FC<Props> = ({
 
   return (
     <Transition appear show={show} as={React.Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose} initialFocus={initFocusRef}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={onClose}
+        initialFocus={initFocusRef}
+      >
         <Transition.Child
           as={React.Fragment}
           enter="ease-out duration-300"
@@ -99,7 +104,13 @@ const Modal: React.FC<Props> = ({
                 </Dialog.Title>
               )}
 
-              <div className={tw("flex-1", "flex flex-col items-center gap-4")}>
+              <div
+                className={tw(
+                  "flex-1",
+                  "flex flex-col items-center gap-4",
+                  "overflow-y-auto"
+                )}
+              >
                 {children}
               </div>
 
