@@ -20,11 +20,17 @@ import { Divider, dividers } from "../../../store/types/dividers";
 import FileParser from "../../common/file-parser/file-parser";
 import {
   fileParserActions,
+  getCoordinateSystem,
   getDivider,
   getFileType,
   getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
 import { FileType, fileTypes } from "../../../store/types/file-types";
+import {
+  CoordinateSystemCode,
+  coordinateSystems,
+} from "../../../store/types/coordinate-systems";
+import CoordinateSystemSelector from "../../common/file-parser/select-coordinate-system";
 
 type Props = {
   id: ElementId;
@@ -38,6 +44,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     changeDivider,
     toggleIgnoreFirstLine,
     setFileType,
+    setCoordinateSystem,
   } = fileParserActions;
 
   const asset = useAppSelector(getAsset(id));
@@ -45,6 +52,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const divider = useAppSelector(getDivider());
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
   const fileType = useAppSelector(getFileType());
+  const cs = useAppSelector(getCoordinateSystem());
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -100,6 +108,25 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
       dispatch(changeDivider(type as Divider));
     },
     [changeDivider, dispatch]
+  );
+
+  const changeCSHandler = useCallback(
+    (cs: CoordinateSystemCode) => {
+      if (!(cs[0] in coordinateSystems.asObject)) return;
+      if (!(cs[1] in coordinateSystems.asObject[cs[0]].subsystems.asObject))
+        return;
+      if (
+        !(
+          cs[2] in
+          coordinateSystems.asObject[cs[0]].subsystems.asObject[cs[1]].zones
+            .asObject
+        )
+      )
+        return;
+
+      dispatch(setCoordinateSystem(cs));
+    },
+    [dispatch, setCoordinateSystem]
   );
 
   return (
@@ -214,6 +241,23 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
               onChange={ignoreFirstLineHandler}
               label="Ignore first line"
             />
+
+            <div
+              className={tw(
+                "flex flex-col items-center gap-2",
+                "border border-slate-400 rounded-md",
+                "p-2",
+                fileType === "ts" && "hidden"
+              )}
+            >
+              <h1 className="text-xl text-slate-500">Coordinate sysyem</h1>
+              <div className={tw("flex flex-row items-center gap-2")}>
+                <CoordinateSystemSelector
+                  value={cs}
+                  onChange={changeCSHandler}
+                />
+              </div>
+            </div>
           </div>
 
           <FileParser />

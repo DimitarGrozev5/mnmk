@@ -1,13 +1,14 @@
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 import { RootState } from "../store";
-import {
-  Divider,
-  dividers,
-} from "../types/dividers";
+import { Divider, dividers } from "../types/dividers";
 import { Draft } from "immer";
 import { FileColumn } from "../types/column-types";
 import { FileType } from "../types/file-types";
+import {
+  CoordinateSystemCode,
+  HeightSystemCode,
+} from "../types/coordinate-systems";
 
 type FileParserState = {
   linesArray: string[];
@@ -16,7 +17,10 @@ type FileParserState = {
   divider: Divider;
   columns: FileColumn[];
   ignoreFirstLine: boolean;
+
   fileType: FileType;
+  coordinateSystem: CoordinateSystemCode;
+  heightSystem: HeightSystemCode;
 };
 
 const initialState: FileParserState = {
@@ -26,7 +30,10 @@ const initialState: FileParserState = {
   divider: "tab",
   columns: [],
   ignoreFirstLine: false,
+
   fileType: "control",
+  coordinateSystem: ["bgs", "cad", "default"],
+  heightSystem: "evrs",
 };
 
 export const fileParserSlice = createSlice({
@@ -123,6 +130,12 @@ export const fileParserSlice = createSlice({
     setFileType: (state, action: PayloadAction<FileType>) => {
       state.fileType = action.payload;
     },
+    setCoordinateSystem: (
+      state,
+      action: PayloadAction<CoordinateSystemCode>
+    ) => {
+      state.coordinateSystem = [...action.payload];
+    },
   },
 });
 
@@ -169,6 +182,8 @@ export const getIgnoreFirstLine = () => (state: RootState) =>
   state.fileParser.ignoreFirstLine;
 export const getFileType = () => (state: RootState) =>
   state.fileParser.fileType;
+export const getCoordinateSystem = () => (state: RootState) =>
+  state.fileParser.coordinateSystem;
 export const getDivider = () => (state: RootState) => state.fileParser.divider;
 export const getColumns = () => (state: RootState) => state.fileParser.columns;
 
