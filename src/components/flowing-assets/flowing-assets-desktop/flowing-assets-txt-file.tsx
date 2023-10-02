@@ -244,7 +244,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
             <div
               className={tw(
-                "flex flex-col items-stretch gap-2",
+                "flex flex-col items-stretch gap-4",
                 "border border-slate-400 rounded-md",
                 "p-2",
                 fileType === "ts" && "hidden"

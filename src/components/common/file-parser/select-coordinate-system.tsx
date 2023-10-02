@@ -59,6 +59,7 @@ const CoordinateSystemSelector: React.FC<Props> = ({
         selectedKey={value[0]}
         selectedCaption={getCS(value[0]).name}
         onChange={changeCSHandler}
+        label="System"
       >
         {coordinateSystems.asArray.map((csCode) => {
           const cs = getCS(csCode);
@@ -70,6 +71,7 @@ const CoordinateSystemSelector: React.FC<Props> = ({
           selectedKey={value[1]}
           selectedCaption={getCSS(value[0], value[1]).name}
           onChange={changeSSHandler}
+          label="Variant"
         >
           {getCS(value[0]).subsystems.asArray.map((ssCode) => {
             const ss = getCSS(value[0], ssCode);
@@ -82,6 +84,7 @@ const CoordinateSystemSelector: React.FC<Props> = ({
           selectedKey={value[2]}
           selectedCaption={getCSZone(value[0], value[1], value[2]).name}
           onChange={changeZHandler}
+          label="Zone"
         >
           {getCSS(value[0], value[1]).zones.asArray.map((zoneCode) => {
             const zone = getCSZone(value[0], value[1], zoneCode);
