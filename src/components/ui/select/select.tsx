@@ -40,7 +40,9 @@ const Select = <T,>({
               )
             }
           >
-            <span className="block truncate text-sky-800">{selectedCaption}</span>
+            <span className="block truncate text-sky-800">
+              {selectedCaption}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className={tw(

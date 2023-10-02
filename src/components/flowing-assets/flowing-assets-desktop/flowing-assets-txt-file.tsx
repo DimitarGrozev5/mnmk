@@ -244,19 +244,14 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
             <div
               className={tw(
-                "flex flex-col items-center gap-2",
+                "flex flex-col items-stretch gap-2",
                 "border border-slate-400 rounded-md",
                 "p-2",
                 fileType === "ts" && "hidden"
               )}
             >
               <h1 className="text-xl text-slate-500">Coordinate sysyem</h1>
-              <div className={tw("flex flex-row items-center gap-2")}>
-                <CoordinateSystemSelector
-                  value={cs}
-                  onChange={changeCSHandler}
-                />
-              </div>
+              <CoordinateSystemSelector value={cs} onChange={changeCSHandler} />
             </div>
           </div>
 
