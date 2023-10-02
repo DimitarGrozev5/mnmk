@@ -106,12 +106,17 @@ export const getCSZone = (cs: string, subsystem: string, zone: string) =>
 
 export type CoordinateSystemCode = [string, string, string];
 
-type HeightSystem = { name: string };
+type HeightSystem = { id: string; name: string };
 
-export const heightSystems: Record<string, HeightSystem> = {
-  evrs: { name: "EVRS" },
-  geo: { name: "Геодезична" },
-  balt: { name: "Балтийска" },
+export const heightSystems: ArrayAndAbject<Record<string, HeightSystem>> = {
+  asArray: ["evrs", "geo", "balt"],
+  asObject: {
+    evrs: { id: "evrs", name: "EVRS" },
+    geo: { id: "geo", name: "Геодезична" },
+    balt: { id: "balt", name: "Балтийска" },
+  },
 };
+
+export const getHS = (cs: string) => heightSystems.asObject[cs];
 
 export type HeightSystemCode = string;

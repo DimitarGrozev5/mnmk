@@ -23,14 +23,16 @@ import {
   getCoordinateSystem,
   getDivider,
   getFileType,
+  getHeightSystem,
   getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
 import { FileType, fileTypes } from "../../../store/types/file-types";
 import {
   CoordinateSystemCode,
-  coordinateSystems,
+  HeightSystemCode,
 } from "../../../store/types/coordinate-systems";
 import CoordinateSystemSelector from "../../common/file-parser/select-coordinate-system";
+import HeightSystemSelector from "../../common/file-parser/select-height-system";
 
 type Props = {
   id: ElementId;
@@ -45,6 +47,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
     toggleIgnoreFirstLine,
     setFileType,
     setCoordinateSystem,
+    setHeightSystem,
   } = fileParserActions;
 
   const asset = useAppSelector(getAsset(id));
@@ -53,6 +56,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
   const fileType = useAppSelector(getFileType());
   const cs = useAppSelector(getCoordinateSystem());
+  const hs = useAppSelector(getHeightSystem());
 
   const assetFile = getAssetFile(id);
   const [fileContents, setFileContents] = useState<string[]>([]);
@@ -112,21 +116,16 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
 
   const changeCSHandler = useCallback(
     (cs: CoordinateSystemCode) => {
-      if (!(cs[0] in coordinateSystems.asObject)) return;
-      if (!(cs[1] in coordinateSystems.asObject[cs[0]].subsystems.asObject))
-        return;
-      if (
-        !(
-          cs[2] in
-          coordinateSystems.asObject[cs[0]].subsystems.asObject[cs[1]].zones
-            .asObject
-        )
-      )
-        return;
-
       dispatch(setCoordinateSystem(cs));
     },
     [dispatch, setCoordinateSystem]
+  );
+
+  const changeHSHandler = useCallback(
+    (hs: HeightSystemCode) => {
+      dispatch(setHeightSystem(hs));
+    },
+    [dispatch, setHeightSystem]
   );
 
   return (
@@ -251,13 +250,27 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
               )}
             >
               <h1 className="text-xl text-slate-500 text-center">
-                Coordinate sysyem
+                Coordinate system
               </h1>
               <CoordinateSystemSelector
                 value={cs}
                 onChange={changeCSHandler}
                 horizontal
               />
+            </div>
+
+            <div
+              className={tw(
+                "flex flex-col items-stretch gap-4",
+                "border border-slate-400 rounded-md",
+                "p-2",
+                fileType === "ts" && "hidden"
+              )}
+            >
+              <h1 className="text-xl text-slate-500 text-center">
+                Height system
+              </h1>
+              <HeightSystemSelector value={hs} onChange={changeHSHandler} />
             </div>
           </div>
 

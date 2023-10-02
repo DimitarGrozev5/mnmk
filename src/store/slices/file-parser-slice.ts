@@ -136,6 +136,9 @@ export const fileParserSlice = createSlice({
     ) => {
       state.coordinateSystem = [...action.payload];
     },
+    setHeightSystem: (state, action: PayloadAction<HeightSystemCode>) => {
+      state.heightSystem = action.payload;
+    },
   },
 });
 
@@ -184,6 +187,8 @@ export const getFileType = () => (state: RootState) =>
   state.fileParser.fileType;
 export const getCoordinateSystem = () => (state: RootState) =>
   state.fileParser.coordinateSystem;
+export const getHeightSystem = () => (state: RootState) =>
+  state.fileParser.heightSystem;
 export const getDivider = () => (state: RootState) => state.fileParser.divider;
 export const getColumns = () => (state: RootState) => state.fileParser.columns;
 
