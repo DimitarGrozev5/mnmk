@@ -5,6 +5,7 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 import React from "react";
 
 type Props<T> = {
+  label?: string;
   selectedKey: T;
   selectedCaption: string;
   onChange: (val: T) => void;
@@ -14,6 +15,7 @@ type Props<T> = {
 };
 
 const Select = <T,>({
+  label,
   selectedKey,
   selectedCaption,
   onChange,
@@ -40,6 +42,31 @@ const Select = <T,>({
               )
             }
           >
+            {label && (
+              <div
+                className={tw(
+                  "text-sky-500 text-xs",
+                  "absolute left-2 -top-2.5 px-1",
+                  "bg-sky-200"
+                )}
+              >
+                <div
+                  className={tw(
+                    "absolute left-0 right-0 top-0 h-[60%]",
+                    "border border-sky-500 rounded-tl-md rounded-tr-md",
+                    "border-b-0",
+                    "transition-all duration-500"
+                  )}
+                />
+                {label}
+                <div
+                  className={tw(
+                    "absolute left-0 right-0 bottom-0 h-[60%]",
+                    "transition-all duration-500"
+                  )}
+                />
+              </div>
+            )}
             <span className="block truncate text-sky-800">
               {selectedCaption}
             </span>
