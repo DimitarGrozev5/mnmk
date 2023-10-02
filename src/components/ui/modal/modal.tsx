@@ -64,15 +64,6 @@ const Modal: React.FC<Props> = ({
             "fixed inset-0 z-50",
             "flex flex-col items-center justify-center"
           )}
-          style={
-            {
-              // left: fullScreen ? "5vw" : "50vw",
-              // top: fullScreen ? "5vh" : "10vh",
-              // width: fullScreen ? "90vw" : "40vw",
-              // height: fullScreen ? "90vh" : "60vh",
-              // transform: fullScreen ? "translate(0%, 0%)" : "translate(-50%, 0%)",
-            }
-          }
         >
           <Transition.Child
             as={React.Fragment}
@@ -106,7 +97,7 @@ const Modal: React.FC<Props> = ({
 
               <div
                 className={tw(
-                  "flex-1",
+                  "flex-1 relative",
                   "flex flex-col items-center gap-4",
                   "overflow-y-auto"
                 )}

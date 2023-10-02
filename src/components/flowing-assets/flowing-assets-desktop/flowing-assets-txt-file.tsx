@@ -250,12 +250,28 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
                 fileType === "ts" && "hidden"
               )}
             >
-              <h1 className="text-xl text-slate-500 text-center">Coordinate sysyem</h1>
-              <CoordinateSystemSelector value={cs} onChange={changeCSHandler} horizontal />
+              <h1 className="text-xl text-slate-500 text-center">
+                Coordinate sysyem
+              </h1>
+              <CoordinateSystemSelector
+                value={cs}
+                onChange={changeCSHandler}
+                horizontal
+              />
             </div>
           </div>
 
-          <FileParser />
+          <div
+            className={tw(
+              "flex-1 self-stretch relative",
+              "flex flex-col items-stretch",
+              "overflow-y-auto"
+            )}
+          >
+            <div className="absolute inset-0">
+              <FileParser />
+            </div>
+          </div>
         </div>
       </Modal>
     </>
