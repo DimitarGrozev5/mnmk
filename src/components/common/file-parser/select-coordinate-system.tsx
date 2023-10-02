@@ -13,9 +13,14 @@ import Select from "../../ui/select/select";
 type Props = {
   value: CoordinateSystemCode;
   onChange: (value: CoordinateSystemCode) => void;
+  horizontal?: boolean;
 };
 
-const CoordinateSystemSelector: React.FC<Props> = ({ value, onChange }) => {
+const CoordinateSystemSelector: React.FC<Props> = ({
+  value,
+  onChange,
+  horizontal,
+}) => {
   const changeCSHandler = useCallback(
     (cs: string) => {
       if (!(cs in coordinateSystems.asObject)) return;
@@ -44,7 +49,12 @@ const CoordinateSystemSelector: React.FC<Props> = ({ value, onChange }) => {
   );
 
   return (
-    <div className={tw("flex flex-col items-stretch gap-2")}>
+    <div
+      className={tw(
+        "flex flex-col justify-start items-stretch gap-2",
+        horizontal && "flex-row justify-between items-center"
+      )}
+    >
       <Select
         selectedKey={value[0]}
         selectedCaption={getCS(value[0]).name}

@@ -250,8 +250,8 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
                 fileType === "ts" && "hidden"
               )}
             >
-              <h1 className="text-xl text-slate-500">Coordinate sysyem</h1>
-              <CoordinateSystemSelector value={cs} onChange={changeCSHandler} />
+              <h1 className="text-xl text-slate-500 text-center">Coordinate sysyem</h1>
+              <CoordinateSystemSelector value={cs} onChange={changeCSHandler} horizontal />
             </div>
           </div>
 
