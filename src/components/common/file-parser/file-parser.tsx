@@ -62,12 +62,12 @@ const FileParser: React.FC = () => {
         <thead>
           <tr>
             <th />
-            {columns.map((field, indexField) => (
+            {columns.map((column, indexField) => (
               <React.Fragment key={indexField}>
                 <th>
                   {
                     <FileColumnSelector
-                      value={field}
+                      value={column}
                       onChange={onChangeField(indexField)}
                       filterForFileType={fileType}
                     />
