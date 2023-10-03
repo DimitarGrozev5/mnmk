@@ -109,8 +109,6 @@ export const fileParserSlice = createSlice({
           const lastStationIndex = stationsArray.slice(-1)[0];
           const lastStationName = lines[lastStationIndex][stColumnIndex];
 
-          console.log(lastStationIndex, lastStationName);
-
           if (lastStationName !== line[stColumnIndex]) {
             stationsArray.push(index + 1);
           }
