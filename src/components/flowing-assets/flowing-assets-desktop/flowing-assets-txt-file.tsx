@@ -281,7 +281,7 @@ const FlowingTextFile: React.FC<Props> = ({ id }) => {
               "overflow-y-auto"
             )}
           >
-            <div className="absolute inset-0">
+            <div className={tw("absolute inset-0", "flex flex-col")}>
               <FileParser />
             </div>
           </div>

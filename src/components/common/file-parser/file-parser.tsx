@@ -8,6 +8,7 @@ import {
   getColumns,
   getFileType,
   getIgnoreFirstLine,
+  getStationsArray,
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
@@ -22,6 +23,7 @@ const FileParser: React.FC = () => {
   const columns = useAppSelector(getColumns());
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
   const fileType = useAppSelector(getFileType());
+  const stationsArray = useAppSelector(getStationsArray());
 
   const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 
@@ -61,6 +63,7 @@ const FileParser: React.FC = () => {
       >
         <thead>
           <tr>
+            {fileType === "ts" && stationsArray.length > 0 && <th />}
             <th />
             {columns.map((column, indexField) => (
               <React.Fragment key={indexField}>

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { tw } from "../../../util/tw";
 import {
+  ArrowRightIcon,
   PencilSquareIcon,
   PlusCircleIcon,
   XMarkIcon,
@@ -10,7 +11,9 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   fileParserActions,
   getColumns,
+  getFileType,
   getLineWithFields,
+  getStationsArray,
 } from "../../../store/slices/file-parser-slice";
 import { fileColumns } from "../../../store/types/column-types";
 
@@ -31,6 +34,8 @@ const FileParserDataRow: React.FC<Props> = ({
 }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
   const columns = useAppSelector(getColumns());
+  const stationsArray = useAppSelector(getStationsArray());
+  const fileType = useAppSelector(getFileType());
 
   const dispatch = useAppDispatch();
   const { removeLine } = fileParserActions;
@@ -52,6 +57,13 @@ const FileParserDataRow: React.FC<Props> = ({
 
   return (
     <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
+      {fileType === "ts" && stationsArray.length > 0 && (
+        <th>
+          {stationsArray.includes(index) && (
+            <ArrowRightIcon className={tw("w-4 h-4 text-sky-500")} />
+          )}
+        </th>
+      )}
       <th
         className={tw(
           "border border-slate-400 px-2",

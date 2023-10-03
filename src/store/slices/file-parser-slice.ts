@@ -54,11 +54,16 @@ export const fileParserSlice = createSlice({
       createStateFromRawData(state, rawLines, divider);
     },
     clearAllData: (state) => {
-      state.linesArray = [];
-      state.lines = {};
-      state.dataFields = {};
-      state.divider = "tab";
-      state.columns = [];
+      state.linesArray = [...initialState.linesArray];
+      state.lines = { ...initialState.lines };
+      state.dataFields = { ...initialState.dataFields };
+      state.divider = initialState.divider;
+      state.columns = [...initialState.columns];
+      state.ignoreFirstLine = initialState.ignoreFirstLine;
+      state.fileType = initialState.fileType;
+      state.coordinateSystem = initialState.coordinateSystem;
+      state.heightSystem = initialState.heightSystem;
+      state.tsStations = [...initialState.tsStations];
     },
     changeDivider: (state, action: PayloadAction<Divider>) => {
       const divider = action.payload;
@@ -81,12 +86,38 @@ export const fileParserSlice = createSlice({
     ) => {
       const { index, type } = action.payload;
 
+      // If another column is of the same type and is single use unset it
       const sameColumnIndex = state.columns.indexOf(type);
       if (sameColumnIndex > -1 && fileColumns[type].singleUse) {
         state.columns[sameColumnIndex] = "unset";
       }
 
       state.columns[index] = type;
+
+      // Calculate stations for ts
+      if (state.fileType === "ts" && state.columns.includes("stationName")) {
+        const stColumnIndex = state.columns.indexOf("stationName");
+
+        // Get all fields
+        const lines = state.linesArray.map((lineId) =>
+          state.lines[lineId].map((fieldId) => state.dataFields[fieldId])
+        );
+
+        const stationsArray = [0];
+
+        lines.slice(1).forEach((line, index) => {
+          const lastStationIndex = stationsArray.slice(-1)[0];
+          const lastStationName = lines[lastStationIndex][stColumnIndex];
+
+          console.log(lastStationIndex, lastStationName);
+
+          if (lastStationName !== line[stColumnIndex]) {
+            stationsArray.push(index + 1);
+          }
+        });
+
+        state.tsStations = stationsArray;
+      }
     },
 
     removeLine: (state, action: PayloadAction<string>) => {
@@ -186,6 +217,7 @@ function createStateFromRawData(
   state.lines = lines;
   state.columns = columns;
   state.divider = divider;
+  state.tsStations = [];
 }
 
 const actions = fileParserSlice.actions;
@@ -202,6 +234,8 @@ export const getHeightSystem = () => (state: RootState) =>
   state.fileParser.heightSystem;
 export const getDivider = () => (state: RootState) => state.fileParser.divider;
 export const getColumns = () => (state: RootState) => state.fileParser.columns;
+export const getStationsArray = () => (state: RootState) =>
+  state.fileParser.tsStations;
 
 export const getAllLinesIds = () => (state: RootState) =>
   state.fileParser.linesArray;
