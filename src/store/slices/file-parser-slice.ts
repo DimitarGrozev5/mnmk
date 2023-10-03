@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { RootState } from "../store";
 import { Divider, dividers } from "../types/dividers";
 import { Draft } from "immer";
-import { FileColumn } from "../types/column-types";
+import { FileColumnCode } from "../types/column-types";
 import { FileType } from "../types/file-types";
 import {
   CoordinateSystemCode,
@@ -15,7 +15,7 @@ type FileParserState = {
   lines: Record<string, string[]>;
   dataFields: Record<string, string>;
   divider: Divider;
-  columns: FileColumn[];
+  columns: FileColumnCode[];
   ignoreFirstLine: boolean;
 
   fileType: FileType;
@@ -76,7 +76,7 @@ export const fileParserSlice = createSlice({
     },
     setColumn: (
       state,
-      action: PayloadAction<{ index: number; type: FileColumn }>
+      action: PayloadAction<{ index: number; type: FileColumnCode }>
     ) => {
       const { index, type } = action.payload;
       state.columns[index] = type;

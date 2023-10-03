@@ -6,12 +6,13 @@ import {
   fileParserActions,
   getAllLinesIds,
   getColumns,
+  getFileType,
   getIgnoreFirstLine,
 } from "../../../store/slices/file-parser-slice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import FileParserEditFieldModal from "./edit-field-modal";
 import FileParserAddFieldModal from "./add-field-modal";
-import { FileColumn } from "../../../store/types/column-types";
+import { FileColumnCode } from "../../../store/types/column-types";
 
 const FileParser: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,11 +21,12 @@ const FileParser: React.FC = () => {
   const linesIds = useAppSelector(getAllLinesIds());
   const columns = useAppSelector(getColumns());
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
+  const fileType = useAppSelector(getFileType());
 
   const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 
   const onChangeField = useCallback(
-    (index: number) => (fieldKey: FileColumn) => {
+    (index: number) => (fieldKey: FileColumnCode) => {
       dispatch(setField({ index, type: fieldKey }));
     },
     [dispatch, setField]
@@ -67,6 +69,7 @@ const FileParser: React.FC = () => {
                     <FileColumnSelector
                       value={field}
                       onChange={onChangeField(indexField)}
+                      filterForFileType={fileType}
                     />
                   }
                 </th>
