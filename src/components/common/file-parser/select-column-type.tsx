@@ -17,13 +17,14 @@ const FileColumnSelector: React.FC<Props> = ({
 }) => {
   const columns = useMemo(
     () =>
-      filterForFileType
-        ? Object.entries(fileColumns).filter(
-            ([, column]) =>
-              column.forFileTypes.includes(filterForFileType) ||
-              column.forFileTypes.length === 0
-          )
-        : Object.entries(fileColumns),
+      Object.values(fileColumns).flatMap((column) => {
+        const fileTypeCheck = filterForFileType
+          ? column.forFileTypes.includes(filterForFileType) ||
+            column.forFileTypes.length === 0
+          : true;
+
+        return fileTypeCheck ? column : [];
+      }),
     [filterForFileType]
   );
 
@@ -33,8 +34,8 @@ const FileColumnSelector: React.FC<Props> = ({
       selectedCaption={fileColumns[value].label}
       onChange={onChange}
     >
-      {columns.map(([key, value]) => (
-        <Option key={key} value={key} caption={value.label} />
+      {columns.map((column) => (
+        <Option key={column.id} value={column.id} caption={column.label} />
       ))}
     </Select>
   );
