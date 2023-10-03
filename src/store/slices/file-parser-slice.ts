@@ -21,6 +21,8 @@ type FileParserState = {
   fileType: FileType;
   coordinateSystem: CoordinateSystemCode;
   heightSystem: HeightSystemCode;
+
+  tsStations: number[];
 };
 
 const initialState: FileParserState = {
@@ -34,6 +36,8 @@ const initialState: FileParserState = {
   fileType: "control",
   coordinateSystem: ["bgs", "cad", "default"],
   heightSystem: "evrs",
+
+  tsStations: [],
 };
 
 export const fileParserSlice = createSlice({
