@@ -98,33 +98,7 @@ export const fileParserSlice = createSlice({
       state.columns[index] = type;
 
       // Calculate stations for ts
-      if (
-        state.fileType === "ts" &&
-        state.columns.includes("stationName") &&
-        state.linesArray.length > 0
-      ) {
-        const stColumnIndex = state.columns.indexOf("stationName");
-
-        // Get all fields
-        const lines = state.linesArray.map((lineId) =>
-          state.lines[lineId].map((fieldId) => state.dataFields[fieldId])
-        );
-
-        const stationsArray = [0];
-
-        lines.slice(1).forEach((line, index) => {
-          const lastStationIndex = stationsArray.slice(-1)[0];
-          const lastStationName = lines[lastStationIndex][stColumnIndex];
-
-          if (lastStationName !== line[stColumnIndex]) {
-            stationsArray.push(index + 1);
-          }
-        });
-
-        state.tsStations = stationsArray.map(
-          (index) => state.linesArray[index]
-        );
-      }
+      calculateTsStations(state, true);
     },
 
     removeLine: (state, action: PayloadAction<string>) => {
@@ -139,6 +113,14 @@ export const fileParserSlice = createSlice({
         return true;
       });
       delete state.lines[lineId];
+
+      // Handle changes to ts stations
+      if (state.tsStationsUserSelected.includes(lineId))
+        state.tsStationsUserSelected = state.tsStationsUserSelected.filter(
+          (st) => st !== lineId
+        );
+
+      if (state.tsStations.includes(lineId)) calculateTsStations(state);
     },
     editField: (
       state,
@@ -157,6 +139,8 @@ export const fileParserSlice = createSlice({
           }
         });
       }
+
+      calculateTsStations(state);
     },
     addField: (
       state,
@@ -167,6 +151,8 @@ export const fileParserSlice = createSlice({
 
       state.dataFields[fieldId] = value;
       state.lines[rowId].splice(atIndex, 0, fieldId);
+
+      calculateTsStations(state, true);
     },
 
     toggleIgnoreFirstLine: (
@@ -175,9 +161,13 @@ export const fileParserSlice = createSlice({
     ) => {
       state.ignoreFirstLine =
         action.payload !== undefined ? action.payload : !state.ignoreFirstLine;
+
+      calculateTsStations(state, true);
     },
     setFileType: (state, action: PayloadAction<FileType>) => {
       state.fileType = action.payload;
+
+      calculateTsStations(state, true);
     },
     setCoordinateSystem: (
       state,
@@ -188,8 +178,65 @@ export const fileParserSlice = createSlice({
     setHeightSystem: (state, action: PayloadAction<HeightSystemCode>) => {
       state.heightSystem = action.payload;
     },
+
+    toggleUserStation: (state, action: PayloadAction<string>) => {
+      const rowId = action.payload;
+      const idIsInState = state.tsStationsUserSelected.includes(rowId);
+
+      if (idIsInState) {
+        state.tsStationsUserSelected = state.tsStationsUserSelected.filter(
+          (st) => st !== rowId
+        );
+      } else {
+        state.tsStationsUserSelected.push(rowId);
+      }
+    },
   },
 });
+
+function calculateTsStations(
+  state: Draft<FileParserState>,
+  clearUserSelected = false
+) {
+  if (
+    state.fileType === "ts" &&
+    state.columns.includes("stationName") &&
+    state.linesArray.length > 0
+  ) {
+    const stColumnIndex = state.columns.indexOf("stationName");
+
+    // Get all fields
+    const lines = state.linesArray
+      .slice(+state.ignoreFirstLine)
+      .map((lineId) =>
+        state.lines[lineId].map((fieldId) => state.dataFields[fieldId])
+      );
+
+    const stationsArray = [0];
+
+    lines.slice(1).forEach((line, index) => {
+      const lastStationIndex = stationsArray.slice(-1)[0];
+      const lastStationName = lines[lastStationIndex][stColumnIndex];
+
+      if (lastStationName !== line[stColumnIndex]) {
+        stationsArray.push(index + 1);
+      }
+    });
+
+    state.tsStations = stationsArray.map(
+      (index) => state.linesArray[index + +state.ignoreFirstLine]
+    );
+    if (clearUserSelected)
+      state.tsStationsUserSelected = [...initialState.tsStationsUserSelected];
+
+    state.tsStationsUserSelected = state.tsStationsUserSelected.filter(
+      (st) => !state.tsStations.includes(st)
+    );
+  } else {
+    state.tsStations = [...initialState.tsStations];
+    state.tsStationsUserSelected = [...initialState.tsStationsUserSelected];
+  }
+}
 
 function createStateFromRawData(
   state: Draft<FileParserState>,

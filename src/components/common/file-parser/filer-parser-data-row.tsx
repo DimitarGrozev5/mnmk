@@ -39,7 +39,7 @@ const FileParserDataRow: React.FC<Props> = ({
   const fileType = useAppSelector(getFileType());
 
   const dispatch = useAppDispatch();
-  const { removeLine } = fileParserActions;
+  const { removeLine, toggleUserStation } = fileParserActions;
 
   const fieldsValidity = useMemo(
     () =>
@@ -56,17 +56,24 @@ const FileParserDataRow: React.FC<Props> = ({
     dispatch(removeLine(rowId));
   }, [dispatch, removeLine, rowId]);
 
+  const onToggleStation = useCallback(() => {
+    dispatch(toggleUserStation(rowId));
+  }, [dispatch, rowId, toggleUserStation]);
+
   return (
     <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
       {fileType === "ts" && stationsArrays.tsStations.length > 0 && (
         <th className={tw("group/stcell", "relative")}>
           <ArrowRightIcon
             className={tw(
-              "w-4 h-4 text-sky-500",
+              "w-4 h-4",
               stationsArrays.tsStations.includes(rowId) ||
                 stationsArrays.tsStationsUserSelected.includes(rowId)
                 ? "visible"
-                : "invisible"
+                : "invisible",
+              stationsArrays.tsStations.includes(rowId) && "text-sky-500",
+              stationsArrays.tsStationsUserSelected.includes(rowId) &&
+                "text-slate-500"
             )}
             aria-hidden={
               !stationsArrays.tsStations.includes(rowId) &&
@@ -85,7 +92,7 @@ const FileParserDataRow: React.FC<Props> = ({
           >
             <Checkbox
               value={stationsArrays.tsStationsUserSelected.includes(rowId)}
-              onChange={() => {}}
+              onChange={onToggleStation}
             />
           </div>
         </th>

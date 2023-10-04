@@ -50,6 +50,7 @@ const FileParserEditFieldModal: React.FC<Props> = ({
     >
       <div
         className={tw(
+          "py-2",
           "self-stretch",
           "flex flex-row justify-between items-center gap-2"
         )}
