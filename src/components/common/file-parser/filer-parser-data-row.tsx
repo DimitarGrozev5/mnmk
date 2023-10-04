@@ -63,14 +63,14 @@ const FileParserDataRow: React.FC<Props> = ({
           <ArrowRightIcon
             className={tw(
               "w-4 h-4 text-sky-500",
-              stationsArrays.tsStations.includes(index) ||
-                stationsArrays.tsStationsUserSelected.includes(index)
+              stationsArrays.tsStations.includes(rowId) ||
+                stationsArrays.tsStationsUserSelected.includes(rowId)
                 ? "visible"
                 : "invisible"
             )}
             aria-hidden={
-              !stationsArrays.tsStations.includes(index) &&
-              !stationsArrays.tsStationsUserSelected.includes(index)
+              !stationsArrays.tsStations.includes(rowId) &&
+              !stationsArrays.tsStationsUserSelected.includes(rowId)
             }
           />
           <div
@@ -78,13 +78,13 @@ const FileParserDataRow: React.FC<Props> = ({
               "absolute inset-0",
               "flex flex-col items-center justify-center  ",
               "invisible opacity-0",
-              !stationsArrays.tsStations.includes(index) &&
+              !stationsArrays.tsStations.includes(rowId) &&
                 "group-hover/stcell:visible group-hover/stcell:opacity-100",
               "transition-all duration-500"
             )}
           >
             <Checkbox
-              value={stationsArrays.tsStationsUserSelected.includes(index)}
+              value={stationsArrays.tsStationsUserSelected.includes(rowId)}
               onChange={() => {}}
             />
           </div>
@@ -112,8 +112,8 @@ const FileParserDataRow: React.FC<Props> = ({
               "group-odd/row:bg-slate-300",
               !fieldsValidity[indexField] && !ignored && "text-red-500",
               columns[indexField] === "stationName" &&
-                (stationsArrays.tsStations.includes(index) ||
-                stationsArrays.tsStationsUserSelected.includes(index)
+                (stationsArrays.tsStations.includes(rowId) ||
+                stationsArrays.tsStationsUserSelected.includes(rowId)
                   ? "text-sky-500 border-sky-500 bg-sky-200 group-odd/row:bg-sky-200"
                   : "text-slate-400")
             )}

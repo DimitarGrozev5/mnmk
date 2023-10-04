@@ -22,8 +22,8 @@ type FileParserState = {
   coordinateSystem: CoordinateSystemCode;
   heightSystem: HeightSystemCode;
 
-  tsStations: number[];
-  tsStationsUserSelected: number[];
+  tsStations: string[];
+  tsStationsUserSelected: string[];
 };
 
 const initialState: FileParserState = {
@@ -98,7 +98,11 @@ export const fileParserSlice = createSlice({
       state.columns[index] = type;
 
       // Calculate stations for ts
-      if (state.fileType === "ts" && state.columns.includes("stationName")) {
+      if (
+        state.fileType === "ts" &&
+        state.columns.includes("stationName") &&
+        state.linesArray.length > 0
+      ) {
         const stColumnIndex = state.columns.indexOf("stationName");
 
         // Get all fields
@@ -117,7 +121,9 @@ export const fileParserSlice = createSlice({
           }
         });
 
-        state.tsStations = stationsArray;
+        state.tsStations = stationsArray.map(
+          (index) => state.linesArray[index]
+        );
       }
     },
 
