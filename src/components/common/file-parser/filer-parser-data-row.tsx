@@ -84,7 +84,11 @@ const FileParserDataRow: React.FC<Props> = ({
               "text-slate-800",
               ignored && "text-slate-400 font-normal",
               "group-odd/row:bg-slate-300",
-              !fieldsValidity[indexField] && !ignored && "text-red-500"
+              !fieldsValidity[indexField] && !ignored && "text-red-500",
+              columns[indexField] === "stationName" &&
+                (stationsArray.includes(index)
+                  ? "text-sky-500 border-sky-500 bg-sky-200 group-odd/row:bg-sky-200"
+                  : "text-slate-400")
             )}
           >
             {field.value}
