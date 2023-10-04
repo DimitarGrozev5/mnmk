@@ -23,6 +23,7 @@ type FileParserState = {
   heightSystem: HeightSystemCode;
 
   tsStations: number[];
+  tsStationsUserSelected: number[];
 };
 
 const initialState: FileParserState = {
@@ -38,6 +39,7 @@ const initialState: FileParserState = {
   heightSystem: "evrs",
 
   tsStations: [],
+  tsStationsUserSelected: [],
 };
 
 export const fileParserSlice = createSlice({
@@ -64,6 +66,7 @@ export const fileParserSlice = createSlice({
       state.coordinateSystem = initialState.coordinateSystem;
       state.heightSystem = initialState.heightSystem;
       state.tsStations = [...initialState.tsStations];
+      state.tsStationsUserSelected = [...initialState.tsStationsUserSelected];
     },
     changeDivider: (state, action: PayloadAction<Divider>) => {
       const divider = action.payload;
@@ -216,6 +219,7 @@ function createStateFromRawData(
   state.columns = columns;
   state.divider = divider;
   state.tsStations = [];
+  state.tsStationsUserSelected = [];
 }
 
 const actions = fileParserSlice.actions;
@@ -232,8 +236,17 @@ export const getHeightSystem = () => (state: RootState) =>
   state.fileParser.heightSystem;
 export const getDivider = () => (state: RootState) => state.fileParser.divider;
 export const getColumns = () => (state: RootState) => state.fileParser.columns;
-export const getStationsArray = () => (state: RootState) =>
-  state.fileParser.tsStations;
+
+export const getStationsArray = createSelector(
+  [
+    (state: RootState) => state.fileParser.tsStations,
+    (state: RootState) => state.fileParser.tsStationsUserSelected,
+  ],
+  (tsStations, tsStationsUserSelected) => ({
+    tsStations,
+    tsStationsUserSelected,
+  })
+);
 
 export const getAllLinesIds = () => (state: RootState) =>
   state.fileParser.linesArray;

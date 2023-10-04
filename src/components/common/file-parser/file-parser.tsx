@@ -23,7 +23,7 @@ const FileParser: React.FC = () => {
   const columns = useAppSelector(getColumns());
   const ignoreFirstLine = useAppSelector(getIgnoreFirstLine());
   const fileType = useAppSelector(getFileType());
-  const stationsArray = useAppSelector(getStationsArray());
+  const stationsArray = useAppSelector(getStationsArray);
 
   const firstLine = ignoreFirstLine ? linesIds[0] : undefined;
 
@@ -63,7 +63,7 @@ const FileParser: React.FC = () => {
       >
         <thead>
           <tr>
-            {fileType === "ts" && stationsArray.length > 0 && <th />}
+            {fileType === "ts" && stationsArray.tsStations.length > 0 && <th />}
             <th />
             {columns.map((column, indexField) => (
               <React.Fragment key={indexField}>

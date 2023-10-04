@@ -35,7 +35,7 @@ const FileParserDataRow: React.FC<Props> = ({
 }) => {
   const line = useAppSelector((state) => getLineWithFields(state, rowId));
   const columns = useAppSelector(getColumns());
-  const stationsArray = useAppSelector(getStationsArray());
+  const stationsArrays = useAppSelector(getStationsArray);
   const fileType = useAppSelector(getFileType());
 
   const dispatch = useAppDispatch();
@@ -58,25 +58,33 @@ const FileParserDataRow: React.FC<Props> = ({
 
   return (
     <tr className={tw("group/row", "w-[max-content]", "odd:bg-slate-3001")}>
-      {fileType === "ts" && stationsArray.length > 0 && (
+      {fileType === "ts" && stationsArrays.tsStations.length > 0 && (
         <th className={tw("group/stcell", "relative")}>
           <ArrowRightIcon
             className={tw(
               "w-4 h-4 text-sky-500",
-              stationsArray.includes(index) ? "visible" : "invisible"
+              stationsArrays.tsStations.includes(index) ||
+                stationsArrays.tsStationsUserSelected.includes(index)
+                ? "visible"
+                : "invisible"
             )}
-            aria-hidden={!stationsArray.includes(index)}
+            aria-hidden={
+              !stationsArrays.tsStations.includes(index) &&
+              !stationsArrays.tsStationsUserSelected.includes(index)
+            }
           />
           <div
             className={tw(
               "absolute inset-0",
               "flex flex-col items-center justify-center  ",
-              "invisible opacity-0 group-hover/stcell:visible group-hover/stcell:opacity-100",
+              "invisible opacity-0",
+              !stationsArrays.tsStations.includes(index) &&
+                "group-hover/stcell:visible group-hover/stcell:opacity-100",
               "transition-all duration-500"
             )}
           >
             <Checkbox
-              value={stationsArray.includes(index)}
+              value={stationsArrays.tsStationsUserSelected.includes(index)}
               onChange={() => {}}
             />
           </div>
@@ -104,7 +112,8 @@ const FileParserDataRow: React.FC<Props> = ({
               "group-odd/row:bg-slate-300",
               !fieldsValidity[indexField] && !ignored && "text-red-500",
               columns[indexField] === "stationName" &&
-                (stationsArray.includes(index)
+                (stationsArrays.tsStations.includes(index) ||
+                stationsArrays.tsStationsUserSelected.includes(index)
                   ? "text-sky-500 border-sky-500 bg-sky-200 group-odd/row:bg-sky-200"
                   : "text-slate-400")
             )}
