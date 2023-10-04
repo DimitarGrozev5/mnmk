@@ -5,7 +5,7 @@ import InputLabel from "../input-label/input-label";
 type Props = {
   value: boolean;
   onChange: (value: boolean) => void;
-  label: string;
+  label?: string;
 };
 
 const Switch: React.FC<Props> = ({ value: checked, onChange, label }) => {
@@ -42,7 +42,7 @@ const Switch: React.FC<Props> = ({ value: checked, onChange, label }) => {
           checked && "bg-sky-400"
         )}
       />
-      <InputLabel htmlFor={`switch-input-${id}`}>{label}</InputLabel>
+      {label && <InputLabel htmlFor={`switch-input-${id}`}>{label}</InputLabel>}
     </div>
   );
 };
