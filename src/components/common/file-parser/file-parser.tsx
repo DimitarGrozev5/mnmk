@@ -65,6 +65,7 @@ const FileParser: React.FC = () => {
           <tr>
             {fileType === "ts" && stationsArray.tsStations.length > 0 && <th />}
             <th />
+            <th />
             {columns.map((column, indexField) => (
               <React.Fragment key={indexField}>
                 <th>
@@ -76,7 +77,7 @@ const FileParser: React.FC = () => {
                     />
                   }
                 </th>
-                <th></th>
+                <th />
               </React.Fragment>
             ))}
           </tr>

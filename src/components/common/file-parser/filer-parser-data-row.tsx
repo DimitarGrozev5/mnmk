@@ -107,6 +107,22 @@ const FileParserDataRow: React.FC<Props> = ({
       >
         {ignored ? null : index + 1}
       </th>
+      <th className="relative group/add">
+        <span
+          className={tw(
+            "absolute top-0 -left-1 -right-1 bottom-0",
+            "flex flex-col items-center justify-center",
+            "transition-all duration-500",
+            "opacity-0 invisible",
+            "group-hover/add:opacity-100 group-hover/add:visible",
+            ignored && "group-hover/row:hidden"
+          )}
+        >
+          <IconButton label="Add field" onClick={() => addFieldAtIndex(0)}>
+            <PlusCircleIcon className="w-5 h-5 text-sky-500" />
+          </IconButton>
+        </span>
+      </th>
       {line.map((field, indexField) => (
         <React.Fragment key={field.id}>
           <td
