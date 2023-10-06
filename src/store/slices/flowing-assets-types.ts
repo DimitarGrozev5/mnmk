@@ -1,3 +1,8 @@
+import {
+  CoordinateSystemCode,
+  HeightSystemCode,
+} from "../types/coordinate-systems";
+
 export type ZonesAndTransformers = {
   zones: Record<string, Zone>;
   zoneIds: string[];
@@ -64,6 +69,70 @@ export type AssetType = {
   add_new: "add_new";
   txt_file: { fileName: string };
   csv_file: { fileName: string };
+  control_points_data: {
+    pointName: string;
+
+    northing: number;
+    nortingStDev: number;
+
+    easting: number;
+    eastingStDev: number;
+
+    height: number;
+    heightStDev: number;
+
+    coordinateSystem: CoordinateSystemCode;
+    heightSystem: HeightSystemCode;
+  };
+  gps_measurment_data: {
+    pointName: string;
+
+    northing: number;
+    nortingStDev: number;
+
+    easting: number;
+    eastingStDev: number;
+
+    height: number;
+    heightStDev: number;
+
+    PDOP: number | null;
+    VDOP: number | null;
+
+    coordinateSystem: CoordinateSystemCode;
+    heightSystem: HeightSystemCode;
+
+    stationHeight: number;
+
+    code: string;
+  };
+
+  ts_measurement_data: {
+    stationsArray: string[];
+    stations: Record<
+      string,
+      {
+        id: string;
+        stationName: string;
+        stationHeight: number;
+
+        measurementsArray: string[];
+        measurements: Record<
+          string,
+          {
+            id: string;
+            observedName: string;
+            observedSignalHeight: number;
+            horizontalAngle: number;
+            zenithAngle: number;
+            slantDistance: number;
+            horizontalDistance: number;
+            code: string;
+          }
+        >;
+      }
+    >;
+  };
 };
 
 /**
